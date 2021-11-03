@@ -1,0 +1,17 @@
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Domain\obj\Debug\net5.0\Forum.Domain.csproj.AssemblyReference.cache
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Domain\obj\Debug\net5.0\Forum.Domain.GeneratedMSBuildEditorConfig.editorconfig
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Domain\obj\Debug\net5.0\Forum.Domain.AssemblyInfoInputs.cache
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Domain\obj\Debug\net5.0\Forum.Domain.AssemblyInfo.cs
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Domain\obj\Debug\net5.0\Forum.Domain.csproj.CoreCompileInputs.cache
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Domain\bin\Debug\net5.0\Forum.Domain.deps.json
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Domain\bin\Debug\net5.0\Forum.Domain.runtimeconfig.json
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Domain\bin\Debug\net5.0\Forum.Domain.runtimeconfig.dev.json
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Domain\bin\Debug\net5.0\Forum.Domain.dll
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Domain\bin\Debug\net5.0\ref\Forum.Domain.dll
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Domain\bin\Debug\net5.0\Forum.Domain.pdb
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Domain\bin\Debug\net5.0\Forum.Core.dll
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Domain\bin\Debug\net5.0\Forum.Core.pdb
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Domain\obj\Debug\net5.0\Forum.Domain.dll
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Domain\obj\Debug\net5.0\ref\Forum.Domain.dll
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Domain\obj\Debug\net5.0\Forum.Domain.pdb
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Domain\obj\Debug\net5.0\Forum.Domain.genruntimeconfig.cache

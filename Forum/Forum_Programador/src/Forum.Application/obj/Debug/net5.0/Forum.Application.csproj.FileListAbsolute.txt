@@ -1,0 +1,17 @@
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Application\obj\Debug\net5.0\Forum.Application.csproj.AssemblyReference.cache
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Application\obj\Debug\net5.0\Forum.Application.GeneratedMSBuildEditorConfig.editorconfig
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Application\obj\Debug\net5.0\Forum.Application.AssemblyInfoInputs.cache
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Application\obj\Debug\net5.0\Forum.Application.AssemblyInfo.cs
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Application\obj\Debug\net5.0\Forum.Application.csproj.CoreCompileInputs.cache
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Application\bin\Debug\net5.0\Forum.Application.deps.json
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Application\bin\Debug\net5.0\Forum.Application.dll
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Application\bin\Debug\net5.0\ref\Forum.Application.dll
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Application\bin\Debug\net5.0\Forum.Application.pdb
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Application\bin\Debug\net5.0\Forum.Core.dll
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Application\bin\Debug\net5.0\Forum.Domain.dll
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Application\bin\Debug\net5.0\Forum.Core.pdb
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Application\bin\Debug\net5.0\Forum.Domain.pdb
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Application\obj\Debug\net5.0\Forum.Application.dll
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Application\obj\Debug\net5.0\ref\Forum.Application.dll
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Application\obj\Debug\net5.0\Forum.Application.pdb
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Application\obj\Debug\net5.0\Forum.Application.csproj.CopyComplete
