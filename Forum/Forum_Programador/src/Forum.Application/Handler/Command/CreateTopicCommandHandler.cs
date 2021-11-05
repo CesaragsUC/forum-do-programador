@@ -1,5 +1,6 @@
 ﻿using Forum.Application.Commands;
 using Forum.Application.Events;
+using Forum.Application.Extensions;
 using Forum.Core.Communication.Mediator;
 using Forum.Core.Messages;
 using Forum.Core.Messages.CommonMessage.Notification;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Forum.Application.Handler
 {
-    public class CreateTopicCommandHandler :
+    public class CreateTopicCommandHandler : ValidateComandBase,
         IRequestHandler<CreateTopicCommand, bool>
     {
 
@@ -19,7 +20,7 @@ namespace Forum.Application.Handler
         private readonly ITopicRepository _topicRepository;
 
         public CreateTopicCommandHandler(IMediatorHandler mediatorHandler,
-            ITopicRepository topicRepository)
+            ITopicRepository topicRepository):base(mediatorHandler)
         {
             _mediatorHandler = mediatorHandler;
             _topicRepository = topicRepository;
@@ -39,17 +40,5 @@ namespace Forum.Application.Handler
         }
 
 
-        private bool ValidateCommand(Command  command)
-        {
-            if (command.IsValid()) return true;
-
-            foreach (var error in command.ValidationResult.Errors)
-            {
-                _mediatorHandler.PublishDomainNotification(
-                    new DomainNotification(command.MessageType, error.ErrorMessage));
-            }
-
-            return false;
-        }
     }
 }

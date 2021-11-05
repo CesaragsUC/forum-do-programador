@@ -14,6 +14,10 @@ namespace Forum.Infra.Mappings
                 .IsRequired()
                 .HasColumnType("varchar(100)");
 
+            builder.Property(s => s.IsActive)
+            .IsRequired()
+            .HasColumnType("bit");
+
             builder.ToTable("Sections");
         }
     }

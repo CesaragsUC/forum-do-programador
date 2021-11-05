@@ -10,15 +10,15 @@ namespace Forum.Application.DTO
     {
         public Guid Id { get; set; }
 
-        public string Title { get; private set; }
+        public string Title { get;  set; }
 
-        public Guid UserId { get; private set; }
+        public Guid UserId { get;  set; }
 
-        public DateTime CreationDate { get; private set; }
+        public DateTime CreationDate { get;  set; }
 
-        public UserDTO User { get; private set; }
+        public UserDTO User { get;  set; }
 
 
-        public ICollection<CommentsDTO> Coments { get; private set; }
+        public ICollection<CommentsDTO> Coments { get;  set; }
     }
 }

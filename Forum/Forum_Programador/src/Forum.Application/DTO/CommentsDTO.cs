@@ -9,18 +9,18 @@ namespace Forum.Application.DTO
     public class CommentsDTO
     {
         public Guid Id { get; set; }
-        public string Text { get; private set; }
-        public Guid UserId { get; private set; }
-        public Guid TopicId { get; private set; }
-        public DateTime CreationDate { get; private set; }
+        public string Text { get;  set; }
+        public Guid UserId { get;  set; }
+        public Guid TopicId { get;  set; }
+        public DateTime CreationDate { get;  set; }
 
-        public int CommentId { get; private set; }
-
-        //EF Realtionship 1:1
-        public UserDTO User { get; private set; }
+        public int CommentId { get;  set; }
 
         //EF Realtionship 1:1
-        public TopicDTO Topic { get; private set; }
+        public UserDTO User { get;  set; }
+
+        //EF Realtionship 1:1
+        public TopicDTO Topic { get;  set; }
     }
 
 }

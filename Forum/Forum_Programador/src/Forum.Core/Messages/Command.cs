@@ -19,5 +19,6 @@ namespace Forum.Core.Messages
         {
             throw new NotFiniteNumberException();
         }
+
     }
 }

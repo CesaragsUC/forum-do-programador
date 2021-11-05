@@ -10,16 +10,16 @@ namespace Forum.Application.DTO
     {
         public Guid Id { get; set; }
 
-        public Guid IdentityId { get; private set; }
-        public string Name { get; private set; }
-        public string Email { get; private set; }
+        public Guid IdentityId { get;  set; }
+        public string Name { get;  set; }
+        public string Email { get;  set; }
 
-        public string Avatar { get; private set; }
+        public string Avatar { get;  set; }
 
-        public int UserTypeId { get; private set; }
+        public int UserTypeId { get;  set; }
 
-        public DateTime CreationDate { get; private set; }
+        public DateTime CreationDate { get;  set; }
 
-        public DateTime LastActivity { get; private set; }
+        public DateTime LastActivity { get;  set; }
     }
 }

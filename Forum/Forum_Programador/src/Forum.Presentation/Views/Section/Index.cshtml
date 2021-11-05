@@ -1,0 +1,128 @@
+﻿
+@model IEnumerable<Forum.Application.DTO.SectionDTO>
+
+@{
+    ViewData["Title"] = "Section";
+}
+
+
+<style>
+    body {
+        margin-top: 20px;
+        background: #f8f8f8
+    }
+</style>
+
+<div class="container">
+    <div class="row flex-lg-nowrap">
+
+        <div class="col">
+
+
+            <div class="row flex-lg-nowrap">
+                <div class="col mb-3">
+                    <div class="e-panel card">
+                        <div class="card-body">
+                            <div class="card-title">
+                                <h6 class="mr-2"><span>Sections Forum</span></h6>
+                            </div>
+                            <a class="btn btn-primary" asp-controller="Section" asp-action="Create">Create</a>
+
+                            <div class="e-table">
+                                <div class="table-responsive table-lg mt-3">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th class="max-width">Name</th>
+                                                <th class="sortable">Date</th>
+                                                <th> Is Active</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (Model.Any())
+                                            {
+                                                @foreach (var item in Model)
+                                                {
+
+                                                    <tr>
+                                                        <td> @item.Name </td>
+                                                        <td class="text-nowrap align-middle"><span> @item.CreationDate.ToString("dd/MM/yyyy") </span></td>
+                                                        <td class="text-center align-middle">@(item.IsActive ? "Yes" : "No")</td>
+                                                        <td class="text-center align-middle">
+                                                            <div class="btn-group align-top">
+                                                                <button class="btn btn-sm btn-outline-secondary badge" type="button" data-toggle="modal" data-target="#user-form-modal">Edit</button>
+                                                                <button class="btn btn-sm btn-outline-secondary badge" type="button"><i class="fa fa-trash"></i></button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!--Paginacao-->
+                                <div class="d-flex justify-content-center">
+                                    <ul class="pagination mt-3 mb-0">
+                                        <li class="disabled page-item"><a href="#" class="page-link">‹</a></li>
+                                        <li class="active page-item"><a href="#" class="page-link">1</a></li>
+                                        <li class="page-item"><a href="#" class="page-link">2</a></li>
+                                        <li class="page-item"><a href="#" class="page-link">3</a></li>
+                                        <li class="page-item"><a href="#" class="page-link">4</a></li>
+                                        <li class="page-item"><a href="#" class="page-link">5</a></li>
+                                        <li class="page-item"><a href="#" class="page-link">›</a></li>
+                                        <li class="page-item"><a href="#" class="page-link">»</a></li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Form Modal -->
+            <div class="modal fade" role="dialog" tabindex="-1" id="user-form-modal">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Create Section</h5>
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="py-1">
+                                <form class="form" novalidate="">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="form-group">
+                                                        <label>Name</label>
+                                                        <input class="form-control" type="text" name="name" placeholder="John Smith" value="John Smith">
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col d-flex justify-content-end">
+                                            <button class="btn btn-primary" type="submit">Save Changes</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

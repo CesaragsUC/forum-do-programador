@@ -1,6 +1,8 @@
 ﻿using Forum.Application.Commands;
 using Forum.Application.Events;
 using Forum.Application.Handler;
+using Forum.Application.Queries;
+using Forum.Application.Queries.Interfaces;
 using Forum.Core.Communication.Mediator;
 using Forum.Core.Messages.CommonMessage.Notification;
 using Forum.Domain.Interfaces;
@@ -24,9 +26,15 @@ namespace Forum.Presentation.DependencyResolver
             //Forum
             services.AddScoped<ForumContext>();
             services.AddScoped<ITopicRepository, TopicRepository>();
+            services.AddScoped<ISectionRepository, SectionRepository>();
 
             services.AddScoped<INotificationHandler<TopicCreatedEvent>, TopicHandlerEvent>();
+            services.AddScoped<INotificationHandler<SectionCreatedEvent>, SectionHandlerEvent>();
+
+            services.AddScoped<ISectionQuery, SectionQuery>();
+
             services.AddScoped<IRequestHandler<CreateTopicCommand, bool>, CreateTopicCommandHandler>();
+            services.AddScoped<IRequestHandler<CreateSectionCommand,bool>, SectionCommandHandler>();
 
 
         }

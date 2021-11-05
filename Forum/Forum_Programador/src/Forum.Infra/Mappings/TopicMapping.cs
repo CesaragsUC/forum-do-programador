@@ -22,6 +22,9 @@ namespace Forum.Infra.Mappings
             //1:1 user
             builder.HasOne(u => u.User);
 
+            //1:1 Section
+            builder.HasOne(u => u.Section);
+
             //1:N comments
             builder.HasMany(c => c.Coments)
                 .WithOne(t => t.Topic)

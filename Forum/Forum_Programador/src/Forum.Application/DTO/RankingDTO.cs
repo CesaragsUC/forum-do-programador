@@ -10,14 +10,14 @@ namespace Forum.Application.DTO
     {
         public Guid Id { get; set; }
 
-        public Guid UserId { get; private set; }
+        public Guid UserId { get;  set; }
 
-        public Guid UserSentPointId { get; private set; }
-        public int Point { get; private set; }
-        public Guid TopicId { get; private set; }
+        public Guid UserSentPointId { get;  set; }
+        public int Point { get;  set; }
+        public Guid TopicId { get;  set; }
 
-        public int CommentId { get; private set; }
+        public int CommentId { get;  set; }
 
-        public DateTime CreationDate { get; private set; }
+        public DateTime CreationDate { get;  set; }
     }
 }

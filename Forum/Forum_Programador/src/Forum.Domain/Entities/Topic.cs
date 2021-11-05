@@ -10,6 +10,8 @@ namespace Forum.Domain.Entities
 
         public Guid UserId { get; private set; }
 
+        public Guid SectionId { get; private set; }
+
         public int TotalViews { get; private set; }
 
         public int TotalReplies { get; private set; }
@@ -18,6 +20,9 @@ namespace Forum.Domain.Entities
 
         //EF Relation 1:1
         public User User { get; private set; }
+
+        //EF Relation 1:1
+        public Section Section { get; private set; }
 
 
         //EF Relation 1:N
