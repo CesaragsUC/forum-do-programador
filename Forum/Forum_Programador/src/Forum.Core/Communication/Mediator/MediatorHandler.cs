@@ -2,10 +2,6 @@
 using Forum.Core.Messages.CommonMessage.DomainEvents;
 using Forum.Core.Messages.CommonMessage.Notification;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Forum.Core.Communication.Mediator

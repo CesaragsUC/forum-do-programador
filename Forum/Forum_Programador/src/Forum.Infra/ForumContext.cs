@@ -21,7 +21,7 @@ namespace Forum.Infra
         public DbSet<Section> Sections { get; set; }
         public DbSet<Topic> Topics { get; set; }
         public DbSet<Comments> Comments { get; set; }
-
+        public DbSet<Area> Areas { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

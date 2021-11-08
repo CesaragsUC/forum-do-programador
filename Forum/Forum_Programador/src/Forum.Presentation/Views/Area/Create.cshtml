@@ -1,0 +1,19 @@
+﻿@model Forum.Application.DTO.AreaDTO
+
+
+<h3>Create New Area</h3>
+
+<vc:summary />
+
+<form asp-action="Create">
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group col-md-4">
+        <label for="exampleInputEmail1">Name</label>
+        <input asp-for="Name" class="form-control" id="name" placeholder="Enter section name">
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>

@@ -12,14 +12,14 @@ using System.Threading.Tasks;
 
 namespace Forum.Application.Handler
 {
-    public class CreateTopicCommandHandler : ValidateComandBase,
+    public class TopicCommandHandler : ValidateComandBase,
         IRequestHandler<CreateTopicCommand, bool>
     {
 
         private readonly IMediatorHandler _mediatorHandler;
         private readonly ITopicRepository _topicRepository;
 
-        public CreateTopicCommandHandler(IMediatorHandler mediatorHandler,
+        public TopicCommandHandler(IMediatorHandler mediatorHandler,
             ITopicRepository topicRepository):base(mediatorHandler)
         {
             _mediatorHandler = mediatorHandler;

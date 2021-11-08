@@ -6,6 +6,9 @@
 <vc:summary />
 
 <form asp-action="Create">
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
     <div class="form-group col-md-4">
         <label for="exampleInputEmail1">Name</label>
         <input asp-for="Name" class="form-control" id="name" placeholder="Enter section name">

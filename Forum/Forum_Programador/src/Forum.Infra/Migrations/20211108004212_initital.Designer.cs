@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Forum.Infra.Migrations
 {
     [DbContext(typeof(ForumContext))]
-    [Migration("20211105022846_Section update v2")]
-    partial class Sectionupdatev2
+    [Migration("20211108004212_initital")]
+    partial class initital
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,21 @@ namespace Forum.Infra.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.11")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("Forum.Domain.Entities.Area", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Areas");
+                });
 
             modelBuilder.Entity("Forum.Domain.Entities.Comments", b =>
                 {
@@ -87,6 +102,9 @@ namespace Forum.Infra.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("AreaId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
@@ -98,6 +116,8 @@ namespace Forum.Infra.Migrations
                         .HasColumnType("varchar(100)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AreaId");
 
                     b.ToTable("Sections");
                 });
@@ -185,6 +205,16 @@ namespace Forum.Infra.Migrations
                     b.Navigation("Topic");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Forum.Domain.Entities.Section", b =>
+                {
+                    b.HasOne("Forum.Domain.Entities.Area", "Areas")
+                        .WithMany()
+                        .HasForeignKey("AreaId")
+                        .IsRequired();
+
+                    b.Navigation("Areas");
                 });
 
             modelBuilder.Entity("Forum.Domain.Entities.Topic", b =>

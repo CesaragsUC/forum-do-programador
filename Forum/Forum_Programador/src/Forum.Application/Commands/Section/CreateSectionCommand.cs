@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using Forum.Core.Messages;
-using Forum.Domain.Entities;
 
 namespace Forum.Application.Commands
 {

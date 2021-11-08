@@ -1,0 +1,143 @@
+﻿
+@model IEnumerable<Forum.Application.DTO.AreaDTO>
+
+
+@{
+    ViewData["Title"] = "Section";
+
+    var pager = ViewBag.Pager;
+    int pageNo = 0;
+
+    if (ViewBag.Pagination != null)
+    {
+        pager = ViewBag.Pagination;
+        pageNo = pager.CurrentPage;
+    }
+}
+
+
+<style>
+    body {
+        margin-top: 20px;
+        background: #f8f8f8
+    }
+</style>
+
+<div class="container">
+    <div class="row flex-lg-nowrap">
+
+        <div class="col">
+
+            <vc:summary />
+
+            <div class="row flex-lg-nowrap">
+                <div class="col mb-3">
+                    <div class="e-panel card">
+                        <div class="card-body">
+                            <div class="card-title">
+                                <h6 class="mr-2"><span>Area Forum</span></h6>
+                            </div>
+                            <a class="btn btn-primary" asp-controller="Area" asp-action="Create">Create</a>
+
+                            <div class="e-table">
+                                <div class="table-responsive table-lg mt-3">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th class="max-width">Name</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (Model.Any())
+                                            {
+                                                @foreach (var item in Model)
+                                                {
+
+                                                    <tr>
+                                                        <td> @item.Name </td>
+
+                                                        <td class="text-center align-middle">
+                                                            <div class="btn-group align-top">
+                                                                <button class="btn btn-sm btn-outline-secondary badge" type="button" asp-controller="Area" asp-action="Update" asp-route-id="@(item.Id)" >Edit</button>
+                                                                <button class="btn btn-sm btn-outline-secondary badge" type="button" data-toggle="modal" id="deleteClicked" onclick="getAreaId(this)" value="@(item.Id)" data-target="#delete-section-modal"><i class="fa fa-trash"></i></button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <partial name="_Pagination" model="@pager" />
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- "Modal Delete Area -->
+            <div class="modal" tabindex="-1" role="dialog" id="delete-section-modal">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Delete Area</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>You sure that want to delete this Area?.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" onclick="deleteArea()" class="btn btn-danger">Confirm</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    <script type="text/javascript">
+
+        var idArea;
+
+        function getAreaId(event) {
+            debugger
+            idArea = event.value;
+        }
+
+        function deleteArea() {
+
+            debugger
+
+            $.ajax({
+                type: "DELETE",
+                url: '@Url.Action("Delete", "Area")',
+                data: { id: idArea },
+                success: function () {
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    alert('An error occured');
+                }
+            });
+        }
+
+    </script>
+}
+
+
+
+
+

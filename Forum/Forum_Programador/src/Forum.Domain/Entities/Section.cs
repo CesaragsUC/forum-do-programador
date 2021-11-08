@@ -7,8 +7,11 @@ namespace Forum.Domain.Entities
     {
         public string Name { get; private set; }
         public bool IsActive { get; private set; }
+        public Guid AreaId { get; private set; }
 
         public DateTime CreationDate { get; set; }
+
+        public Area Areas { get; private set; }
 
         public Section( string name,bool active)
         {
@@ -18,6 +21,16 @@ namespace Forum.Domain.Entities
         protected Section()
         {
 
+        }
+
+        public void UpdateSectionName(string name)
+        {
+            Name = name;
+        }
+
+        public void InativeSection(bool isactive)
+        {
+            IsActive = isactive;
         }
     }
 }

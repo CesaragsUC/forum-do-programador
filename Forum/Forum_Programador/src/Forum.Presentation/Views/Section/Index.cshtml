@@ -1,8 +1,18 @@
 ﻿
 @model IEnumerable<Forum.Application.DTO.SectionDTO>
 
+
 @{
     ViewData["Title"] = "Section";
+
+    var pager = ViewBag.Pager;
+    int pageNo = 0;
+
+    if (ViewBag.Pagination != null)
+    {
+        pager = ViewBag.Pagination;
+        pageNo = pager.CurrentPage;
+    }
 }
 
 
@@ -18,6 +28,7 @@
 
         <div class="col">
 
+            <vc:summary />
 
             <div class="row flex-lg-nowrap">
                 <div class="col mb-3">
@@ -34,8 +45,8 @@
                                         <thead>
                                             <tr>
                                                 <th class="max-width">Name</th>
-                                                <th class="sortable">Date</th>
-                                                <th> Is Active</th>
+                                                <th class="sortable">Creation Date</th>
+                                                <th> Is Active?</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -47,12 +58,17 @@
 
                                                     <tr>
                                                         <td> @item.Name </td>
-                                                        <td class="text-nowrap align-middle"><span> @item.CreationDate.ToString("dd/MM/yyyy") </span></td>
-                                                        <td class="text-center align-middle">@(item.IsActive ? "Yes" : "No")</td>
+                                                        <td class="text-nowrap align-middle"><span> @item.CreationDate?.ToString("dd/MM/yyyy") </span></td>
+                                                        <td class="text-center align-middle">
+
+                                                            <div class="form-group">
+                                                                <input type="checkbox" @(item.IsActive ? "checked='checked'" : "") onchange="inativeSection(this)" value="@item.Id" id="active">
+                                                            </div>
+                                                        </td>
                                                         <td class="text-center align-middle">
                                                             <div class="btn-group align-top">
-                                                                <button class="btn btn-sm btn-outline-secondary badge" type="button" data-toggle="modal" data-target="#user-form-modal">Edit</button>
-                                                                <button class="btn btn-sm btn-outline-secondary badge" type="button"><i class="fa fa-trash"></i></button>
+                                                                <button class="btn btn-sm btn-outline-secondary badge" type="button" data-toggle="modal" id="editClicked" onclick="getSectionId(this)" value="@(item.Id) " data-target="#update-form-modal">Edit</button>
+                                                                <button class="btn btn-sm btn-outline-secondary badge" type="button" data-toggle="modal" id="deleteClicked" onclick="getSectionId(this)" value="@(item.Id)" data-target="#delete-section-modal"><i class="fa fa-trash"></i></button>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -64,19 +80,7 @@
                                     </table>
                                 </div>
 
-                                <!--Paginacao-->
-                                <div class="d-flex justify-content-center">
-                                    <ul class="pagination mt-3 mb-0">
-                                        <li class="disabled page-item"><a href="#" class="page-link">‹</a></li>
-                                        <li class="active page-item"><a href="#" class="page-link">1</a></li>
-                                        <li class="page-item"><a href="#" class="page-link">2</a></li>
-                                        <li class="page-item"><a href="#" class="page-link">3</a></li>
-                                        <li class="page-item"><a href="#" class="page-link">4</a></li>
-                                        <li class="page-item"><a href="#" class="page-link">5</a></li>
-                                        <li class="page-item"><a href="#" class="page-link">›</a></li>
-                                        <li class="page-item"><a href="#" class="page-link">»</a></li>
-                                    </ul>
-                                </div>
+                                <partial name="_Pagination" model="@pager" />
 
                             </div>
                         </div>
@@ -84,26 +88,27 @@
                 </div>
             </div>
 
-            <!-- User Form Modal -->
-            <div class="modal fade" role="dialog" tabindex="-1" id="user-form-modal">
+            <!-- Edit Section Modal -->
+            <div class="modal fade" role="dialog" tabindex="-1" id="update-form-modal">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Create Section</h5>
+                            <h5 class="modal-title">Update Name</h5>
                             <button type="button" class="close" data-dismiss="modal">
                                 <span aria-hidden="true">×</span>
                             </button>
                         </div>
                         <div class="modal-body">
                             <div class="py-1">
-                                <form class="form" novalidate="">
+                                <form class="form-section-update" id="caralho">
+
                                     <div class="row">
                                         <div class="col">
                                             <div class="row">
                                                 <div class="col">
                                                     <div class="form-group">
                                                         <label>Name</label>
-                                                        <input class="form-control" type="text" name="name" placeholder="John Smith" value="John Smith">
+                                                        <input class="form-control" type="text" id="nameSection">
                                                     </div>
                                                 </div>
 
@@ -113,7 +118,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col d-flex justify-content-end">
-                                            <button class="btn btn-primary" type="submit">Save Changes</button>
+                                            <input class="btn btn-primary" id="saveSection" onclick="updateSection()" type="submit" value="Save Changes" />
                                         </div>
                                     </div>
                                 </form>
@@ -123,6 +128,120 @@
                     </div>
                 </div>
             </div>
+
+            <!-- "Modal Delete Section -->
+            <div class="modal" tabindex="-1" role="dialog" id="delete-section-modal">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Delete Section</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>You sure that want to delete this section?.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" onclick="deleteSection()" class="btn btn-danger">Confirm</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
+
+@section scripts{
+
+    <script type="text/javascript">
+
+        var idSection;
+        var nameSection;
+        var active;
+
+        function getSectionId(event) {
+            debugger
+            idSection = event.value;
+        }
+
+        function inativeSection(event) {
+
+            debugger
+            var result;
+
+            if (!event.checked)
+                result = confirm("Inative this section ?");
+            else
+                result = confirm("Active this section ?");
+
+            if (result)
+            {
+                $.ajax({
+                type: "PUT",
+                    url: '@Url.Action("Inative", "Section")',
+                    data: { id: event.value, active: event.checked },
+                success: function () {
+                    location.reload();
+                },
+                    error: function (xhr, status, error) {
+
+                        alert('An error occured');
+                 }
+                });
+            }
+
+        }
+
+        function updateSection() {
+
+            debugger
+            var nameSection = $('#nameSection').val();
+
+            var model = {
+                Id: idSection,
+                Name: nameSection,
+                IsActive: active,
+                CreationDate: null
+            }
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Update", "Section")',
+                data: { id: idSection, name: nameSection },
+                success: function () {
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    alert('An error occured');
+                }
+            });
+        }
+
+
+        function deleteSection() {
+
+            debugger
+
+            $.ajax({
+                type: "DELETE",
+                url: '@Url.Action("Delete", "Section")',
+                data: { id: idSection },
+                success: function () {
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    alert('An error occured');
+                }
+            });
+        }
+
+    </script>
+}
+
+
+
+
+

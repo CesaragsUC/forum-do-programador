@@ -7,7 +7,7 @@ namespace Forum.Application.Queries.Interfaces
 {
     public interface ISectionQuery
     {
-        Task<SectionDTO> Get(Guid id);
+        Task<SectionDTO> GetById(Guid id);
         Task<IEnumerable<SectionDTO>> GetAll();
     }
 }

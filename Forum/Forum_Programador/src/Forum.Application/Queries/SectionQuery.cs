@@ -15,7 +15,7 @@ namespace Forum.Application.Queries
         {
             _sectionRepository = sectionRepository;
         }
-        public async Task<SectionDTO> Get(Guid id)
+        public async Task<SectionDTO> GetById(Guid id)
         {
             var section = await _sectionRepository.GetById(id);
             if (section == null) return null;

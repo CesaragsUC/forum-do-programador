@@ -1,8 +1,44 @@
-﻿@if (ViewData.ModelState.ErrorCount > 0)
+﻿<!--for case a ModelState is no valid-->
+@if (ViewData.ModelState.ErrorCount > 0)
 {
-<div class="alert alert-danger">
-    <button type="button" class="close" data-dismiss="alert">×</button>
-    <h3 id="msgRetorno">Ops! An error occured:</h3>
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-</div>
+    <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <h3 id="msgRetorno">Ops! An error occured:</h3>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    </div>
+}
+
+
+<!--Get messages from DomainNotification-->
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <h3 id="msgRetorno">Ops! Somethins went wrong:</h3>
+        <p>@TempData["Erro"]</p>
+    </div>
+}
+
+@if (TempData["Errors"] != null)
+{
+    <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <h3 id="msgRetorno">Ops! Somethins went wrong:</h3>
+        @{
+            var erros = TempData["Errors"] as string[];
+            foreach (var erro in erros)
+            {
+                <p>@erro</p>
+            }
+        }
+
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(ViewBag.Sucesso))
+{
+    <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <h3 id="msgRetorno">@ViewBag.Sucesso</h3>
+    </div>
 }

@@ -32,6 +32,7 @@ namespace Forum.Presentation
 
             services.AddControllersWithViews();
             services.AddMediatR(typeof(Startup));
+            services.AddAutoMapper(typeof(Startup));
             services.RegisterServices();
         }
 

@@ -18,6 +18,8 @@ namespace Forum.Infra.Mappings
             .IsRequired()
             .HasColumnType("bit");
 
+            builder.HasOne(x => x.Areas);
+
             builder.ToTable("Sections");
         }
     }
