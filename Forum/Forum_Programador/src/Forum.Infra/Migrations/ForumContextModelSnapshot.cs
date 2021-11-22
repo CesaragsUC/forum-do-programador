@@ -48,7 +48,7 @@ namespace Forum.Infra.Migrations
 
                     b.Property<string>("Text")
                         .IsRequired()
-                        .HasColumnType("varchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<Guid>("TopicId")
                         .HasColumnType("uniqueidentifier");
@@ -112,6 +112,15 @@ namespace Forum.Infra.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("varchar(100)");
+
+                    b.Property<int>("TotalPosts")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TotalTopic")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TotalViews")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -208,7 +217,7 @@ namespace Forum.Infra.Migrations
             modelBuilder.Entity("Forum.Domain.Entities.Section", b =>
                 {
                     b.HasOne("Forum.Domain.Entities.Area", "Areas")
-                        .WithMany()
+                        .WithMany("Sections")
                         .HasForeignKey("AreaId")
                         .IsRequired();
 
@@ -230,6 +239,11 @@ namespace Forum.Infra.Migrations
                     b.Navigation("Section");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Forum.Domain.Entities.Area", b =>
+                {
+                    b.Navigation("Sections");
                 });
 
             modelBuilder.Entity("Forum.Domain.Entities.Topic", b =>

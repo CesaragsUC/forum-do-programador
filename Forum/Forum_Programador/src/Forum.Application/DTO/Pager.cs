@@ -15,12 +15,15 @@ namespace Forum.Application.DTO
         public int StartPage { get; private set; }
         public int EndPage { get; private set; }
 
+        public string ActionName { get; private set; }
+        public string ControllerName { get; private set; }
+
         public Pager()
         {
 
         }
 
-        public Pager(int totalItens, int page, int pageSize = 10)
+        public Pager(int totalItens, int page, string controller, string actionName, int pageSize = 10)
         {
             int totalPage = (int)Math.Ceiling((decimal)totalItens / (decimal)pageSize);
             int currentPage = page;
@@ -48,6 +51,8 @@ namespace Forum.Application.DTO
             TotalPage = totalPage;
             StartPage = startPage;
             EndPage = endPage;
+            ControllerName = controller;
+            ActionName = actionName;
         }
     }
 }

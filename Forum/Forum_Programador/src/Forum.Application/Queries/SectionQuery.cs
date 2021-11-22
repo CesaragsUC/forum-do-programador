@@ -10,10 +10,13 @@ namespace Forum.Application.Queries
     public class SectionQuery : ISectionQuery
     {
         private readonly ISectionRepository _sectionRepository;
+        private readonly IAreaQuery _areaQuery;
 
-        public SectionQuery(ISectionRepository sectionRepository)
+        public SectionQuery(ISectionRepository sectionRepository,
+            IAreaQuery areaQuery)
         {
             _sectionRepository = sectionRepository;
+            _areaQuery = areaQuery;
         }
         public async Task<SectionDTO> GetById(Guid id)
         {
@@ -40,13 +43,17 @@ namespace Forum.Application.Queries
 
             foreach (var item in sections)
             {
-                sectionModel.Add(new SectionDTO { 
-                
+                var area = await _areaQuery.GetById(item.AreaId);
+                sectionModel.Add(new SectionDTO
+                {
+
                     Id = item.Id,
                     Name = item.Name,
                     IsActive = item.IsActive,
-                    CreationDate = item.CreationDate
-                });;
+                    CreationDate = item.CreationDate,
+                    AreaId = item.AreaId,
+                    Area = area
+                }); 
 
             }
 

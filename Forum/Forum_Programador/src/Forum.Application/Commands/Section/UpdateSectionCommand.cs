@@ -9,11 +9,12 @@ namespace Forum.Application.Commands.Section
         public Guid Id { get; set; }
         public string Name { get; private set; }
         public bool IsActive  { get; private set; }
-       
-        public UpdateSectionCommand(Guid id, string name)
+        public Guid AreaId { get; private set; }
+        public UpdateSectionCommand(Guid id, string name,Guid areaId)
         {
             Id = id;
             Name = name;
+            AreaId = areaId;
             AggregateId = id;
         }
 
@@ -29,6 +30,7 @@ namespace Forum.Application.Commands.Section
         public UpdateSectionValidation()
         {
             RuleFor(x => x.Name).NotEmpty().WithMessage("Name cant be empety");
+            RuleFor(x => x.AreaId).NotEqual(Guid.Empty).WithMessage("AreaId can't be null");
         }
     }
 }

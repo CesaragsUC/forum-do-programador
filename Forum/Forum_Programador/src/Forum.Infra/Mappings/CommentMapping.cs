@@ -17,7 +17,7 @@ namespace Forum.Infra.Mappings
 
             builder.Property(c => c.Text)
                 .IsRequired()
-                .HasColumnType("varchar(max)");
+                .HasColumnType("text");
 
             builder.Property(c => c.CommentId)
                  .IsRequired();

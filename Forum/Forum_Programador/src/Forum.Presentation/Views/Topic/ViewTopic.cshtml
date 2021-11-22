@@ -1,0 +1,120 @@
+﻿@model IEnumerable<Forum.Application.DTO.CommentsDTO>
+
+@{ ViewData["Title"] = @ViewBag.TopicTitle; }
+
+<head>
+    <link rel="stylesheet" href="/richtexteditor/rte_theme_default.css" />
+    <link rel="stylesheet" href="/richtexteditor/runtime/richtexteditor_preview.css" />
+    <link href="~/css/topic/topicview.css" rel="stylesheet" />
+</head>
+
+
+
+<div class="container-fluid mt-100">
+
+    <div class="ibox-content m-b-sm">
+        <div class="p-xs">
+            <h2> @ViewBag.TopicTitle</h2>
+        </div>
+    </div>
+
+    <br />
+    @{ 
+        foreach (var comment in Model)
+        {
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <div class="media flex-wrap w-100 align-items-center">
+                                    <img src="https://i.imgur.com/iNmBizf.jpg" class="d-block ui-w-40 rounded-circle" alt="">
+                                    <div class="media-body ml-3">
+                                        <a href="javascript:void(0)" data-abc="true">@comment.User.Name</a>
+                                        <div class="text-muted small">@comment.TimeAgo</div>
+                                    </div>
+                                    <div class="text-muted small ml-3">
+                                        <div>Member since <strong>@comment.User.CreationDate.ToString("dd/MM/yyyy")</strong></div>
+                                        <div id="post-id"><strong>#</strong>@comment.CommentId </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                @(Html.Raw(@comment.Text))
+
+                            </div>
+                            <div class="card-footer d-flex flex-wrap justify-content-between align-items-center px-0 pt-0 pb-3">
+                                <div class="px-4 pt-3"> <a href="javascript:void(0)" class="text-muted d-inline-flex align-items-center align-middle" data-abc="true"> <i class="fa fa-heart text-danger"></i>&nbsp; <span class="align-middle">445</span> </a> <span class="text-muted d-inline-flex align-items-center align-middle ml-4"> </span> </div>
+                                <div class="px-4 pt-3">
+                                 @if (@comment.CanEdit){ <a  asp-controller="Topic" asp-action="EditComment" asp-route-id="@comment.Id">&nbsp; Edit</a>}
+                                  @*<a  href="#">&nbsp; Reply</a>*@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+          } 
+       
+        }
+
+
+    @if (true.Equals(ViewData["IsPosted"]))
+    {
+
+
+        <div class="text-center">
+            <h1 class="display-4">PreView</h1>
+
+            <div style="width: 960px;margin:0 auto;text-align:left;border:solid 1px gray;padding:8px;">
+                @(Html.Raw(ViewData["PostedValue"]))
+            </div>
+
+        </div>
+    }
+    else
+    {
+
+
+        <form asp-action="Reply">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input name="sectionId" value="@ViewBag.SectionId" type="hidden" />
+            <input name="topicId" value="@ViewBag.TopicId" type="hidden" />
+            <input name="htmlcode" id="inp_htmlcode" type="hidden" />
+
+            <!-- html text -->
+            <div class="form-outline col-md-6">
+                <div id="div_editor1" class="richtexteditor" style="width: 960px;margin:0 auto;">
+                </div>
+            </div>
+            <br />
+
+            <div class="form-outline form-buttons col-md-6">
+                <!-- Submit button -->
+                <button type="submit" class="btn btn-primary">Post Quick Reply</button>
+                <button type="submit" class="btn btn-warning" asp-controller="Topic" asp-action="Index" asp-route-id="@ViewBag.SectionId">Back</button>
+            </div>
+
+        </form>
+
+    }
+
+
+</div>
+@section scripts{
+
+
+    <script type="text/javascript" src="/richtexteditor/rte.js"></script>
+    <script type="text/javascript" src='/richtexteditor/plugins/all_plugins.js'></script>
+    <script type="text/javascript" src="/rte-upload.js"></script>
+
+    <script>
+        var editor1 = new RichTextEditor(document.getElementById("div_editor1"));
+        editor1.attachEvent("change", function () {
+            document.getElementById("inp_htmlcode").value = editor1.getHTMLCode();
+        });
+    </script>
+
+
+}

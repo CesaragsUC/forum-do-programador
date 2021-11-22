@@ -11,11 +11,11 @@
         {
 
             <li class="page-item">
-                <a class="page-link" asp-controller="Section" asp-action="Index" asp-route-pg="1">First</a>
+                <a class="page-link" asp-controller="@Model.ControllerName" asp-action="@Model.ActionName" asp-route-pg="1">First</a>
             </li>
 
             <li class="page-item">
-                <a class="page-link" asp-controller="Section" asp-action="Index" asp-route-pg="@(Model.CurrentPage - 1)">Previous</a>
+                <a class="page-link" asp-controller="@Model.ControllerName" asp-action="@Model.ActionName" asp-route-pg="@(Model.CurrentPage - 1)">Previous</a>
             </li>
 
         }
@@ -26,7 +26,7 @@
             @for (var pge = Model.StartPage; pge <= Model.EndPage; pge++)
             {
                 <li class="page-item @(pge == Model.CurrentPage ? "active" : "")">
-                    <a class="page-link" asp-controller="Section" asp-action="Index" asp-route-pg="@pge">@pge</a>
+                    <a class="page-link" asp-controller="@Model.ControllerName" asp-action="@Model.ActionName" asp-route-pg="@pge">@pge</a>
                 </li>
             }
         }
@@ -38,11 +38,11 @@
         {
 
             <li class="page-item">
-                <a class="page-link" asp-controller="Section" asp-action="Index" asp-route-pg="@(Model.CurrentPage + 1)">Next</a>
+                <a class="page-link" asp-controller="@Model.ControllerName" asp-action="@Model.ActionName" asp-route-pg="@(Model.CurrentPage + 1)">Next</a>
             </li>
 
             <li class="page-item">
-                <a class="page-link" asp-controller="Section" asp-action="Index" asp-route-pg="@Model.TotalPage">Last</a>
+                <a class="page-link" asp-controller="@Model.ControllerName" asp-action="@Model.ActionName" asp-route-pg="@Model.TotalPage">Last</a>
             </li>
 
         }

@@ -7,6 +7,7 @@ using Forum.Core.Messages.CommonMessage.Notification;
 using Forum.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,13 +18,16 @@ namespace Forum.Presentation.Controllers
     {
         private readonly IMediatorHandler _mediatorHandler;
         private readonly ISectionQuery _sectionQuery;
+        private readonly IAreaQuery _areaQuery;
 
         public SectionController(INotificationHandler<DomainNotification> notifications,
             IMediatorHandler mediatorHandler,
-            ISectionQuery sectionQuery) : base(notifications, mediatorHandler)
+            ISectionQuery sectionQuery,
+            IAreaQuery areaQuery) : base(notifications, mediatorHandler)
         {
             _mediatorHandler = mediatorHandler;
             _sectionQuery = sectionQuery;
+            _areaQuery = areaQuery;
         }
 
         public async Task<IActionResult> Get()
@@ -34,18 +38,21 @@ namespace Forum.Presentation.Controllers
         //public IActionResult Index() => View(); //only in NET Core 5
 
         [Route("sections")]
-        public async Task<IActionResult> Index(int pg=1)
+        public async Task<IActionResult> Index(int pg = 1)
         {
             var sections = await _sectionQuery.GetAll();
-            
+
             //limit iten for page
             const int pageSize = 5;
 
             if (pg < 1)
                 pg = 1;
 
+            string controllerName = ControllerContext.ActionDescriptor.ControllerName;
+            string actionName = ControllerContext.ActionDescriptor.ActionName;
+
             int totalItens = sections.Count();
-            var pager = new Pager(totalItens, pg, pageSize);
+            var pager = new Pager(totalItens, pg, controllerName, actionName, pageSize);
             int rowSkip = (pg - 1) * pageSize;
 
             var data = sections.Skip(rowSkip).Take(pager.PageSize).ToList();
@@ -56,12 +63,16 @@ namespace Forum.Presentation.Controllers
             //return View(sections);
         }
 
+        private void LoadViewBags()
+        {
+
+        }
 
         [HttpGet]
         [Route("add-section")]
         public async Task<IActionResult> Create()
         {
-
+            ViewBag.Areas = new SelectList(await _areaQuery.GetAll(), "Id", "Name");
             return View();
         }
 
@@ -72,7 +83,7 @@ namespace Forum.Presentation.Controllers
 
             if (!ModelState.IsValid) return View(section);
 
-            var command = new CreateSectionCommand(section.Name, section.IsActive);
+            var command = new CreateSectionCommand(section.Name, section.IsActive, section.AreaId);
 
             await _mediatorHandler.SendCommand(command);
 
@@ -86,26 +97,37 @@ namespace Forum.Presentation.Controllers
             return View(section);
         }
 
-        [HttpPost]
-        [Route("update")]
-        public async Task<IActionResult> Update(Guid id, string name)
+        [HttpGet]
+        [Route("update-section")]
+        public async Task<IActionResult> Update(Guid id)
         {
-            if (id == Guid.Empty || string.IsNullOrEmpty(name))
+            if (id == Guid.Empty)
             {
-                TempData["Error"] = "Name can't be empty";
+                TempData["Error"] = "Id can't be empty";
                 return RedirectToAction("Index");
             }
 
             var section = await _sectionQuery.GetById(id);
 
+            ViewBag.Areas = new SelectList(await _areaQuery.GetAll(), "Id", "Name", section.AreaId);
+
             if (section == null) return BadRequest("Section not found.");
 
-            var comand = new UpdateSectionCommand(id, name);
+            return View(section);
+        }
+
+        [HttpPost]
+        [Route("update-section")]
+        public async Task<IActionResult> Update(SectionDTO model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            var comand = new UpdateSectionCommand(model.Id, model.Name,model.AreaId);
 
             await _mediatorHandler.SendCommand(comand);
-            
-            if(IsvalidOpperation())
-                return RedirectToAction("Index","Section");
+
+            if (IsvalidOpperation())
+                return RedirectToAction("Index", "Section");
 
             //if have erros  then get from domainnotification
             TempData["Errors"] = GetMessageErros();
@@ -115,7 +137,7 @@ namespace Forum.Presentation.Controllers
         }
 
         [HttpDelete]
-        [Route("delete")]
+        [Route("delete-section")]
         public async Task<IActionResult> Delete(Guid id)
         {
             if (id == Guid.Empty) return BadRequest("Invalid Id");
@@ -138,8 +160,8 @@ namespace Forum.Presentation.Controllers
         }
 
         [HttpPut]
-        [Route("inative")]
-        public async Task<IActionResult> Inative(Guid id,bool active)
+        [Route("inative-section")]
+        public async Task<IActionResult> Inative(Guid id, bool active)
         {
             if (id == Guid.Empty)
             {
@@ -149,7 +171,7 @@ namespace Forum.Presentation.Controllers
 
             var section = await _sectionQuery.GetById(id);
 
-            var comand = new InativeSectionCommand(id,active);
+            var comand = new InativeSectionCommand(id, active);
 
             await _mediatorHandler.SendCommand(comand);
 

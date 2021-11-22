@@ -35,8 +35,11 @@ namespace Forum.Presentation.Controllers
             if (pg < 1)
                 pg = 1;
 
+            string controllerName = ControllerContext.ActionDescriptor.ControllerName;
+            string actionName = ControllerContext.ActionDescriptor.ActionName;
+
             int totalItens = areas.Count();
-            var pager = new Pager(totalItens, pg, pageSize);
+            var pager = new Pager(totalItens, pg, controllerName, actionName,pageSize);
             int rowSkip = (pg - 1) * pageSize;
 
             var data = areas.Skip(rowSkip).Take(pager.PageSize).ToList();
@@ -81,7 +84,7 @@ namespace Forum.Presentation.Controllers
         }
 
         [HttpDelete]
-        [Route("delete")]
+        [Route("delete-area")]
         public async Task<IActionResult> Delete(Guid id)
         {
             if (id == Guid.Empty) return BadRequest("Invalid Id");
@@ -103,32 +106,32 @@ namespace Forum.Presentation.Controllers
         }
 
         [HttpGet]
-        [Route("update")]
-        public async Task<IActionResult> Update()
+        [Route("update-area")]
+        public async Task<IActionResult> Update(Guid id)
         {
-            return View();
-        }
-
-        [HttpPut]
-        [Route("update")]
-        public async Task<IActionResult> Update(Guid id, string name)
-        {
-            if (id == Guid.Empty || string.IsNullOrEmpty(name))
+            if (id == Guid.Empty)
             {
                 TempData["Error"] = "Name can't be empty";
                 return RedirectToAction("Index");
             }
 
-            var section = await _areaQuery.GetById(id);
+            var model = await _areaQuery.GetById(id);
+            return View(model);
+        }
 
-            if (section == null) return BadRequest("Section not found.");
+        [HttpPost]
+        [Route("update-area")]
+        public async Task<IActionResult> Update(AreaDTO area)
+        {
+            if (!ModelState.IsValid) 
+                return View(area);
 
-            var comand = new UpdateAreaCommand(id, name);
+            var comand = new UpdateAreaCommand(area.Id, area.Name);
 
             await _mediatorHandler.SendCommand(comand);
 
             if (IsvalidOpperation())
-                return RedirectToAction("Index", "Section");
+                return RedirectToAction("Index", "Area");
 
             //if have erros  then get from domainnotification
             TempData["Errors"] = GetMessageErros();

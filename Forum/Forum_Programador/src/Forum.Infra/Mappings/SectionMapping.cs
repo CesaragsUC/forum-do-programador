@@ -18,7 +18,9 @@ namespace Forum.Infra.Mappings
             .IsRequired()
             .HasColumnType("bit");
 
-            builder.HasOne(x => x.Areas);
+            //1:N
+            builder.HasOne(x => x.Areas)
+                .WithMany(x => x.Sections);
 
             builder.ToTable("Sections");
         }

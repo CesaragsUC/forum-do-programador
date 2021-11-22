@@ -28,6 +28,14 @@ namespace Forum.Domain.Entities
         protected Comments()
         {
 
+        } 
+        public void UpdateText( string text)
+        {
+            Text = text;
+        }
+        public void EncreaCommentId()
+        {
+            CommentId += 1;
         }
     }
 }

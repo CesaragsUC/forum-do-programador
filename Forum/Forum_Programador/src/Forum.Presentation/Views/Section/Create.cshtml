@@ -14,6 +14,13 @@
         <input asp-for="Name" class="form-control" id="name" placeholder="Enter section name">
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
+    <div class="form-group col-md-4">
+        <label for="exampleInputEmail1">Area</label>
+        <select asp-for="AreaId" class="form-control" id="name" asp-items="ViewBag.Areas">
+            <option></option>
+        </select>
+        <span asp-validation-for="AreaId" class="text-danger"></span>
+    </div>
     <div class="form-check">
         <input asp-for="IsActive" class="form-check-input" id="isActive">
         <label class="form-check-label" for="exampleCheck1">Active?</label>

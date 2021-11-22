@@ -1,0 +1,77 @@
+﻿@model Forum.Application.DTO.TopicDTO
+
+@{
+    ViewData["Title"] = "Create Topic";
+}
+
+<head>
+    <link rel="stylesheet" href="/richtexteditor/rte_theme_default.css" />
+    <link rel="stylesheet" href="/richtexteditor/runtime/richtexteditor_preview.css" />
+
+</head>
+
+@if (true.Equals(ViewData["IsPosted"]))
+{
+
+
+    <div class="text-center">
+        <h1 class="display-4">PreView</h1>
+
+        <div style="width: 960px;margin:0 auto;text-align:left;border:solid 1px gray;padding:8px;">
+            @(Html.Raw(ViewData["PostedValue"]))
+        </div>
+
+    </div>
+}
+else
+{
+
+    //credits: https://mdbootstrap.com/docs/standard/forms/overview/
+<form asp-action="CreateTopic">
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <input name="sectionId" value="@ViewBag.SectionId" type="hidden" />
+    <input name="htmlcode" id="inp_htmlcode" type="hidden" />
+
+    <!-- title -->
+    <div class="form-outline col-md-6">
+        <label class="form-label">Title</label>
+        <input type="text" id="title" name="title" class="form-control" />
+
+    </div>
+    <br />
+
+    <!-- html text -->
+    <div class="form-outline col-md-6">
+        <div id="div_editor1" class="richtexteditor" style="width: 960px;margin:0 auto;">
+        </div>
+    </div>
+    <br />
+
+    <div class="form-outline col-md-6">
+        <!-- Submit button -->
+        <button type="submit" class="btn btn-primary">Create Thread</button>
+        <button type="submit" class="btn btn-warning" asp-controller="Topic" asp-action="Index" asp-route-id="@ViewBag.SectionId">Cancel</button>
+    </div>
+
+</form>
+
+
+}
+@section scripts{
+
+
+    <script type="text/javascript" src="/richtexteditor/rte.js"></script>
+    <script type="text/javascript" src='/richtexteditor/plugins/all_plugins.js'></script>
+    <script type="text/javascript" src="/rte-upload.js"></script>
+
+    <script>
+        var editor1 = new RichTextEditor(document.getElementById("div_editor1"));
+        editor1.attachEvent("change", function () {
+            document.getElementById("inp_htmlcode").value = editor1.getHTMLCode();
+        });
+    </script>
+
+
+}

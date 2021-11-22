@@ -26,17 +26,38 @@ namespace Forum.Domain.Entities
 
 
         //EF Relation 1:N
-        public ICollection<Comments> Coments { get; private set; }
+        private readonly List<Comments> _comments;
+        public IReadOnlyCollection<Comments> Coments => _comments;
 
-        public Topic(string title,Guid userId)
+        public Topic(string title,Guid userId, Guid sectionId)
         {
             Title = title;
             UserId = userId;
+            SectionId = sectionId;
+            TotalViews = 0;
+            TotalReplies = 0;
+            _comments = new List<Comments>();
+
         }
 
         protected Topic()
         {
+            _comments = new List<Comments>();
+        }
 
+        public void UpdateTitle(string title)
+        {
+            Title = title;
+        }
+
+        public void UpdateSection(Guid sectionId)
+        {
+            SectionId = sectionId;
+        }
+
+        public void AddCommnet(Comments coment)
+        {
+            _comments.Add(coment);
         }
     }
 }

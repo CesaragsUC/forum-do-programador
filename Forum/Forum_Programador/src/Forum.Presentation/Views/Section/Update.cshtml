@@ -1,0 +1,33 @@
+﻿@model Forum.Application.DTO.SectionDTO
+
+
+<h3>Update Section</h3>
+
+<vc:summary />
+
+<form asp-action="Update">
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <input type="hidden" asp-for="Id"/>
+
+    <div class="form-group col-md-4">
+        <label for="exampleInputEmail1">Name</label>
+        <input asp-for="Name" class="form-control" id="name" placeholder="Enter section name">
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group col-md-4">
+        <label for="exampleInputEmail1">Area</label>
+        <select asp-for="AreaId" class="form-control" id="name" asp-items="@ViewBag.Areas">
+            <option></option>
+        </select>
+        <span asp-validation-for="AreaId" class="text-danger"></span>
+    </div>
+    <div class="form-check">
+        <input asp-for="IsActive" class="form-check-input" id="isActive">
+        <label class="form-check-label" for="exampleCheck1">Active?</label>
+        <span asp-validation-for="IsActive" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="submit" asp-controller="Section" asp-action="Index" class="btn btn-primary">Cancel</button>
+</form>

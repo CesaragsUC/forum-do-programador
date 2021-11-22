@@ -40,14 +40,40 @@ namespace Forum.Application.Queries
 
             var areaModel = new List<AreaDTO>();
 
+
             foreach (var item in areas)
             {
+                var sectionList = new List<SectionDTO>();
+
+                foreach (var sc in item.Sections)
+                {
+                    var areaDTO = new AreaDTO
+                    {
+                        Id = sc.Areas.Id,
+                        Name = sc.Areas.Name
+                    };
+
+                    var sectionDTO = new SectionDTO
+                    {
+                        Id = sc.Id,
+                        Name = sc.Name,
+                        IsActive = sc.IsActive,
+                        AreaId = sc.AreaId,
+                        Area = areaDTO
+
+                    };
+
+                    sectionList.Add(sectionDTO);
+                }
                 areaModel.Add(new AreaDTO
                 {
 
                     Id = item.Id,
-                    Name = item.Name
-                }); 
+                    Name = item.Name,
+                    Sections = sectionList
+
+                });
+
 
             }
 

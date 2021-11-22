@@ -38,7 +38,13 @@ namespace Forum.Infra.Repository
 
         public async Task<IEnumerable<Section>> GetAll()
         {
-            return await _context.Sections.AsNoTracking().ToListAsync();
+            var section = await (from sc in _context.Sections
+                                 join area in _context.Areas on sc.AreaId equals area.Id
+                                 select sc).AsNoTracking().ToListAsync();
+
+
+            return section;
+
         }
 
         public async Task<Section> GetById(Guid id)

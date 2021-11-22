@@ -92,3 +92,10 @@ F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Prese
 F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\obj\Debug\net5.0\Razor\Views\Area\Create.cshtml.g.cs
 F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\obj\Debug\net5.0\Razor\Views\Area\Index.cshtml.g.cs
 F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\obj\Debug\net5.0\Razor\Views\Area\Update.cshtml.g.cs
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\obj\Debug\net5.0\Razor\Views\Section\Update.cshtml.g.cs
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\obj\Debug\net5.0\Razor\Views\Topic\Create.cshtml.g.cs
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\obj\Debug\net5.0\Razor\Views\Topic\CreateTopic.cshtml.g.cs
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\obj\Debug\net5.0\Razor\Views\Topic\Reply.cshtml.g.cs
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\obj\Debug\net5.0\Razor\Views\Topic\ReplyEdit.cshtml.g.cs
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\obj\Debug\net5.0\Razor\Views\Topic\ViewTopic.cshtml.g.cs
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\obj\Debug\net5.0\Razor\Views\Topic\EditComment.cshtml.g.cs

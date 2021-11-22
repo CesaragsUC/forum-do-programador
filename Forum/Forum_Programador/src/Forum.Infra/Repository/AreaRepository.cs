@@ -4,6 +4,7 @@ using Forum.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Forum.Infra.Repository
@@ -36,7 +37,9 @@ namespace Forum.Infra.Repository
 
         public async Task<IEnumerable<Area>> GetAll()
         {
-            return await _context.Areas.AsNoTracking().ToListAsync();
+
+            return await _context.Areas.AsNoTracking()
+                .Include(s => s.Sections).OrderBy(s => s.Name).ToListAsync();
         }
 
         public async Task<Area> GetById(Guid id)

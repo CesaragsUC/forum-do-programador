@@ -9,14 +9,20 @@ namespace Forum.Domain.Entities
         public bool IsActive { get; private set; }
         public Guid AreaId { get; private set; }
 
+        public int TotalViews { get; private set; }
+
+        public int TotalTopic { get; private set; }
+        public int TotalPosts { get; private set; }
+
         public DateTime CreationDate { get; set; }
 
         public Area Areas { get; private set; }
 
-        public Section( string name,bool active)
+        public Section( string name,bool active,Guid areaId)
         {
             Name = name;
             IsActive = active;
+            AreaId = areaId;
         }
         protected Section()
         {
@@ -31,6 +37,19 @@ namespace Forum.Domain.Entities
         public void InativeSection(bool isactive)
         {
             IsActive = isactive;
+        }
+
+        public  void UpdateTotalViews()
+        {
+            TotalViews += 1;
+        }
+        public void UpdateTotalTopics()
+        {
+            TotalTopic += 1;
+        }
+        public void UpdateTotalPosts()
+        {
+            TotalPosts += 1;
         }
     }
 }

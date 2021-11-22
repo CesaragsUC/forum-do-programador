@@ -7,7 +7,8 @@ namespace Forum.Application.DTO
     {
         public Guid Id { get; set; }
 
-        public Guid AreaId { get; private set; }
+        [Required(ErrorMessage = "Area ID is required")]
+        public Guid AreaId { get; set; }
 
         [Required(ErrorMessage ="Section name is required")]
         public string Name { get;  set; }

@@ -1,5 +1,6 @@
 ﻿using Forum.Application.Commands;
 using Forum.Application.Commands.Area;
+using Forum.Application.Commands.Comments;
 using Forum.Application.Commands.Section;
 using Forum.Application.Events;
 using Forum.Application.Handler;
@@ -31,6 +32,9 @@ namespace Forum.Presentation.DependencyResolver
             services.AddScoped<ITopicRepository, TopicRepository>();
             services.AddScoped<ISectionRepository, SectionRepository>();
             services.AddScoped<IAreaRepository, AreaRepository>();
+            services.AddScoped<ICommentRepository, CommentRepository>();
+            services.AddScoped<IRankingRepository, RankingRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             //Notifications
             services.AddScoped<INotificationHandler<TopicCreatedEvent>, TopicHandlerEvent>();
@@ -39,9 +43,19 @@ namespace Forum.Presentation.DependencyResolver
             //Queries
             services.AddScoped<ISectionQuery, SectionQuery>();
             services.AddScoped<IAreaQuery, AreaQuery>();
+            services.AddScoped<ICommentQuery, CommentQuery>();
+            services.AddScoped<IRankingQuery, RankingQuery>();
+            services.AddScoped<ITopicQuery, TopicQuery>();
+            services.AddScoped<IUserQuery, UserQuery>();
 
             //ComandHandlers
             services.AddScoped<IRequestHandler<CreateTopicCommand, bool>, TopicCommandHandler>();
+            services.AddScoped<IRequestHandler<UpdateTopicCommand, bool>, TopicCommandHandler>();
+            services.AddScoped<IRequestHandler<DeleteTopicCommand, bool>, TopicCommandHandler>();
+            services.AddScoped<IRequestHandler<UpdateTopicCommand, bool>, TopicCommandHandler>();
+
+
+
             services.AddScoped<IRequestHandler<CreateSectionCommand,bool>, SectionCommandHandler>();
             services.AddScoped<IRequestHandler<DeleteSectionCommand, bool>, SectionCommandHandler>();
             services.AddScoped<IRequestHandler<UpdateSectionCommand, bool>, SectionCommandHandler>();
@@ -50,6 +64,11 @@ namespace Forum.Presentation.DependencyResolver
             services.AddScoped<IRequestHandler<CreateAreaCommand, bool>, AreaCommandHandler>();
             services.AddScoped<IRequestHandler<UpdateAreaCommand, bool>, AreaCommandHandler>();
             services.AddScoped<IRequestHandler<DeleteAreaCommand, bool>, AreaCommandHandler>();
+
+
+            services.AddScoped<IRequestHandler<AddComentCommand, bool>, CommentCommandHandler>();
+            services.AddScoped<IRequestHandler<EditComentCommand, bool>, CommentCommandHandler>();
+            services.AddScoped<IRequestHandler<DeleteComentCommand, bool>, CommentCommandHandler>();
 
 
         }

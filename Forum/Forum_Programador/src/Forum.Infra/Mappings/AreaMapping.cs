@@ -16,6 +16,11 @@ namespace Forum.Infra.Mappings
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Name).IsRequired().HasColumnType("varchar(100)");
+
+            //1:N
+            builder.HasMany(x => x.Sections)
+                .WithOne(x => x.Areas)
+                .HasForeignKey(x => x.AreaId);
             
             builder.ToTable("Areas");
         }

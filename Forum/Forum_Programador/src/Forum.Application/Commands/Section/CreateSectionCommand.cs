@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Forum.Core.Messages;
+using System;
 
 namespace Forum.Application.Commands
 {
@@ -7,10 +8,12 @@ namespace Forum.Application.Commands
     {
         public string Name { get; private set; }
         public bool IsActive { get; private set; }
-        public CreateSectionCommand(string name, bool active)
+        public Guid AreaId { get; private set; }
+        public CreateSectionCommand(string name, bool active,Guid areaId)
         {
             Name = name;
             IsActive = active;
+            AreaId = areaId;
         }
 
         public override bool IsValid()
@@ -26,6 +29,7 @@ namespace Forum.Application.Commands
         public CreateSectionValidation()
         {
             RuleFor(x => x.Name).NotEmpty().WithMessage("Section name cant be  empery");
+            RuleFor(x => x.AreaId).NotEqual(Guid.Empty).WithMessage("AreaId can't be null");
         }
     }
 }

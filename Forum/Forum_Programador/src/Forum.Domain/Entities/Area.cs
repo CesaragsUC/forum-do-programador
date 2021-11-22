@@ -1,4 +1,6 @@
 ﻿using Forum.Core.DomainObjects;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Forum.Domain.Entities
 {
@@ -6,6 +8,10 @@ namespace Forum.Domain.Entities
     {
 
         public string Name { get; private set; }
+
+        //EF 1:1
+        public List<Section> Sections { get; private set; }
+
         protected Area()
         {
 

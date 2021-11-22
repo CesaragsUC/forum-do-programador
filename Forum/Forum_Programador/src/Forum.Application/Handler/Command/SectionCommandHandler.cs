@@ -39,7 +39,7 @@ namespace Forum.Application.Handler
         {
             if (!ValidateCommand(comand)) return false;
 
-            var section = new Section(comand.Name,comand.IsActive);
+            var section = new Section(comand.Name,comand.IsActive, comand.AreaId);
 
             _sectionRepository.Add(section);
 

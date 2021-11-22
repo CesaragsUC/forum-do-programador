@@ -16,6 +16,9 @@ namespace Forum.Application.DTO
 
         public int CommentId { get;  set; }
 
+        public string TimeAgo { get; set; }
+        public bool CanEdit { get; set; }
+
         //EF Realtionship 1:1
         public UserDTO User { get;  set; }
 

@@ -1,4 +1,91 @@
-﻿
+﻿@model IEnumerable<Forum.Application.DTO.TopicDTO>
+
 @{
-    <h1>Opa</h1>
+    ViewData["Title"] = "Create Topic";
 }
+
+<link href="~/css/home.css" rel="stylesheet" />
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="wrapper wrapper-content animated fadeInRight">
+
+
+                <a class="btn btn-success" asp-controller="Topic" asp-action="CreateTopic" asp-route-id="@ViewBag.SectionId">Create Thread</a>
+                <br>
+                <br>
+
+                <div class="ibox-content m-b-sm border-bottom">
+                    <div class="p-xs">
+                        <h2> @ViewBag.SectionName</h2>
+                    </div>
+                </div>
+
+                <div class="ibox-content forum-container">
+
+                    @{
+
+                        if (Model.Any())
+                        {
+
+                            foreach (var topic in Model)
+                            {
+                                <div class="forum-item active">
+                                    <div class="row">
+                                        <div class="col-md-7">
+                                            <div class="forum-icon">
+                                                <i class="fa fa-shield"></i>
+                                            </div>
+                                            <a class="forum-item-title" asp-controller="Topic" asp-action="ViewTopic" asp-route-id="@topic.Id">@topic.Title</a>
+                                            <div class="forum-sub-title"> <strong>Last Post:</strong> @topic.UserLastPost.Name @topic.LastCommentTimeAgo</div>
+                                        </div>
+                                        <div class="col-md-3 forum-info">
+                                            <span class="views-number">
+                                                @topic.User.Name
+                                            </span>
+                                            <div>
+                                                <small>Created By </small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1 forum-info">
+                                            <span class="views-number">
+                                                @topic.Coments.Count()
+                                            </span>
+                                            <div>
+                                                <small>Replies</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1 forum-info">
+                                            <span class="views-number">
+                                                @topic.TotalViews
+                                            </span>
+                                            <div>
+                                                <small>Views</small>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="ibox-content m-b-sm border-bottom">
+                                <div class="p-xs">
+                                    <h5> There no topic on this section.</h5>
+                                </div>
+                            </div>
+
+                        }
+
+
+
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

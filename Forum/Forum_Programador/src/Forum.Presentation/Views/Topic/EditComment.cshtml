@@ -1,0 +1,51 @@
+﻿@model Forum.Application.DTO.CommentsDTO
+
+
+@{
+    var topicId = ViewData["TopicId"];
+ }
+
+<head>
+    <link rel="stylesheet" href="/richtexteditor/rte_theme_default.css" />
+    <link rel="stylesheet" href="/richtexteditor/runtime/richtexteditor_preview.css" />
+    <link href="~/css/topic/topicview.css" rel="stylesheet" />
+</head>
+
+<form asp-action="EditComment">
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <input name="commentid" value="@Model.Id" type="hidden" />
+    <input name="topicid" value="@ViewData["TopicId"]" type="hidden" />
+    <input name="htmlcode" id="inp_htmlcode" type="hidden" />
+
+    <!-- html text -->
+    <div class="form-outline col-md-6">
+        <div id="div_editor1" class="richtexteditor" style="width: 960px;margin:0 auto;">
+            @(Html.Raw(ViewData["HtmlComment"]))
+        </div>
+    </div>
+    <br />
+
+    <div class="form-outline form-buttons col-md-6">
+        <!-- Submit button -->
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a class="btn btn-warning" asp-controller="Topic" asp-action="ViewTopic" asp-route-id="@topicId">Cancel</a>
+    </div>
+
+</form>
+
+@section scripts{
+
+
+    <script type="text/javascript" src="/richtexteditor/rte.js"></script>
+    <script type="text/javascript" src='/richtexteditor/plugins/all_plugins.js'></script>
+    <script type="text/javascript" src="/rte-upload.js"></script>
+
+    <script>var editor1 = new RichTextEditor(document.getElementById("div_editor1"));
+        editor1.attachEvent("change", function () {
+            document.getElementById("inp_htmlcode").value = editor1.getHTMLCode();
+        });</script>
+
+
+}

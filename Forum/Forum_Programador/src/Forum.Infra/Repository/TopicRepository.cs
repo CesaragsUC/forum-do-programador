@@ -4,6 +4,7 @@ using Forum.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Forum.Infra.Repository
@@ -19,12 +20,17 @@ namespace Forum.Infra.Repository
 
         public void Add(Topic topic)
         {
-            _context.Add(topic);
+            _context.Topics.Add(topic);
+        }
+
+        public void AddComment(Comments comment)
+        {
+            _context.Comments.Add(comment);
         }
 
         public void Delete(Topic topic)
         {
-            _context.Remove(topic);
+            _context.Topics.Remove(topic);
         }
 
         public void Dispose()
@@ -34,13 +40,24 @@ namespace Forum.Infra.Repository
 
         public async  Task<IEnumerable<Topic>> GetAll()
         {
-            return await _context.Topics.AsNoTracking().ToListAsync();
+            return await _context.Topics.
+                Include(c=> c.Coments)
+                .Include(u=> u.User)
+                .AsNoTracking().ToListAsync();
         }
 
         public async Task<Topic> GetById(Guid id)
         {
             return await _context.Topics.FirstOrDefaultAsync(u => u.Id == id);
         }
+        public async Task<IEnumerable<Topic>> GetBySectionId(Guid sectionId)
+        {
+            return await _context.Topics.Where(x=> x.SectionId == sectionId)
+                .Include(u=>u.User)
+                .Include(c=>c.Coments)
+                .AsNoTracking().ToListAsync();
+        }
+
 
         public async Task<Topic> GetByUserId(Guid userId)
         {
@@ -49,7 +66,7 @@ namespace Forum.Infra.Repository
 
         public void Update(Topic topic)
         {
-            _context.Update(topic);
+            _context.Topics.Update(topic);
         }
     }
 }
