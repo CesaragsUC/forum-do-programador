@@ -12,5 +12,7 @@ namespace Forum.Application.Queries.Interfaces
         Task<UserDTO> GetById(Guid id);
         Task<IEnumerable<UserDTO>> GetAll();
         Task<UserDTO> GetByIdentityId(Guid identityId);
+        Task<UserDTO> GetByNameAndEmail(string name, string email);
+        
     }
 }

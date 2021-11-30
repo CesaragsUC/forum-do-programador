@@ -19,12 +19,12 @@ namespace Forum.Infra.Repository
 
         public void Add(User user)
         {
-            _context.Add(user);
+            _context.Users.Add(user);
         }
 
         public void Delete(User user)
         {
-            _context.Remove(user);
+            _context.Users.Remove(user);
         }
 
         public void Dispose()
@@ -47,9 +47,14 @@ namespace Forum.Infra.Repository
             return await _context.Users.FirstOrDefaultAsync(u => u.IdentityId == identityId);
         }
 
+        public async Task<User> GetByNameAndEmail(string name, string email)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.Name == name || u.Email == email);
+        }
+
         public void Update(User user)
         {
-            _context.Update(user);
+            _context.Users.Update(user);
         }
     }
 }

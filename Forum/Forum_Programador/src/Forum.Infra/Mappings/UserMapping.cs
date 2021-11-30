@@ -26,6 +26,7 @@ namespace Forum.Infra.Mappings
             builder.Property(u => u.UserTypeId)
                 .IsRequired();
 
+
             builder.ToTable("Users");
            
         }

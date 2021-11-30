@@ -29,9 +29,6 @@
                             if (item.Sections.Count() != 0)
                             {
                                 <div class="forum-title">
-                                    <div class="pull-right forum-desc">
-                                        <samll>Total posts: 320,800</samll>
-                                    </div>
                                     <h3>@item.Name</h3>
                                 </div>
 
@@ -41,7 +38,7 @@
                                 {
                                     <div class="forum-item active">
                                         <div class="row">
-                                            <div class="col-md-9">
+                                            <div class="col-md-10">
                                                 <div class="forum-icon">
                                                     <i class="fa fa-shield"></i>
                                                 </div>
@@ -50,15 +47,7 @@
                                             </div>
                                             <div class="col-md-1 forum-info">
                                                 <span class="views-number">
-                                                    1216
-                                                </span>
-                                                <div>
-                                                    <small>Views</small>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-1 forum-info">
-                                                <span class="views-number">
-                                                    368
+                                                    @sec.TotalTopics
                                                 </span>
                                                 <div>
                                                     <small>Topics</small>
@@ -66,7 +55,7 @@
                                             </div>
                                             <div class="col-md-1 forum-info">
                                                 <span class="views-number">
-                                                    140
+                                                    @sec.TotalPosts
                                                 </span>
                                                 <div>
                                                     <small>Posts</small>

@@ -29,7 +29,7 @@ else
     //credits: https://mdbootstrap.com/docs/standard/forms/overview/
 <form asp-action="CreateTopic">
 
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <vc:summary/>
 
     <input name="sectionId" value="@ViewBag.SectionId" type="hidden" />
     <input name="htmlcode" id="inp_htmlcode" type="hidden" />

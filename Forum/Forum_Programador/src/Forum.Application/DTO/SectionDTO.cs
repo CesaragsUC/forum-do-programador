@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Forum.Application.DTO
@@ -13,6 +15,9 @@ namespace Forum.Application.DTO
         [Required(ErrorMessage ="Section name is required")]
         public string Name { get;  set; }
 
+        public int TotalTopics { get; set; }
+
+        public int TotalPosts { get; set; }
 
         [Required(ErrorMessage = "Please cheack if section will be active.")]
         public bool IsActive { get;  set; }
@@ -21,6 +26,8 @@ namespace Forum.Application.DTO
 
 
         public AreaDTO Area { get; set; }
-        
+
+   
+
     }
 }

@@ -14,6 +14,7 @@
 
 
                 <a class="btn btn-success" asp-controller="Topic" asp-action="CreateTopic" asp-route-id="@ViewBag.SectionId">Create Thread</a>
+                <a class="btn btn-info" asp-controller="Home" asp-action="Index" >Back Home</a>
                 <br>
                 <br>
 
@@ -27,7 +28,7 @@
 
                     @{
 
-                        if (Model.Any())
+                        if (Model != null)
                         {
 
                             foreach (var topic in Model)

@@ -82,5 +82,22 @@ namespace Forum.Application.Queries
 
             return userModel;
         }
+
+        public async Task<UserDTO> GetByNameAndEmail(string name, string email)
+        {
+            var user = await _userRepository.GetByNameAndEmail(name, email);
+            var userModel = new UserDTO
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Email = user.Email,
+                IdentityId = user.IdentityId,
+                LastActivity = user.LastActivity,
+                UserTypeId = user.UserTypeId,
+                CreationDate = user.CreationDate,
+                Avatar = user.Avatar
+            };
+            return userModel;
+        }
     }
 }

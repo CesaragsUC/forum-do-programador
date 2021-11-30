@@ -9,4 +9,3 @@ F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Core\
 F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Core\obj\Debug\net5.0\Forum.Core.dll
 F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Core\obj\Debug\net5.0\ref\Forum.Core.dll
 F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Core\obj\Debug\net5.0\Forum.Core.pdb
-F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Core\obj\Debug\net5.0\Forum.Core.csproj.AssemblyReference.cache

@@ -13,10 +13,13 @@ namespace Forum.Application.Queries
     {
 
         private readonly IAreaRepository _areaRepository;
+        private readonly ITopicRepository _topicRepository;
 
-        public AreaQuery(IAreaRepository areaRepository)
+        public AreaQuery(IAreaRepository areaRepository,
+            ITopicRepository topicRepository)
         {
             _areaRepository = areaRepository;
+            _topicRepository = topicRepository;
         }
         public async Task<AreaDTO> GetById(Guid id)
         {
@@ -47,6 +50,9 @@ namespace Forum.Application.Queries
 
                 foreach (var sc in item.Sections)
                 {
+                    var topics = await _topicRepository.GetBySectionId(sc.Id);
+                    var coments = topics.Select(x => x.Coments).ToList();
+
                     var areaDTO = new AreaDTO
                     {
                         Id = sc.Areas.Id,
@@ -59,12 +65,16 @@ namespace Forum.Application.Queries
                         Name = sc.Name,
                         IsActive = sc.IsActive,
                         AreaId = sc.AreaId,
-                        Area = areaDTO
+                        Area = areaDTO,
+                        TotalPosts = coments.Any() ? coments[0].Count() : 0, //all sumed comments for each topic
+                        TotalTopics = topics.Count() //all sumed topics for this section
+
 
                     };
 
                     sectionList.Add(sectionDTO);
                 }
+
                 areaModel.Add(new AreaDTO
                 {
 

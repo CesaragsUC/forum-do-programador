@@ -14,14 +14,17 @@ namespace Forum.Application.Queries
         private readonly ITopicRepository _topicRepository;
         private readonly IUserRepository _userRepository;
         private readonly ICommentRepository _commentRepository;
+        private readonly ITopicViewsRepository _topicViewsRepository;
 
         public TopicQuery(ITopicRepository topicRepository,
             IUserRepository userRepository,
-            ICommentRepository commentRepository)
+            ICommentRepository commentRepository,
+            ITopicViewsRepository topicViewsRepository)
         {
             _topicRepository = topicRepository;
             _userRepository = userRepository;
             _commentRepository = commentRepository;
+            _topicViewsRepository = topicViewsRepository;
         }
 
         public async Task<IEnumerable<TopicDTO>> GetAll()
@@ -35,6 +38,8 @@ namespace Forum.Application.Queries
             foreach (var item in topicList)
             {
                 var comments = new List<CommentsDTO>();
+
+                var topicTotalViews = await _topicViewsRepository.GetByTopicId(item.Id);
 
                 foreach (var cm in item.Coments)
                 {
@@ -69,7 +74,8 @@ namespace Forum.Application.Queries
                     Id = item.Id,
                     Title = item.Title,
                     User = userTopicModel,
-                    Coments = comments
+                    Coments = comments,
+                    TotalViews = topicTotalViews.Count()
 
                 };
 
@@ -89,6 +95,7 @@ namespace Forum.Application.Queries
 
             var userTopic = await _userRepository.GetById(topic.UserId);
             var commentsList = await _commentRepository.GetByTopicId(topic.Id);
+            var topicTotalViews = await _topicViewsRepository.GetByTopicId(topic.Id);
 
             var comments = new List<CommentsDTO>();
 
@@ -125,7 +132,8 @@ namespace Forum.Application.Queries
                 Title = topic.Title,
                 User = userTopicModel,
                 Coments = comments,
-                SectionId = topic.SectionId
+                SectionId = topic.SectionId,
+                TotalViews = topicTotalViews.Count()
             };
 
             return topicModel;
@@ -141,12 +149,15 @@ namespace Forum.Application.Queries
 
             foreach (var t in topics)
             {
+                var topicTotalViews = await _topicViewsRepository.GetByTopicId(t.Id);
+
                 var topic = new TopicDTO
                 {
                     Id = t.Id,
                     Title = t.Title,
                     CreationDate = t.CreationDate,
-                    UserId = t.UserId
+                    UserId = t.UserId,
+                    TotalViews = topicTotalViews.Count()
 
                 };
 

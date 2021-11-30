@@ -22,6 +22,10 @@ namespace Forum.Infra
         public DbSet<Topic> Topics { get; set; }
         public DbSet<Comments> Comments { get; set; }
         public DbSet<Area> Areas { get; set; }
+        public DbSet<PrivateMessages> PrivateMessages { get; set; }
+        public DbSet<TopicViews> TopicViews { get; set; }
+        public DbSet<UserInformation> UserInformations { get; set; }
+        public DbSet<UserFriends> UserFriends { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

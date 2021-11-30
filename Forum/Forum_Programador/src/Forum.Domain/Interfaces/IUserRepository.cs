@@ -14,5 +14,6 @@ namespace Forum.Domain.Interfaces
         Task<User> GetById(Guid id);
         Task<User> GetByIdentityId(Guid identityId);
         Task<IEnumerable<User>> GetAll();
+        Task<User> GetByNameAndEmail(string name, string email);
     }
 }

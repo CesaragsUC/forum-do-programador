@@ -10,6 +10,7 @@ namespace Forum.Domain.Entities
         public Guid IdentityId { get; private set; }
         public string Name { get; private set; }
         public string Email { get; private set; }
+        public bool IsActive { get; private set; }
 
         public string Avatar { get; private set; }
 
@@ -19,6 +20,7 @@ namespace Forum.Domain.Entities
 
         public DateTime LastActivity { get; private set; }
 
+
         public User(Guid identityId, string name,string email,string avatar,int usertypeId)
         {
             IdentityId = identityId;
@@ -26,6 +28,7 @@ namespace Forum.Domain.Entities
             Email = email;
             Avatar = avatar;
             UserTypeId = usertypeId;
+            IsActive = true;
         }
 
         protected User()
@@ -48,9 +51,12 @@ namespace Forum.Domain.Entities
             LastActivity = DateTime.Now;
         }
 
-        public void UpdateAvatar(string picture)
+        public void Update(string email, int usertypeId, string avatar, bool active)
         {
-
+            Email = email;
+            UserTypeId = usertypeId;
+            IsActive = active;
+            Avatar = avatar;
         }
     }
 }

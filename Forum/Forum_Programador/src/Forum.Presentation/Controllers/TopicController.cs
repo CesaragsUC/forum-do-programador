@@ -1,5 +1,6 @@
 ﻿using Forum.Application.Commands;
 using Forum.Application.Commands.Comments;
+using Forum.Application.Commands.TopicViews;
 using Forum.Application.Queries.Interfaces;
 using Forum.Core.Communication.Mediator;
 using Forum.Core.Messages.CommonMessage.Notification;
@@ -52,6 +53,9 @@ namespace Forum.Presentation.Controllers
 
             var comments = await _commentQuery.GetByTopicId(topic.Id,GetRandomUser());
             ViewBag.SectionId = topic.SectionId;
+
+            var command = new AddTopicViewsCommand(id, GetRandomUser());
+            await _mediatorHandler.SendCommand(command);
 
             return View(comments);
         }
