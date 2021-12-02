@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Forum.Application.Handler.Command
 {
-    class UserCommandHandler : ValidateComandBase,
+    public class UserCommandHandler : ValidateComandBase,
         IRequestHandler<AddUserCommand, bool>,
          IRequestHandler<UpdateUserCommand, bool>,
          IRequestHandler<DeleteUserCommand, bool>

@@ -39,7 +39,7 @@ namespace Forum.Application.Commands.UserFirend
             RuleFor(x => x.IdentityId).NotEqual(Guid.Empty).WithMessage("Invalid IdentityId.");
             RuleFor(x => x.Name).NotEqual(string.Empty).WithMessage("Invalid Name.");
             RuleFor(x => x.Email).NotEqual(string.Empty).WithMessage("Invalid Email.");
-            RuleFor(x => x.UserTypeId).Must((x,type)=>IsValidUserType(type).Equals(true)).WithMessage("Invalid User Type Id.");
+            RuleFor(x => x.UserTypeId).NotNull().GreaterThan(0).WithMessage("Invalid User Type Id.");
         }
 
         private bool IsValidUserType(int type)

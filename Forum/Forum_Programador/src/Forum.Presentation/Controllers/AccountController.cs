@@ -73,17 +73,26 @@ namespace Forum.Presentation.Controllers
                 EmailConfirmed = true
             };
 
-            var result = await _userManager.CreateAsync(user, registerUser.Password);
-            if (result.Succeeded)
+            var command = new AddUserCommand(Guid.Parse(user.Id), registerUser.Name, registerUser.Email, 3);
+            await _mediatorHandler.SendCommand(command);
+            
+            if(command.IsValid())
             {
-                var command = new AddUserCommand(Guid.Parse(user.Id), registerUser.Name, registerUser.Email, 3);
-                await _mediatorHandler.SendCommand(command);
+                var result = await _userManager.CreateAsync(user, registerUser.Password);
+                if (result.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, false);
+                }
 
-                await _signInManager.SignInAsync(user, false);
             }
 
-            // if (IsvalidOpperation())
-            return RedirectToAction("Home", "Index");
+
+            if (IsvalidOpperation())
+               return RedirectToAction("Index", "Home");
+
+            TempData["Errors"] = GetMessageErros();
+
+            return View(registerUser);
 
         }
 
@@ -220,6 +229,7 @@ namespace Forum.Presentation.Controllers
                 var message = new Message(new string[] { user.Email }, "Forum Nerd - Reset Password", callbackUrl, null);
                 await _emailSender.SendEmailAsync(message);
 
+                TempData["EmailTo"] = user.Email;
                 TempData["ForgotPasswordSent"] = "[+] The link has been sent, please check your email to reset your password.";
                 return View();
 

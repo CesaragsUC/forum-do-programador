@@ -1,12 +1,12 @@
 ﻿<!--for case a ModelState is no valid-->
-@if (ViewData.ModelState.ErrorCount > 0)
+@*@if (ViewData.ModelState.ErrorCount > 0)
 {
     <div class="alert alert-danger">
         <button type="button" class="close" data-dismiss="alert">×</button>
-        <h3 id="msgRetorno">Ops! An error occured:</h3>
+        <h3 id="msgRetorno">Opa! Algo deu errado:</h3>
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     </div>
-}
+}*@
 
 
 <!--Get messages from DomainNotification-->
@@ -15,7 +15,7 @@
     <div class="alert alert-danger">
         <button type="button" class="close" data-dismiss="alert">×</button>
         <h3 id="msgRetorno">Ops! Somethins went wrong:</h3>
-        <p>@TempData["Erro"]</p>
+        <p><i class="fa fa-times" style="font-size:15px;color:orangered"></i>&nbsp@TempData["Erro"]</p>
     </div>
 }
 
@@ -25,10 +25,10 @@
         <button type="button" class="close" data-dismiss="alert">×</button>
         <h3 id="msgRetorno">Ops! Somethins went wrong:</h3>
         @{
-            var erros = TempData["Errors"] as string[];
+            var erros = TempData["Errors"] as IEnumerable<string>;
             foreach (var erro in erros)
             {
-                <p>@erro</p>
+                <p><i class="fa fa-times" style="font-size:15px;color:orangered"></i>&nbsp @erro</p>
             }
         }
 

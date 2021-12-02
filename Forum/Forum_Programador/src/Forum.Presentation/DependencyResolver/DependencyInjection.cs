@@ -4,6 +4,7 @@ using Forum.Application.Commands.Comments;
 using Forum.Application.Commands.PrivateMessages;
 using Forum.Application.Commands.Section;
 using Forum.Application.Commands.TopicViews;
+using Forum.Application.Commands.UserFirend;
 using Forum.Application.Events;
 using Forum.Application.Handler;
 using Forum.Application.Handler.Command;
@@ -81,6 +82,10 @@ namespace Forum.Presentation.DependencyResolver
             services.AddScoped<IRequestHandler<AddTopicViewsCommand, bool>, TopicViewsCommandHandler>();
             services.AddScoped<IRequestHandler<UpdateTopicViewsCommand, bool>, TopicViewsCommandHandler>();
             services.AddScoped<IRequestHandler<DeleteTopicViewsCommand, bool>, TopicViewsCommandHandler>();
+
+            services.AddScoped<IRequestHandler<AddUserCommand, bool>, UserCommandHandler>();
+            services.AddScoped<IRequestHandler<UpdateUserCommand, bool>, UserCommandHandler>();
+            services.AddScoped<IRequestHandler<DeleteUserCommand, bool>, UserCommandHandler>();
 
 
         }

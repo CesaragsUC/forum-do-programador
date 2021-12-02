@@ -15,6 +15,9 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
 
 <div class="container">
+
+    <vc:summary />
+
     <div class="row">
         <div class="col-md-4"></div>
         <div class="col-md-5">
@@ -24,19 +27,20 @@
 
                     <div class="form-group">
 
-                        <form id="login-nav" asp-action="Register"  method="post" role="form" class="form" accept-charset="UTF-8">
+
+                        <form id="login-nav" asp-action="Register" method="post" role="form" class="form" accept-charset="UTF-8">
 
                             <div class="form-group">
                                 <label class="sr-only">Username</label>
-                                <input type="text" asp-for="Name" id="reg_username"  class="form-control"
+                                <input type="text" asp-for="Name" id="reg_username" class="form-control"
                                        value="" placeholder="Username" required>
                             </div>
 
                             <!-- email group -->
                             <div class="form-group">
                                 <label class="sr-only">E-mail Address</label>
-                                <input type="email" asp-for="Email" id="reg_useremail"  class="form-control"
-                                        placeholder="youremail@email.com">
+                                <input type="email" asp-for="Email" id="reg_useremail" class="form-control"
+                                       placeholder="youremail@email.com">
                             </div>
 
                             <!-- password group -->
@@ -46,8 +50,8 @@
                                 <label class="sr-only">Password</label>
                                 <!-- password input -->
                                 <div class="input-group">
-                                    <input type="password" asp-for="Password" id="reg_userpassword"  class="form-control" data-placement="bottom" data-toggle="popover" data-container="body"
-                                           data-html="true"  placeholder="Password" required>
+                                    <input type="password" asp-for="Password" id="reg_userpassword" class="form-control" data-placement="bottom" data-toggle="popover" data-container="body"
+                                           data-html="true" placeholder="Password" required>
 
                                     <div class="input-group-append">
                                         <button class="btn btn-outline-secondary" type="button" id="button-append1" onclick="togglePassword()">
