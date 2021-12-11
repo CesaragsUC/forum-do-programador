@@ -3,6 +3,7 @@ using Forum.Core.Communication.Mediator;
 using Forum.Core.Messages.CommonMessage.Notification;
 using Forum.Presentation.Models;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -20,28 +21,36 @@ namespace Forum.Presentation.Controllers
         private readonly IMediatorHandler _mediatorHandler;
 
         private readonly IAreaQuery _areaQuery;
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
         public HomeController(INotificationHandler<DomainNotification> notifications,
             IMediatorHandler mediatorHandler,
             IAreaQuery areaQuery,
-            ILogger<HomeController> logger) : base(notifications, mediatorHandler)
+            ILogger<HomeController> logger,
+             SignInManager<IdentityUser> signInManager,
+            UserManager<IdentityUser> userManager) : base(notifications, mediatorHandler)
         {
             _mediatorHandler = mediatorHandler;
             _areaQuery = areaQuery;
             _logger = logger;
+            _signInManager = signInManager;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> Index()
         {
+            var loogedUser = HttpContext.User;
+            var user = await _userManager.GetUserAsync(loogedUser);
+            
+            if(user != null)
+                TempData["UserId"] = user.Id;
+
             var areas = await _areaQuery.GetAll();
 
             return View(areas);
         }
 
-        public async Task<IActionResult> Privacy()
-        {
-            return View();
-        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> Error()

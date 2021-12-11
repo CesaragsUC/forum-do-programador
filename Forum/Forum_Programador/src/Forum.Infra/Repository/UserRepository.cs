@@ -22,6 +22,11 @@ namespace Forum.Infra.Repository
             _context.Users.Add(user);
         }
 
+        public void AddUserInformation(UserInformation userInformation)
+        {
+            _context.UserInformations.Add(userInformation);
+        }
+
         public void Delete(User user)
         {
             _context.Users.Remove(user);
@@ -55,6 +60,11 @@ namespace Forum.Infra.Repository
         public void Update(User user)
         {
             _context.Users.Update(user);
+        }
+
+        public void UpdateUserInformation(UserInformation userInformation)
+        {
+            _context.UserInformations.Update(userInformation);
         }
     }
 }

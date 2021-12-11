@@ -57,7 +57,16 @@ namespace Forum.Infra
                      entry.Property("CreationDate").IsModified = false;
 
             }
-            return await base.SaveChangesAsync() > 0;
+            try
+            {
+                return await base.SaveChangesAsync() > 0;
+            }
+            catch (Exception ex )
+            {
+
+                throw;
+            }
+
         }
     }
 }

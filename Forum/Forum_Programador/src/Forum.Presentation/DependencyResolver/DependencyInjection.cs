@@ -5,6 +5,7 @@ using Forum.Application.Commands.PrivateMessages;
 using Forum.Application.Commands.Section;
 using Forum.Application.Commands.TopicViews;
 using Forum.Application.Commands.UserFirend;
+using Forum.Application.Commands.UserInfo;
 using Forum.Application.Events;
 using Forum.Application.Handler;
 using Forum.Application.Handler.Command;
@@ -40,6 +41,8 @@ namespace Forum.Presentation.DependencyResolver
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPrivateMessageRepository, PrivateMessageRepository>();
             services.AddScoped<ITopicViewsRepository, TopicViewsRepository>();
+            services.AddScoped<IUserInformationRepository, UserInformationRepository>();
+            services.AddScoped<IUserFriendRepository, UserFriendRepository>();
 
             //Events
             services.AddScoped<INotificationHandler<TopicCreatedEvent>, TopicHandlerEvent>();
@@ -54,6 +57,9 @@ namespace Forum.Presentation.DependencyResolver
             services.AddScoped<IUserQuery, UserQuery>();
             services.AddScoped<ITopicViewsQuery, TopicViewsQuery>();
             services.AddScoped<IPrivateMessagesQuery, PrivateMessagesQuery>();
+            services.AddScoped<IUserInformationfoQuery, UserInformationfoQuery>();
+            services.AddScoped<IUserFriendQuery, UserFriendQuery>();
+
 
             //ComandHandlers
             services.AddScoped<IRequestHandler<CreateTopicCommand, bool>, TopicCommandHandler>();
@@ -86,6 +92,9 @@ namespace Forum.Presentation.DependencyResolver
             services.AddScoped<IRequestHandler<AddUserCommand, bool>, UserCommandHandler>();
             services.AddScoped<IRequestHandler<UpdateUserCommand, bool>, UserCommandHandler>();
             services.AddScoped<IRequestHandler<DeleteUserCommand, bool>, UserCommandHandler>();
+            services.AddScoped<IRequestHandler<UpdateUserInformationCommand, bool>, UserCommandHandler>();
+            services.AddScoped<IRequestHandler<AddUserInformationCommand, bool>, UserCommandHandler>();
+            
 
 
         }

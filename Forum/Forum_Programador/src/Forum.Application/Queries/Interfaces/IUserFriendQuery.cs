@@ -7,7 +7,7 @@ namespace Forum.Application.Queries.Interfaces
 {
     public interface IUserFriendQuery
     {
-        Task<UserFriendDTO> GetByUserId(Guid userId);
+        Task<IEnumerable<UserFriendDTO>> GetByUserId(Guid userId);
         Task<IEnumerable<UserFriendDTO>> GetAll();
     }
 }

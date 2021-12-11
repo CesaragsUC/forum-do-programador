@@ -141,6 +141,7 @@ namespace Forum.Presentation.Controllers
 
                 if (result.Succeeded)
                 {
+                    TempData["UserId"] = user.Id;
                     return RedirectToAction("Index", "Home");
                 }
                 if (result.IsLockedOut)

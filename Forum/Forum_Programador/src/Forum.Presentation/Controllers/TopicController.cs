@@ -5,7 +5,9 @@ using Forum.Application.Queries.Interfaces;
 using Forum.Core.Communication.Mediator;
 using Forum.Core.Messages.CommonMessage.Notification;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using NToastNotify;
 using System;
 using System.Threading.Tasks;
 
@@ -17,17 +19,26 @@ namespace Forum.Presentation.Controllers
         private readonly ITopicQuery _topicQuery;
         private readonly ISectionQuery _sectionQuery;
         private readonly ICommentQuery _commentQuery;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly IUserQuery _userQuery;
+        private readonly IToastNotification _toastNotification;
 
         public TopicController(INotificationHandler<DomainNotification> notifications,
             IMediatorHandler mediatorHandler,
             ITopicQuery topicQuery,
             ISectionQuery sectionQuery,
-            ICommentQuery commentQuery) : base(notifications, mediatorHandler)
+            ICommentQuery commentQuery,
+             UserManager<IdentityUser> userManager,
+              IToastNotification toastNotification,
+              IUserQuery userQuery) : base(notifications, mediatorHandler)
         {
             _mediatorHandler = mediatorHandler;
             _topicQuery = topicQuery;
             _sectionQuery = sectionQuery;
             _commentQuery = commentQuery;
+            _userManager = userManager;
+            _toastNotification = toastNotification;
+            _userQuery = userQuery;
         }
 
         public async Task<IActionResult> Index(Guid id)
@@ -50,8 +61,18 @@ namespace Forum.Presentation.Controllers
             ViewBag.TopicTitle = topic.Title;
             ViewBag.TopicId = topic.Id;
 
+            var loogedUser = HttpContext.User;
+            var userIdentity = await _userManager.GetUserAsync(loogedUser);
 
-            var comments = await _commentQuery.GetByTopicId(topic.Id,GetRandomUser());
+            if (userIdentity == null)
+            {
+                _toastNotification.AddErrorToastMessage("An unexpected error occur");
+                return RedirectToAction("Index", "Home");
+            }
+
+            var user = await _userQuery.GetByIdentityId(Guid.Parse(userIdentity.Id));
+
+            var comments = await _commentQuery.GetByTopicId(topic.Id, user.Id);
             ViewBag.SectionId = topic.SectionId;
 
             var command = new AddTopicViewsCommand(id, GetRandomUser());
@@ -71,6 +92,17 @@ namespace Forum.Presentation.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateTopic(string htmlcode, string title, Guid sectionId)
         {
+            var loogedUser = HttpContext.User;
+            var userIdentity = await _userManager.GetUserAsync(loogedUser);
+
+            if (userIdentity == null)
+            {
+                _toastNotification.AddErrorToastMessage("An unexpected error occur");
+                return RedirectToAction("Index", "Home");
+            }
+
+            var user = await _userQuery.GetByIdentityId(Guid.Parse(userIdentity.Id));
+
             if (sectionId == Guid.Empty || string.IsNullOrEmpty(htmlcode) || string.IsNullOrEmpty(title))
             {
                 ModelState.AddModelError("Error","Invalid form data");
@@ -81,7 +113,7 @@ namespace Forum.Presentation.Controllers
             ViewData["PostedValue"] = htmlcode;
 
 
-            var command = new CreateTopicCommand(title, htmlcode, GetRandomUser(), sectionId);
+            var command = new CreateTopicCommand(title, htmlcode, user.Id, sectionId);
             await _mediatorHandler.SendCommand(command);
 
 
@@ -108,7 +140,19 @@ namespace Forum.Presentation.Controllers
             ViewData["IsPosted"] = true;
             ViewData["PostedValue"] = htmlcode;
 
-            var command = new AddComentCommand(topicId, GetRandomUser(), htmlcode);
+
+            var loogedUser = HttpContext.User;
+            var userIdentity = await _userManager.GetUserAsync(loogedUser);
+
+            if (userIdentity == null)
+            {
+                _toastNotification.AddErrorToastMessage("An unexpected error occur");
+                return RedirectToAction("Index", "Home");
+            }
+
+            var user = await _userQuery.GetByIdentityId(Guid.Parse(userIdentity.Id));
+
+            var command = new AddComentCommand(topicId, user.Id, htmlcode);
             await _mediatorHandler.SendCommand(command);
 
 

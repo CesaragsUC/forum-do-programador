@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Forum.Application.DTO
 {
     public class UserInformationDTO
     {
+        public UserInformationDTO()
+        {
+            UserFriend = new List<UserFriendDTO>();
+        }
         public Guid Id { get;  set; }
         public Guid UserId { get;  set; }
 
@@ -18,9 +19,9 @@ namespace Forum.Application.DTO
         public string Instagran { get;  set; }
         public string FaceBook { get;  set; }
 
-        [Required(ErrorMessage ="The {0} is required")]
-        [MaxLength(20)]
-        public string NickName { get;  set; }
+        [EmailAddress]
+        public string Email { get; set; }
+
 
         [Required(ErrorMessage = "The {0} is required")]
         [MaxLength(50)]
@@ -33,7 +34,8 @@ namespace Forum.Application.DTO
         [MaxLength(50)]
         public string Occupation { get;  set; }
 
- 
+
+        public List< UserFriendDTO> UserFriend { get; set; }
         public UserDTO User { get;  set; }
     }
 }

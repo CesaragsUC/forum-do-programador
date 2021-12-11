@@ -12,9 +12,9 @@ namespace Forum.Domain.Interfaces
         public void Delete(PrivateMessages message);
         public void Update(PrivateMessages message);
         Task<PrivateMessages> GetById(Guid id);
-        Task<PrivateMessages> GetBySubject(string subject);
-        Task<PrivateMessages> GetBySenderyId(Guid senderId);
-        Task<PrivateMessages> GetByRecipientId(Guid recipientId);
+        Task<IEnumerable<PrivateMessages>> GetBySubject(string subject);
+        Task<IEnumerable<PrivateMessages>> GetBySenderyId(Guid senderId);
+        Task<IEnumerable<PrivateMessages>> GetByRecipientId(Guid userId);
         Task<IEnumerable<PrivateMessages>> GetAll();
     }
 }

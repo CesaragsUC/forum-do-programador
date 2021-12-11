@@ -4,12 +4,12 @@ namespace Forum.Application.DTO
 {
     public class UserFriendDTO
     {
-        public Guid Id { get; private set; }
-        public Guid UserId { get; private set; }
-        public Guid FriendId { get; private set; }
-        public DateTime CreationDate { get; private set; }
+        public Guid Id { get;  set; }
+        public Guid UserId { get;  set; }
+        public Guid FriendId { get;  set; }//His friend ID
+        public DateTime CreationDate { get;  set; }
 
-        public UserDTO User { get; private set; }
-        public UserDTO Friend { get; private set; } //His friend
+        public UserDTO User { get;  set; }
+        public UserDTO Friend { get;  set; } //His friend
     }
 }

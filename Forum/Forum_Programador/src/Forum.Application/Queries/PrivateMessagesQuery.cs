@@ -120,142 +120,163 @@ namespace Forum.Application.Queries
             return privateMessagesDTO;
         }
 
-        public async Task<PrivateMessagesDTO> GetByRecipientId(Guid recipientId)
+        public async Task<IEnumerable<PrivateMessagesDTO>> GetByRecipientId(Guid userId)
         {
-            var privatemessage = await _privateMessageRepository.GetByRecipientId(recipientId);
+            var privatemessage = await _privateMessageRepository.GetByRecipientId(userId);
+           
+            var listMessagesDTO = new List<PrivateMessagesDTO>();
 
-            var privateMessagesDTO = new PrivateMessagesDTO
+            foreach (var message in privatemessage)
             {
-                Id = privatemessage.Id,
-                CreationDate = privatemessage.CreationDate,
-                IsSeen = privatemessage.IsSeen,
-                RecipientId = privatemessage.RecipientId,
-                SenderId = privatemessage.SenderId,
-                Subject = privatemessage.Subject,
-                Text = privatemessage.Text
+                var privateMessagesDTO = new PrivateMessagesDTO
+                {
+                    Id = message.Id,
+                    CreationDate = message.CreationDate,
+                    IsSeen = message.IsSeen,
+                    RecipientId = message.RecipientId,
+                    SenderId = message.SenderId,
+                    Subject = message.Subject,
+                    Text = message.Text
 
-            };
+                };
 
-            var senderDTO = new UserDTO
-            {
-                Id = privatemessage.Sender.Id,
-                Avatar = privatemessage.Sender.Avatar,
-                CreationDate = privatemessage.Sender.CreationDate,
-                Email = privatemessage.Sender.Email,
-                IdentityId = privatemessage.Sender.IdentityId,
-                LastActivity = privatemessage.Sender.LastActivity,
-                Name = privatemessage.Sender.Name,
-                UserTypeId = privatemessage.Sender.UserTypeId
-            };
+                var senderDTO = new UserDTO
+                {
+                    Id = message.Sender.Id,
+                    Avatar = message.Sender.Avatar,
+                    CreationDate = message.Sender.CreationDate,
+                    Email = message.Sender.Email,
+                    IdentityId = message.Sender.IdentityId,
+                    LastActivity = message.Sender.LastActivity,
+                    Name = message.Sender.Name,
+                    UserTypeId = message.Sender.UserTypeId
+                };
 
-            var recipientDTO = new UserDTO
-            {
-                Id = privatemessage.Recipient.Id,
-                Avatar = privatemessage.Recipient.Avatar,
-                CreationDate = privatemessage.Recipient.CreationDate,
-                Email = privatemessage.Recipient.Email,
-                IdentityId = privatemessage.Recipient.IdentityId,
-                LastActivity = privatemessage.Recipient.LastActivity,
-                Name = privatemessage.Recipient.Name,
-                UserTypeId = privatemessage.Recipient.UserTypeId
-            };
+                var recipientDTO = new UserDTO
+                {
+                    Id = message.Recipient.Id,
+                    Avatar = message.Recipient.Avatar,
+                    CreationDate = message.Recipient.CreationDate,
+                    Email = message.Recipient.Email,
+                    IdentityId = message.Recipient.IdentityId,
+                    LastActivity = message.Recipient.LastActivity,
+                    Name = message.Recipient.Name,
+                    UserTypeId = message.Recipient.UserTypeId
+                };
 
-            privateMessagesDTO.Recipient = recipientDTO;
-            privateMessagesDTO.Sender = senderDTO;
+                privateMessagesDTO.Recipient = recipientDTO;
+                privateMessagesDTO.Sender = senderDTO;
 
-            return privateMessagesDTO;
+                listMessagesDTO.Add(privateMessagesDTO);
+            }
+
+            return listMessagesDTO;
         }
 
-        public async Task<PrivateMessagesDTO> GetBySenderyId(Guid senderId)
+        public async Task<IEnumerable<PrivateMessagesDTO>> GetBySenderyId(Guid senderId)
         {
             var privatemessage = await _privateMessageRepository.GetByRecipientId(senderId);
 
-            var privateMessagesDTO = new PrivateMessagesDTO
+            var listMessagesDTO = new List<PrivateMessagesDTO>();
+
+            foreach (var message in privatemessage)
             {
-                Id = privatemessage.Id,
-                CreationDate = privatemessage.CreationDate,
-                IsSeen = privatemessage.IsSeen,
-                RecipientId = privatemessage.RecipientId,
-                SenderId = privatemessage.SenderId,
-                Subject = privatemessage.Subject,
-                Text = privatemessage.Text
+                var privateMessagesDTO = new PrivateMessagesDTO
+                {
+                    Id = message.Id,
+                    CreationDate = message.CreationDate,
+                    IsSeen = message.IsSeen,
+                    RecipientId = message.RecipientId,
+                    SenderId = message.SenderId,
+                    Subject = message.Subject,
+                    Text = message.Text
 
-            };
+                };
 
-            var senderDTO = new UserDTO
-            {
-                Id = privatemessage.Sender.Id,
-                Avatar = privatemessage.Sender.Avatar,
-                CreationDate = privatemessage.Sender.CreationDate,
-                Email = privatemessage.Sender.Email,
-                IdentityId = privatemessage.Sender.IdentityId,
-                LastActivity = privatemessage.Sender.LastActivity,
-                Name = privatemessage.Sender.Name,
-                UserTypeId = privatemessage.Sender.UserTypeId
-            };
+                var senderDTO = new UserDTO
+                {
+                    Id = message.Sender.Id,
+                    Avatar = message.Sender.Avatar,
+                    CreationDate = message.Sender.CreationDate,
+                    Email = message.Sender.Email,
+                    IdentityId = message.Sender.IdentityId,
+                    LastActivity = message.Sender.LastActivity,
+                    Name = message.Sender.Name,
+                    UserTypeId = message.Sender.UserTypeId
+                };
 
-            var recipientDTO = new UserDTO
-            {
-                Id = privatemessage.Recipient.Id,
-                Avatar = privatemessage.Recipient.Avatar,
-                CreationDate = privatemessage.Recipient.CreationDate,
-                Email = privatemessage.Recipient.Email,
-                IdentityId = privatemessage.Recipient.IdentityId,
-                LastActivity = privatemessage.Recipient.LastActivity,
-                Name = privatemessage.Recipient.Name,
-                UserTypeId = privatemessage.Recipient.UserTypeId
-            };
+                var recipientDTO = new UserDTO
+                {
+                    Id = message.Recipient.Id,
+                    Avatar = message.Recipient.Avatar,
+                    CreationDate = message.Recipient.CreationDate,
+                    Email = message.Recipient.Email,
+                    IdentityId = message.Recipient.IdentityId,
+                    LastActivity = message.Recipient.LastActivity,
+                    Name = message.Recipient.Name,
+                    UserTypeId = message.Recipient.UserTypeId
+                };
 
-            privateMessagesDTO.Recipient = recipientDTO;
-            privateMessagesDTO.Sender = senderDTO;
+                privateMessagesDTO.Recipient = recipientDTO;
+                privateMessagesDTO.Sender = senderDTO;
 
-            return privateMessagesDTO;
+                listMessagesDTO.Add(privateMessagesDTO);
+            }
+
+            return listMessagesDTO;
         }
 
-        public async Task<PrivateMessagesDTO> GetBySubject(string subject)
+        public async Task<IEnumerable<PrivateMessagesDTO>> GetBySubject(string subject)
         {
             var privatemessage = await _privateMessageRepository.GetBySubject(subject);
 
-            var privateMessagesDTO = new PrivateMessagesDTO
+            var listMessagesDTO = new List<PrivateMessagesDTO>();
+
+            foreach (var message in privatemessage)
             {
-                Id = privatemessage.Id,
-                CreationDate = privatemessage.CreationDate,
-                IsSeen = privatemessage.IsSeen,
-                RecipientId = privatemessage.RecipientId,
-                SenderId = privatemessage.SenderId,
-                Subject = privatemessage.Subject,
-                Text = privatemessage.Text
+                var privateMessagesDTO = new PrivateMessagesDTO
+                {
+                    Id = message.Id,
+                    CreationDate = message.CreationDate,
+                    IsSeen = message.IsSeen,
+                    RecipientId = message.RecipientId,
+                    SenderId = message.SenderId,
+                    Subject = message.Subject,
+                    Text = message.Text
 
-            };
+                };
 
-            var senderDTO = new UserDTO
-            {
-                Id = privatemessage.Sender.Id,
-                Avatar = privatemessage.Sender.Avatar,
-                CreationDate = privatemessage.Sender.CreationDate,
-                Email = privatemessage.Sender.Email,
-                IdentityId = privatemessage.Sender.IdentityId,
-                LastActivity = privatemessage.Sender.LastActivity,
-                Name = privatemessage.Sender.Name,
-                UserTypeId = privatemessage.Sender.UserTypeId
-            };
+                var senderDTO = new UserDTO
+                {
+                    Id = message.Sender.Id,
+                    Avatar = message.Sender.Avatar,
+                    CreationDate = message.Sender.CreationDate,
+                    Email = message.Sender.Email,
+                    IdentityId = message.Sender.IdentityId,
+                    LastActivity = message.Sender.LastActivity,
+                    Name = message.Sender.Name,
+                    UserTypeId = message.Sender.UserTypeId
+                };
 
-            var recipientDTO = new UserDTO
-            {
-                Id = privatemessage.Recipient.Id,
-                Avatar = privatemessage.Recipient.Avatar,
-                CreationDate = privatemessage.Recipient.CreationDate,
-                Email = privatemessage.Recipient.Email,
-                IdentityId = privatemessage.Recipient.IdentityId,
-                LastActivity = privatemessage.Recipient.LastActivity,
-                Name = privatemessage.Recipient.Name,
-                UserTypeId = privatemessage.Recipient.UserTypeId
-            };
+                var recipientDTO = new UserDTO
+                {
+                    Id = message.Recipient.Id,
+                    Avatar = message.Recipient.Avatar,
+                    CreationDate = message.Recipient.CreationDate,
+                    Email = message.Recipient.Email,
+                    IdentityId = message.Recipient.IdentityId,
+                    LastActivity = message.Recipient.LastActivity,
+                    Name = message.Recipient.Name,
+                    UserTypeId = message.Recipient.UserTypeId
+                };
 
-            privateMessagesDTO.Recipient = recipientDTO;
-            privateMessagesDTO.Sender = senderDTO;
+                privateMessagesDTO.Recipient = recipientDTO;
+                privateMessagesDTO.Sender = senderDTO;
 
-            return privateMessagesDTO;
+                listMessagesDTO.Add(privateMessagesDTO);
+            }
+
+            return listMessagesDTO;
         }
 
     }

@@ -434,3 +434,6 @@ F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Prese
 F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\bin\Debug\net5.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
 F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\bin\Debug\net5.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
 F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\bin\Debug\net5.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\obj\Debug\net5.0\Razor\Views\PrivateMesage\Messages.cshtml.g.cs
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\obj\Debug\net5.0\Razor\Views\User\Index.cshtml.g.cs
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\obj\Debug\net5.0\Razor\Views\User\_FriendsPartial.cshtml.g.cs

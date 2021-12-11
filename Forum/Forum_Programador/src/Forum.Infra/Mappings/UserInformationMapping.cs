@@ -26,10 +26,6 @@ namespace Forum.Infra.Mappings
                 .HasColumnType("varchar(100)");
 
 
-            builder.Property(u => u.NickName)
-                .IsRequired()
-                .HasColumnType("varchar(100)");
-
             builder.Property(u => u.FullName)
                 .IsRequired()
                 .HasColumnType("varchar(100)");

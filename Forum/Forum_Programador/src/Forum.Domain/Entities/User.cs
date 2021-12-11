@@ -51,11 +51,21 @@ namespace Forum.Domain.Entities
             LastActivity = DateTime.Now;
         }
 
-        public void Update(string email, int usertypeId, string avatar, bool active)
+        public void Update( int usertypeId, bool active)
         {
-            Email = email;
+
             UserTypeId = usertypeId;
             IsActive = active;
+           
+        }
+
+        public void UpdateEmail(string email)
+        {
+            Email = email;
+        }
+
+        public void UpdateAvatar(string avatar)
+        {
             Avatar = avatar;
         }
     }

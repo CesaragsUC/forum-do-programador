@@ -8,9 +8,9 @@ namespace Forum.Application.Queries.Interfaces
     public interface IPrivateMessagesQuery
     {
         Task<PrivateMessagesDTO> GetById(Guid id);
-        Task<PrivateMessagesDTO> GetBySubject(string subject);
-        Task<PrivateMessagesDTO> GetBySenderyId(Guid senderId);
-        Task<PrivateMessagesDTO> GetByRecipientId(Guid recipientId);
+        Task<IEnumerable<PrivateMessagesDTO>> GetBySubject(string subject);
+        Task<IEnumerable<PrivateMessagesDTO>> GetBySenderyId(Guid senderId);
+        Task<IEnumerable<PrivateMessagesDTO>> GetByRecipientId(Guid userId);
         Task<IEnumerable<PrivateMessagesDTO>> GetAll();
     }
 }

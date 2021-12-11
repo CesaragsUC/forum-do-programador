@@ -1,5 +1,6 @@
 ﻿using Forum.Core.DomainObjects;
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Forum.Domain.Entities
 {
@@ -12,17 +13,15 @@ namespace Forum.Domain.Entities
         public string Twitter { get; private set; }
         public string Instagran { get; private set; }
         public string FaceBook { get; private set; }
-        public string NickName { get; private set; }
         public string FullName { get; private set; }
         public string Adress { get; private set; }
 
         public string Occupation { get; private set; }
 
-        //EF
         public User User { get; private set; }
 
         public UserInformation(Guid userId, string website,string github,string twitter, string instagran,
-                string facebook,string nickname,string fullname,string occupation, string adress)
+                string facebook,string fullname,string occupation, string adress)
         {
             UserId = userId;
             WebSite = website;
@@ -30,7 +29,6 @@ namespace Forum.Domain.Entities
             Twitter = twitter;
             Instagran = instagran;
             FaceBook = facebook;
-            NickName = nickname;
             FullName = fullname;
             Adress = adress;
             Occupation = occupation;
@@ -41,15 +39,20 @@ namespace Forum.Domain.Entities
 
         }
 
-        public void UpdateInformation(UserInformation information)
+        public void UpdateInformation(Guid id,Guid userId, string site,string github, string twiteer, string instagran,
+            string facebook, string fullname,  string occupation, string adress)
         {
-            WebSite = information.WebSite;
-            GitHub = information.GitHub;
-            Twitter = information.Twitter;
-            Instagran = information.Instagran;
-            FaceBook = information.FaceBook;
-            FullName = information.FullName;
-            Adress = information.Adress;
+            Id = id;
+            UserId = userId;
+            WebSite = site;
+            GitHub = github;
+            Twitter = twiteer;
+            Instagran = instagran;
+            FaceBook = facebook;
+            FullName = fullname;
+            Adress = adress;
+            Occupation = occupation;
+           
         }
     }
 }

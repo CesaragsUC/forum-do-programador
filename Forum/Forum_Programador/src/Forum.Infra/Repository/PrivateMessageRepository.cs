@@ -47,25 +47,25 @@ namespace Forum.Infra.Repository
                                  Include(r => r.Recipient).FirstOrDefault();
         }
 
-        public async Task<PrivateMessages> GetByRecipientId(Guid recipientId)
+        public async Task<IEnumerable<PrivateMessages>> GetByRecipientId(Guid userId)
         {
-            return _context.PrivateMessages.Where(x => x.SenderId == recipientId)
+            return await _context.PrivateMessages.Where(x => x.RecipientId == userId)
                                 .Include(u => u.Sender)
-                                .Include(r => r.Recipient).FirstOrDefault();
+                                .Include(r => r.Recipient).AsNoTracking().ToListAsync();
         }
 
-        public async Task<PrivateMessages> GetBySenderyId(Guid senderId)
+        public async Task<IEnumerable<PrivateMessages>> GetBySenderyId(Guid senderId)
         {
-            return _context.PrivateMessages.Where(x => x.SenderId == senderId)
+            return await _context.PrivateMessages.Where(x => x.SenderId == senderId)
                                 .Include(u => u.Sender)
-                                .Include(r => r.Recipient).FirstOrDefault();
+                                .Include(r => r.Recipient).AsNoTracking().ToListAsync();
         }
 
-        public async Task<PrivateMessages> GetBySubject(string subject)
+        public async Task<IEnumerable<PrivateMessages>> GetBySubject(string subject)
         {
-            return  _context.PrivateMessages.Where(x => x.Subject.Contains(subject))
+            return await _context.PrivateMessages.Where(x => x.Subject.Contains(subject))
                                          .Include(u => u.Sender)
-                                         .Include(r => r.Recipient).FirstOrDefault();
+                                         .Include(r => r.Recipient).AsNoTracking().ToListAsync();
         }
 
         public void Update(PrivateMessages message)
