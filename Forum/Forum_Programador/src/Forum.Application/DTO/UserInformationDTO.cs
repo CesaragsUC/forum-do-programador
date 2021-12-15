@@ -37,5 +37,9 @@ namespace Forum.Application.DTO
 
         public List< UserFriendDTO> UserFriend { get; set; }
         public UserDTO User { get;  set; }
+
+        public UpdateUserAvatarDTO UpdateUserAvatar { get; set; }
+
+        public UpdateUserPasswordDTO UpdateUserPassword { get; set; }
     }
 }

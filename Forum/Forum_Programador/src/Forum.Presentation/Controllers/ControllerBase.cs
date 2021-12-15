@@ -1,10 +1,13 @@
 ﻿using Forum.Core.Communication.Mediator;
 using Forum.Core.Messages.CommonMessage.Notification;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Forum.Presentation.Controllers
 {
@@ -54,6 +57,25 @@ namespace Forum.Presentation.Controllers
         protected void NotifyError(string cod, string msg)
         {
             _mediatorHandler.PublishDomainNotification(new DomainNotification(cod, msg));
+        }
+
+        protected async Task<bool> UploadFile(IFormFile file, string imgPrefix)
+        {
+            if (file.Length < 0) return false;
+
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", imgPrefix + file.FileName);
+
+            if(System.IO.File.Exists(path))
+            {
+                ModelState.AddModelError(string.Empty, "Already exist a file with this name.");
+                return false;
+            }
+
+            using (var stream = new FileStream(path,FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+            return true;
         }
     }
 

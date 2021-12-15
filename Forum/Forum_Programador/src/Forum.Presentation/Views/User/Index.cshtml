@@ -3,7 +3,7 @@
 @{
     var isOwnerProfile = Convert.ToBoolean(ViewBag.IsOwnerProfile);
     var errorEdit = TempData["IsValidEditForm"];
-    var teste = Model;
+    var loggedUserId = TempData["LogedUserId"];
 }
 
 <head>
@@ -21,7 +21,7 @@
                     if (isOwnerProfile)
                     {
                         <li class="breadcrumb-item">
-                            <a class="btn btn-info " target="__blank" href="#">Private Messages</a>
+                            <a target="__blank" href="#"><i class="fa fa-envelope" style="font-size:20px"></i> My Messages</a>
                         </li>
                     }
                     else
@@ -42,15 +42,15 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex flex-column align-items-center text-center">
-                            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
+                            <img src="~/images/@Model.User.Avatar" alt="Admin" class="rounded-circle" width="150">
                             <div class="mt-3">
                                 <h4> @(Model.FullName != null ? Model.FullName : Model.User.Name)</h4>
                                 <p class="text-secondary mb-1"> @(Model.Occupation != null ? Model.Occupation : "-") </p>
-                                <p class="text-muted font-size-sm"> @(Model.Adress != null ? Model.Adress: "-" )</p>
+                                <p class="text-muted font-size-sm"> @(Model.Adress != null ? Model.Adress : "-" )</p>
                                 @{
                                     if (isOwnerProfile)
                                     {
-                                        <button class="btn btn-warning">Update Avatar</button>
+                                        <a class="btn btn-warning" id="updateAvatar">Update Avatar</a>
                                     }
                                     else
                                     {
@@ -69,13 +69,13 @@
                             <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-globe mr-2 icon-inline"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>@(Model.WebSite != null ? Model.WebSite : "-")</h6>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                            <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github mr-2 icon-inline"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>@(Model.GitHub!= null ? Model.GitHub : "-")</h6>
+                            <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github mr-2 icon-inline"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>@(Model.GitHub != null ? Model.GitHub : "-")</h6>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                            <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter mr-2 icon-inline text-info"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>@(Model.Twitter !=  null ? Model.Twitter : "-")</h6>
+                            <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter mr-2 icon-inline text-info"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>@(Model.Twitter != null ? Model.Twitter : "-")</h6>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                            <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-instagram mr-2 icon-inline text-danger"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>@(Model.Instagran != null ? Model.Instagran: "-")</h6>
+                            <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-instagram mr-2 icon-inline text-danger"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>@(Model.Instagran != null ? Model.Instagran : "-")</h6>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                             <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-facebook mr-2 icon-inline text-primary"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>@(Model.FaceBook != null ? Model.FaceBook : "-")</h6>
@@ -84,7 +84,7 @@
                 </div>
             </div>
             <div class="col-md-8">
-                <div class="card mb-3">
+                <div class="card mb-3" id="user-data">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-3">
@@ -100,32 +100,39 @@
                                 <h6 class="mb-0">Email</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                @(Model.Email !=  null ? Model.Email : Model.User.Email)
+                                @(Model.Email != null ? Model.Email : Model.User.Email)
                             </div>
                         </div>
                         <hr>
                         <div class="row">
                             <div class="col-sm-12">
-                                <a class="btn btn-info " data-toggle="modal" data-target="#my-modal">Edit</a>
+                                @{
+                                    if (isOwnerProfile)
+                                    {
+                                        <a class="btn btn-info " data-toggle="modal" data-target="#my-modal">Edit</a>
+                                    }
+                                }
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="row gutters-sm" id="updatePhoto" style="display: none; background-color: lightgray;">
 
+                    @await Html.PartialAsync("_UpdateAvatar", Model.UpdateUserAvatar)
+
+                </div>
                 <div class="row gutters-sm">
 
                     @await Html.PartialAsync("_FriendsPartial", Model.UserFriend)
 
                 </div>
+
             </div>
         </div>
 
     </div>
 </div>
 
-
-
-@*Modal edit Informations*@
 
 
 <div id="my-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
@@ -149,7 +156,7 @@
                                     <input asp-for="UserId" value="@TempData["LogedUserId"]" type="hidden" />
                                     <div class="row my-3">
                                         <div class="col">
-                                            <div class="form-group mt-1 mb-1"> <input type="text" asp-for="FullName" class="form-control pl-3 " > <label class="ml-3 form-control-placeholder">Full Name</label> </div>
+                                            <div class="form-group mt-1 mb-1"> <input type="text" asp-for="FullName" class="form-control pl-3 "> <label class="ml-3 form-control-placeholder">Full Name</label> </div>
                                         </div>
                                     </div>
                                     <div class="row my-3">
@@ -220,6 +227,38 @@
     {
         openPopup();
     }
+
+     function UploadPhoto()
+     {
+         var userId = "@loggedUserId";
+
+         $.ajax({
+            type: "GET",
+            url: '@Url.Action("UpdateAvatar", "User")',
+            data: { userId: userId },
+            success: function (data) {
+               $('.modal-body').html(data);
+            }
+        });
+
+        $("#avatarModal").modal("show");
+     }
+
+     $('#updateAvatar').on('hidden.bs.modal', function (e) {
+         $('.modal-body').html("");
+     })
+
+     $('#updateAvatar').click(function () {
+
+         $('#updatePhoto').attr("style", "display:block");
+
+     });
+
+     $('#cancelPhoto').click(function () {
+
+         $('#updatePhoto').attr("style", "display:none");
+         $('#imageResult').attr('src', '');
+     });
 
     </script>
 }

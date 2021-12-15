@@ -13,7 +13,7 @@ namespace Forum.Application.Handler.Command
 {
     public class UserCommandHandler : ValidateComandBase,
         IRequestHandler<AddUserCommand, bool>,
-         IRequestHandler<UpdateUserCommand, bool>,
+         IRequestHandler<UpdateUserAvatarCommand, bool>,
          IRequestHandler<DeleteUserCommand, bool>,
         IRequestHandler<UpdateUserInformationCommand, bool>,
         IRequestHandler<AddUserInformationCommand, bool>
@@ -61,7 +61,7 @@ namespace Forum.Application.Handler.Command
             return await _userRepository.UnitOfWork.Commit();
         }
 
-        public async Task<bool> Handle(UpdateUserCommand command, CancellationToken cancellationToken)
+        public async Task<bool> Handle(UpdateUserAvatarCommand command, CancellationToken cancellationToken)
         {
             if (!ValidateCommand(command)) return false;
 
@@ -72,7 +72,7 @@ namespace Forum.Application.Handler.Command
                 return false;
             }
 
-            user.Update(command.UserTypeId, command.IsActive);
+            user.UpdateAvatar(command.Avatar);
 
             _userRepository.Update(user);
 

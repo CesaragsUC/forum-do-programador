@@ -75,8 +75,11 @@ namespace Forum.Presentation.Controllers
             var comments = await _commentQuery.GetByTopicId(topic.Id, user.Id);
             ViewBag.SectionId = topic.SectionId;
 
-            var command = new AddTopicViewsCommand(id, GetRandomUser());
+            //add +1 view to thread if user its seen first time
+            var command = new AddTopicViewsCommand(id, user.Id);
             await _mediatorHandler.SendCommand(command);
+
+            TempData["LoggedUserId"] = userIdentity.Id;
 
             return View(comments);
         }

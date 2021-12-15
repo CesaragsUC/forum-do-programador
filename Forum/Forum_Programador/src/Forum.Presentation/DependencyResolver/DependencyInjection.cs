@@ -90,7 +90,7 @@ namespace Forum.Presentation.DependencyResolver
             services.AddScoped<IRequestHandler<DeleteTopicViewsCommand, bool>, TopicViewsCommandHandler>();
 
             services.AddScoped<IRequestHandler<AddUserCommand, bool>, UserCommandHandler>();
-            services.AddScoped<IRequestHandler<UpdateUserCommand, bool>, UserCommandHandler>();
+            services.AddScoped<IRequestHandler<UpdateUserAvatarCommand, bool>, UserCommandHandler>();
             services.AddScoped<IRequestHandler<DeleteUserCommand, bool>, UserCommandHandler>();
             services.AddScoped<IRequestHandler<UpdateUserInformationCommand, bool>, UserCommandHandler>();
             services.AddScoped<IRequestHandler<AddUserInformationCommand, bool>, UserCommandHandler>();

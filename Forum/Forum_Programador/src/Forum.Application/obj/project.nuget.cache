@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "7/qVYCFHUFx0FfUTOj754eA+ak4KygoscZmmnPUyjwargo1bBCNm0EU8cTmDvSkEAzE+WM1Wtz26OPI5x9S7wA==",
+  "dgSpecHash": "n1sfmN/IxP4DV/l4kcUH49/4d3kxK50TqcQa26lLd4qa6Gs7EfDmPmo9CW76jvstkEHIypVViXxfvzml/ce3Nw==",
   "success": true,
   "projectFilePath": "F:\\Projetos ASP.NET\\forum-do-programador\\Forum\\Forum_Programador\\src\\Forum.Application\\Forum.Application.csproj",
   "expectedPackageFiles": [
@@ -8,10 +8,12 @@
     "C:\\Users\\cesar\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\8.1.1\\automapper.extensions.microsoft.dependencyinjection.8.1.1.nupkg.sha512",
     "C:\\Users\\cesar\\.nuget\\packages\\fluentvalidation\\10.3.4\\fluentvalidation.10.3.4.nupkg.sha512",
     "C:\\Users\\cesar\\.nuget\\packages\\mediatr\\9.0.0\\mediatr.9.0.0.nupkg.sha512",
+    "C:\\Users\\cesar\\.nuget\\packages\\microsoft.aspnetcore.http.features\\5.0.12\\microsoft.aspnetcore.http.features.5.0.12.nupkg.sha512",
     "C:\\Users\\cesar\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\cesar\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\3.0.0\\microsoft.extensions.dependencyinjection.abstractions.3.0.0.nupkg.sha512",
     "C:\\Users\\cesar\\.nuget\\packages\\microsoft.extensions.options\\3.0.0\\microsoft.extensions.options.3.0.0.nupkg.sha512",
-    "C:\\Users\\cesar\\.nuget\\packages\\microsoft.extensions.primitives\\3.0.0\\microsoft.extensions.primitives.3.0.0.nupkg.sha512",
+    "C:\\Users\\cesar\\.nuget\\packages\\microsoft.extensions.primitives\\5.0.1\\microsoft.extensions.primitives.5.0.1.nupkg.sha512",
+    "C:\\Users\\cesar\\.nuget\\packages\\system.io.pipelines\\5.0.1\\system.io.pipelines.5.0.1.nupkg.sha512",
     "C:\\Users\\cesar\\.nuget\\packages\\system.reflection.emit\\4.7.0\\system.reflection.emit.4.7.0.nupkg.sha512"
   ],
   "logs": []

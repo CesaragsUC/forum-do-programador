@@ -154,7 +154,6 @@ F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Prese
 F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\bin\Debug\net5.0\refs\Microsoft.AspNetCore.Http.Connections.dll
 F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\bin\Debug\net5.0\refs\Microsoft.AspNetCore.Http.dll
 F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\bin\Debug\net5.0\refs\Microsoft.AspNetCore.Http.Extensions.dll
-F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\bin\Debug\net5.0\refs\Microsoft.AspNetCore.Http.Features.dll
 F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\bin\Debug\net5.0\refs\Microsoft.AspNetCore.HttpOverrides.dll
 F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\bin\Debug\net5.0\refs\Microsoft.AspNetCore.HttpsPolicy.dll
 F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\bin\Debug\net5.0\refs\Microsoft.AspNetCore.Identity.dll
@@ -234,7 +233,6 @@ F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Prese
 F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\bin\Debug\net5.0\refs\Microsoft.Extensions.Options.ConfigurationExtensions.dll
 F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\bin\Debug\net5.0\refs\Microsoft.Extensions.Options.DataAnnotations.dll
 F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\bin\Debug\net5.0\refs\Microsoft.Extensions.Options.dll
-F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\bin\Debug\net5.0\refs\Microsoft.Extensions.Primitives.dll
 F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\bin\Debug\net5.0\refs\Microsoft.Extensions.WebEncoders.dll
 F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\bin\Debug\net5.0\refs\Microsoft.JSInterop.dll
 F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\bin\Debug\net5.0\refs\Microsoft.Net.Http.Headers.dll
@@ -292,7 +290,6 @@ F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Prese
 F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\bin\Debug\net5.0\refs\System.IO.FileSystem.Watcher.dll
 F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\bin\Debug\net5.0\refs\System.IO.IsolatedStorage.dll
 F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\bin\Debug\net5.0\refs\System.IO.MemoryMappedFiles.dll
-F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\bin\Debug\net5.0\refs\System.IO.Pipelines.dll
 F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\bin\Debug\net5.0\refs\System.IO.Pipes.dll
 F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\bin\Debug\net5.0\refs\System.IO.UnmanagedMemoryStream.dll
 F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\bin\Debug\net5.0\refs\System.Linq.dll
@@ -437,3 +434,8 @@ F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Prese
 F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\obj\Debug\net5.0\Razor\Views\PrivateMesage\Messages.cshtml.g.cs
 F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\obj\Debug\net5.0\Razor\Views\User\Index.cshtml.g.cs
 F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\obj\Debug\net5.0\Razor\Views\User\_FriendsPartial.cshtml.g.cs
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\bin\Debug\net5.0\Microsoft.AspNetCore.Http.Features.dll
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\bin\Debug\net5.0\Microsoft.Extensions.Primitives.dll
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\bin\Debug\net5.0\System.IO.Pipelines.dll
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\obj\Debug\net5.0\Razor\Views\User\UpdatePassword.cshtml.g.cs
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\obj\Debug\net5.0\Razor\Views\User\_UpdateAvatar.cshtml.g.cs

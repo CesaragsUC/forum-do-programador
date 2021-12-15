@@ -4,23 +4,17 @@ using System;
 
 namespace Forum.Application.Commands.UserFirend
 {
-    public class UpdateUserCommand : Command
+    public class UpdateUserAvatarCommand : Command
     {
         public Guid Id { get; set; }
-        public string Email { get; private set; }
-        public bool IsActive { get; private set; }
 
         public string Avatar { get; private set; }
 
-        public int UserTypeId { get; private set; }
 
-        public UpdateUserCommand(Guid id,  string email, int usertypeId,string avatar,bool active)
+        public UpdateUserAvatarCommand(Guid id,string avatar)
         {
-            Id = Id;
+            Id = id;
             AggregateId = id;
-            Email = email;
-            UserTypeId = usertypeId;
-            IsActive = active;
             Avatar = avatar;
         }
 
@@ -31,13 +25,13 @@ namespace Forum.Application.Commands.UserFirend
         }
 
     }
-    public class UpdateUserValidation : AbstractValidator<UpdateUserCommand>
+    public class UpdateUserValidation : AbstractValidator<UpdateUserAvatarCommand>
     {
         public UpdateUserValidation()
         {
             RuleFor(x => x.Id).NotEqual(Guid.Empty).WithMessage("Invalid IdentityId.");
-            RuleFor(x => x.Email).NotEqual(string.Empty).WithMessage("Invalid Email.");
-            RuleFor(x => x.UserTypeId).Must((x, type) => IsValidUserType(type).Equals(true)).WithMessage("Invalid User Type Id.");
+            RuleFor(x => x.Avatar).NotEqual(string.Empty).WithMessage("Invalid Avatar.");
+
         }
 
         private bool IsValidUserType(int type)

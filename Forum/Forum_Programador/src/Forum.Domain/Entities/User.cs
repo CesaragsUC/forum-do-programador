@@ -46,6 +46,7 @@ namespace Forum.Domain.Entities
             UserTypeId = _type;
         }
 
+
         public void UpdateLastActivity()
         {
             LastActivity = DateTime.Now;

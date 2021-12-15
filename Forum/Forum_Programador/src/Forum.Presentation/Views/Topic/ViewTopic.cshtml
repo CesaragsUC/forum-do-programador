@@ -1,5 +1,9 @@
 ﻿@model IEnumerable<Forum.Application.DTO.CommentsDTO>
 
+@{ 
+    var loggedUserId = TempData["LoggedUserId"];
+}
+
 @{ ViewData["Title"] = @ViewBag.TopicTitle; }
 
 <head>
@@ -34,7 +38,7 @@
                         <div class="media flex-wrap w-100 align-items-center">
                             <img src="https://i.imgur.com/iNmBizf.jpg" class="d-block ui-w-40 rounded-circle" alt="">
                             <div class="media-body ml-3">
-                                <a href="javascript:void(0)" data-abc="true">@comment.User.Name</a>
+                                <a asp-controller="User" asp-action="Index" asp-route-loggedid="@loggedUserId" asp-route-profileid="@comment.UserId" asp-route-isowner="0" data-abc="true">@comment.User.Name</a>
                                 <div class="text-muted small">@comment.TimeAgo</div>
                             </div>
                             <div class="text-muted small ml-3">

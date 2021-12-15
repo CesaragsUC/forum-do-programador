@@ -1,0 +1,39 @@
+﻿@model Forum.Application.DTO.UpdateUserAvatarDTO
+
+<head>
+
+    <link href="~/css/update-avatar/uploadavatar.css" rel="stylesheet" />
+</head>
+     
+
+<form enctype="multipart/form-data" asp-action="UpdateAvatar">
+
+    <vc:summary />
+
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="IdentityId" />
+
+    <div class="form-group col-md-6">
+        <!-- Upload image input-->
+        <input id="upload" asp-for="AvatarUpload" type="file" onchange="readURL(this);" class="form-control border-0">
+        <label id="upload-label" for="upload" class="font-weight-light text-muted"></label>
+        <div class="input-group-append">
+            <label for="upload" class="btn btn-light m-0 rounded-pill px-4"> <i class="fa fa-cloud-upload mr-2 text-muted"></i><small class="text-uppercase font-weight-bold text-muted">Choose file</small></label>
+        </div>
+        <span asp-validation-for="AvatarUpload" class="text-danger"></span>
+    </div>
+
+    <!-- Uploaded image area-->
+    <div class="image-area mt-4"><img id="imageResult" src="#" alt="" class="img-fluid rounded shadow-sm mx-auto d-block"></div>
+
+
+    <div class="form-outline col-md-6">
+        <!-- Submit button -->
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a class="btn btn-warning" id="cancelPhoto">Cancel</a>
+    </div>
+
+</form>
+     
+
+<script src="~/js/upload-avatar/uploadavatar.js"></script>
