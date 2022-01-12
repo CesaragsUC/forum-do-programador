@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Forum.Application.DTO.PrivateMessagesDTO>
+
+@{
+    ViewData["Title"] = "Messages";
+    var loggedUserId = TempData["LoggedUserId"];
+}
+
+<link href="~/css/home.css" rel="stylesheet" />
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="wrapper wrapper-content animated fadeInRight">
+
+                <a class="btn btn-light" asp-controller="User" asp-action="Index" asp-route-loggedid="@loggedUserId" asp-route-profileid="" asp-route-isowner="1"><strong>Back to profile</strong></a>
+                <br>
+                <br>
+
+                <div class="ibox-content m-b-sm border-bottom">
+                    <div class="p-xs">
+                        <h2> Private Messages</h2>
+                    </div>
+                </div>
+
+                <div class="ibox-content forum-container">
+
+                    @{
+
+                        if (Model.Any())
+                        {
+
+                            foreach (var message in Model)
+                            {
+                                <div class="forum-item active">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="forum-icon">
+                                                <i class="fa fa-envelope" style="font-size:20px"></i>
+                                            </div>
+                                            <a class="forum-item-title" asp-controller="PrivateMesage" asp-action="ViewMessages" asp-route-messageId="@message.Id">@message.Subject</a>
+                                        </div>
+                                        <div class="col-md-3 forum-info">
+                                            <span class="views-number">
+                                                @message.CreationDate.ToString("dd/mm/yyyy")
+                                            </span>
+                                            <div>
+                                                <small>Date </small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 forum-info">
+                                            <span class="views-number">
+                                                <strong>@message.Sender.Name</strong> 
+                                            </span>
+                                            <div>
+                                                <small> @message.TimeAgo </small>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="ibox-content m-b-sm border-bottom">
+                                <div class="p-xs">
+                                    <h5> No messages.</h5>
+                                </div>
+                            </div>
+
+                        }
+
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

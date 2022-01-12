@@ -7,6 +7,7 @@ using Forum.Application.Commands.TopicViews;
 using Forum.Application.Commands.UserFirend;
 using Forum.Application.Commands.UserInfo;
 using Forum.Application.Events;
+using Forum.Application.Events.UserFriend;
 using Forum.Application.Handler;
 using Forum.Application.Handler.Command;
 using Forum.Application.Queries;
@@ -43,10 +44,8 @@ namespace Forum.Presentation.DependencyResolver
             services.AddScoped<ITopicViewsRepository, TopicViewsRepository>();
             services.AddScoped<IUserInformationRepository, UserInformationRepository>();
             services.AddScoped<IUserFriendRepository, UserFriendRepository>();
+            services.AddScoped<IMessageCommentRepository, MessageCommentRepository>();
 
-            //Events
-            services.AddScoped<INotificationHandler<TopicCreatedEvent>, TopicHandlerEvent>();
-            services.AddScoped<INotificationHandler<SectionCreatedEvent>, SectionHandlerEvent>();
 
             //Queries
             services.AddScoped<ISectionQuery, SectionQuery>();
@@ -59,6 +58,13 @@ namespace Forum.Presentation.DependencyResolver
             services.AddScoped<IPrivateMessagesQuery, PrivateMessagesQuery>();
             services.AddScoped<IUserInformationfoQuery, UserInformationfoQuery>();
             services.AddScoped<IUserFriendQuery, UserFriendQuery>();
+            services.AddScoped<IMessaCommentsQuery, MessaCommentQuery>();
+
+            //Events
+            services.AddScoped<INotificationHandler<TopicCreatedEvent>, TopicHandlerEvent>();
+            services.AddScoped<INotificationHandler<SectionCreatedEvent>, SectionHandlerEvent>();
+            services.AddScoped<INotificationHandler<UserFriendEvent>, UserFriendHandlerEvent>();
+
 
 
             //ComandHandlers
@@ -83,7 +89,8 @@ namespace Forum.Presentation.DependencyResolver
             services.AddScoped<IRequestHandler<AddPrivateMessagesCommand, bool>, PrivateMessagesCommandHandler>();
             services.AddScoped<IRequestHandler<UpdatePrivateMessagesCommand, bool>, PrivateMessagesCommandHandler>();
             services.AddScoped<IRequestHandler<DeletePrivateMessagesCommand, bool>, PrivateMessagesCommandHandler>();
-
+            services.AddScoped<IRequestHandler<AddMessagesCommentCommand, bool>, PrivateMessagesCommandHandler>();
+            
 
             services.AddScoped<IRequestHandler<AddTopicViewsCommand, bool>, TopicViewsCommandHandler>();
             services.AddScoped<IRequestHandler<UpdateTopicViewsCommand, bool>, TopicViewsCommandHandler>();
@@ -94,7 +101,10 @@ namespace Forum.Presentation.DependencyResolver
             services.AddScoped<IRequestHandler<DeleteUserCommand, bool>, UserCommandHandler>();
             services.AddScoped<IRequestHandler<UpdateUserInformationCommand, bool>, UserCommandHandler>();
             services.AddScoped<IRequestHandler<AddUserInformationCommand, bool>, UserCommandHandler>();
-            
+
+            services.AddScoped<IRequestHandler<AddUserFriendCommand, bool>, UserFriendCommandHandler>();
+            services.AddScoped<IRequestHandler<DeleteUserFriendCommand, bool>, UserFriendCommandHandler>();
+
 
 
         }

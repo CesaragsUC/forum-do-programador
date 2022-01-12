@@ -14,4 +14,3 @@ F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Appli
 F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Application\obj\Debug\net5.0\Forum.Application.dll
 F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Application\obj\Debug\net5.0\ref\Forum.Application.dll
 F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Application\obj\Debug\net5.0\Forum.Application.pdb
-F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Application\obj\Debug\net5.0\Forum.Application.csproj.CopyComplete

@@ -1,0 +1,143 @@
+﻿@model IEnumerable<Forum.Application.DTO.MessageCommentDTO>
+
+
+@{ ViewData["Title"] = "Message";
+    var loggedUserId = TempData["LoggedUserId"];
+    var messageId = TempData["MessageId"];
+
+}
+
+<head>
+    <link rel="stylesheet" href="/richtexteditor/rte_theme_default.css" />
+    <link rel="stylesheet" href="/richtexteditor/runtime/richtexteditor_preview.css" />
+    <link href="~/css/topic/topicview.css" rel="stylesheet" />
+</head>
+
+
+<div class="col-md-6">
+    <a class="btn btn-info" asp-controller="PrivateMesage" asp-action="Index" asp-route-userid="@loggedUserId">&nbsp; Back</a>
+</div>
+
+<div class="container-fluid mt-100">
+
+
+    <div class="ibox-content m-b-sm">
+        <div class="p-xs">
+            <h2> @ViewBag.TopicTitle</h2>
+        </div>
+    </div>
+
+    <br />
+    @{
+
+        if (Model.Any())
+        {
+            foreach (var msg in Model)
+            {
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <div class="media flex-wrap w-100 align-items-center">
+                                    <img src="https://i.imgur.com/iNmBizf.jpg" class="d-block ui-w-40 rounded-circle" alt="">
+                                    <div class="media-body ml-3">
+                                        @{
+                                            if (msg.UserId == @Guid.Parse(@loggedUserId.ToString()))
+                                            {
+                                                <a asp-controller="User" asp-action="Index" asp-route-loggedid="@loggedUserId" asp-route-profileid="@msg.UserId" asp-route-isowner="1" data-abc="true">@msg.User.Name</a>
+                                            }
+                                            else
+                                            {
+                                                <a asp-controller="User" asp-action="Index" asp-route-loggedid="@loggedUserId" asp-route-profileid="@msg.UserId" asp-route-isowner="0" data-abc="true">@msg.User.Name</a>
+                                            }
+
+                                        }
+
+                                        <div class="text-muted small">@msg.TimeAgo</div>
+                                    </div>
+                                    <div class="text-muted small ml-3">
+                                        <div>Member since <strong>@msg.CreationDate.ToString("dd/mm/yyyy")</strong></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                @(Html.Raw(@msg.Text))
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+                <h3>Somethings went wrong</h3>
+        }
+
+    }
+
+
+    @if (true.Equals(ViewData["IsPosted"]))
+    {
+
+
+        <div class="text-center">
+            <h1 class="display-4">PreView</h1>
+
+            <div style="width: 960px;margin:0 auto;text-align:left;border:solid 1px gray;padding:8px;">
+                @(Html.Raw(ViewData["PostedValue"]))
+            </div>
+
+        </div>
+
+    }
+    else
+    {
+
+
+        <form method="post" enctype="multipart/form-data" asp-action="ReplyMessage">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+            <input name="loggedid" value="@loggedUserId" type="hidden" />
+            <input name="htmlcode" id="inp_htmlcode" type="hidden" />
+            <input name="messageid" value="@messageId" type="hidden" />
+
+
+            <!-- html text -->
+            <div class="form-outline col-md-6">
+                <div id="div_editor1" class="richtexteditor" style="width: 960px;margin:0 auto;">
+                </div>
+            </div>
+            <br />
+
+            <div class="form-outline form-buttons col-md-6">
+                <!-- Submit button -->
+                <button type="submit" class="btn btn-primary">Post Quick Reply</button>
+                <button type="submit" class="btn btn-warning" asp-controller="PrivateMesage" asp-action="Index" asp-route-id="@ViewBag.SectionId">Cancel</button>
+            </div>
+
+        </form>
+
+    }
+
+
+</div>
+@section scripts{
+
+
+    <script type="text/javascript" src="/richtexteditor/rte.js"></script>
+    <script type="text/javascript" src='/richtexteditor/plugins/all_plugins.js'></script>
+    <script type="text/javascript" src="/rte-upload.js"></script>
+
+    <script>
+        var editor1 = new RichTextEditor(document.getElementById("div_editor1"));
+        editor1.attachEvent("change", function () {
+            document.getElementById("inp_htmlcode").value = editor1.getHTMLCode();
+        });</script>
+
+
+}

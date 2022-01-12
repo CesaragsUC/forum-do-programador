@@ -1,6 +1,6 @@
 ﻿$(document).ready(function () {
 
-    // şifre kurallı değilse butonu disable et
+    // botão de desabilitar se a senha não for regular
     $('#reg_userpassword').keyup(function () {
         var password = $('#reg_userpassword').val();
         var confirmpassword = $('#reg_userpasswordconfirm').val();
@@ -10,7 +10,7 @@
         }
     });
 
-    // password-rule divi hide/show
+    // divi regra de senha ocultar / mostrar
     $('#reg_userpassword').keyup(function () {
         if ($('#reg_userpassword').val()) {
             $('#reg_passwordrules').removeClass('hide');
@@ -49,7 +49,7 @@
             });
         }
     });
-    // karakter doğrulama
+    // validação de personagem
     function checkStrength(password) {
         var strength = 0;
 
@@ -136,7 +136,7 @@
 
 });
 
-// Şifre gizle göster
+// Mostrar esconder senha
 function togglePassword() {
 
     var element = document.getElementById('reg_userpassword');

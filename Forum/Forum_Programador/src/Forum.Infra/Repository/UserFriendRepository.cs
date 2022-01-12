@@ -47,7 +47,7 @@ namespace Forum.Infra.Repository
         public async Task<IEnumerable<UserFriends>> GetByUserId(Guid userId)
         {
             return await _context.UserFriends
-                .Where(x => x.UserId == userId)
+                .Where(x => x.FriendId == userId)
                 .Include(u => u.User)
                 .Include(f => f.Friend)
                 .AsNoTracking().ToListAsync();

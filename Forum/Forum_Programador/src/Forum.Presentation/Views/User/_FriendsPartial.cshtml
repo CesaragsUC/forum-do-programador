@@ -1,29 +1,49 @@
 ﻿@model IEnumerable<Forum.Application.DTO.UserFriendDTO>
 
-@{ 
-    var loggedUserId = TempData["LogedUserId"];
+@{
+    var loggedUserId = TempData["LoggedUserId"];
 }
 
 
-@{ 
-
-    foreach (var friend in Model)
-    {
-        <div class="card">
+@{
+    <div class="card">
+        @if (Model.Any())
+        {
             <div class="header">
-                <h1><strong>Friends</strong></h1>
+                <h1><strong>Followers</strong></h1>
             </div>
-            <div class="body">
-                <ul class="new_friend_list list-unstyled row">
-                    <li class="col-lg-4 col-md-2 col-sm-6 col-4">
-                        <a asp-controller="User" asp-action="Index" asp-route-loggedid="@loggedUserId" asp-route-profileid="@friend.Friend.IdentityId" asp-route-isowner="0">
-                            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" class="img-thumbnail" alt="User Image">
-                            <h6 class="users_name">@friend.Friend.Name</h6>
-                        </a>
-                    </li>
-                </ul>
+        }
 
-            </div>
+        <div class="body">
+            <ul class="new_friend_list list-unstyled row">
+                @{
+
+                    if (Model.Any())
+                    {
+                        @foreach (var friend in Model)
+                        {
+
+
+                            <li class="col-lg-4 col-md-2 col-sm-6 col-4">
+                                <a asp-controller="User" asp-action="Index" asp-route-loggedid="@loggedUserId" asp-route-profileid="@friend.Friend.Id" asp-route-isowner="0">
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" class="img-thumbnail" alt="User Image">
+                                    <h6 class="users_name">@friend.Friend.Name</h6>
+                                </a>
+                            </li>
+
+
+                        }
+                    }
+                    else
+                    {
+
+                        <h2><strong>No followers</strong></h2>
+
+                    }
+
+                }
+
+            </ul>
         </div>
-    }
+    </div>
 }

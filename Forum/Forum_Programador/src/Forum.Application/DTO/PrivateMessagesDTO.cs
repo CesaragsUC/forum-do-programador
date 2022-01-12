@@ -13,10 +13,14 @@ namespace Forum.Application.DTO
         public Guid RecipientId { get;  set; }
         public DateTime CreationDate { get;  set; }
         public bool IsSeen { get;  set; }
+        public bool IsReplied { get; set; }
         public string Subject { get;  set; }
-        public string Text { get;  set; }
         public UserDTO Recipient { get;  set; }
         public UserDTO Sender { get;  set; }
+
+        public string TimeAgo { get; set; }
+
+        public List<MessageCommentDTO> Comments { get; set; }
 
     }
 }

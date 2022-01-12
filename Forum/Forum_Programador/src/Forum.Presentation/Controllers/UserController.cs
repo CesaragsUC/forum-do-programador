@@ -5,12 +5,14 @@ using Forum.Application.Queries.Interfaces;
 using Forum.Core.Communication.Mediator;
 using Forum.Core.Messages.CommonMessage.Notification;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NToastNotify;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Forum.Presentation.Controllers
@@ -28,6 +30,7 @@ namespace Forum.Presentation.Controllers
         private readonly IUserFriendQuery _userFriendQuery;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
+        private IHttpContextAccessor _httpContextAccessor;
 
         public UserController(INotificationHandler<DomainNotification> notifications,
             IMediatorHandler mediatorHandler,
@@ -39,7 +42,8 @@ namespace Forum.Presentation.Controllers
             SignInManager<IdentityUser> signInManager,
             UserManager<IdentityUser> userManager,
             IUserInformationfoQuery userInformationfoQuery,
-            IUserFriendQuery userFriendQuery) : base(notifications, mediatorHandler)
+            IUserFriendQuery userFriendQuery,
+            IHttpContextAccessor httpContextAccessor) : base(notifications, mediatorHandler)
         {
             _mediatorHandler = mediatorHandler;
             _topicQuery = topicQuery;
@@ -51,10 +55,10 @@ namespace Forum.Presentation.Controllers
             _toastNotification = toastNotification;
             _userInformationfoQuery = userInformationfoQuery;
             _userFriendQuery = userFriendQuery;
+            _httpContextAccessor = httpContextAccessor;
         }
         public async Task<IActionResult> Index(Guid loggedid, Guid profileid, string isowner)
         {
-
 
             bool isOwnerProfile = Convert.ToBoolean(Convert.ToInt32(isowner));
             var userInfo = new UserInformationDTO();
@@ -62,10 +66,10 @@ namespace Forum.Presentation.Controllers
             if (!isOwnerProfile)
             {
 
-                //her get by identity ID
+                //get my current user by USER ID
                 var loggedUser = await _userQuery.GetByIdentityId(loggedid);
 
-                //her get by user ID
+                //get the profile that im visiting  by user ID
                 var userProfile = await _userQuery.GetById(profileid);
 
                 if (loggedUser == null || userProfile == null)
@@ -87,7 +91,8 @@ namespace Forum.Presentation.Controllers
                     userInfo.UserFriend = friendList.ToList();
 
                     ViewBag.IsOwnerProfile = false;
-                    TempData["LogedUserId"] = loggedid;
+                    TempData["LoggedUserId"] = loggedid;
+                    TempData["ProfileId"] = user.Id;
                     return View(userInfo);
                 }
                 else
@@ -99,7 +104,8 @@ namespace Forum.Presentation.Controllers
                     userInfo.UserFriend = friendList.ToList();
 
                     ViewBag.IsOwnerProfile = false;
-                    TempData["LogedUserId"] = loggedid;
+                    TempData["LoggedUserId"] = loggedid;
+                    TempData["ProfileId"] = user.Id;
                     return View(userInfo);
                 }
 
@@ -118,18 +124,24 @@ namespace Forum.Presentation.Controllers
                     IdentityId = user.IdentityId
                 };
 
+                var updatePasswordModel = new UpdateUserPasswordDTO
+                {
+                    Id = user.Id,
+                    IdentityId = user.IdentityId
+                };
+
                 var info = await _userInformationfoQuery.GetByUserId(user.Id);
                 if (info == null)
                 {
                     userInfo.User = user;
                     userInfo.UpdateUserAvatar = updateAvatarModel;
-
+                    userInfo.UpdateUserPassword = updatePasswordModel;
 
                     var friendList = await _userFriendQuery.GetByUserId(user.Id);
                     userInfo.UserFriend = friendList.ToList();
 
                     ViewBag.IsOwnerProfile = true;
-                    TempData["LogedUserId"] = loggedid;
+                    TempData["LoggedUserId"] = loggedid;
                     return View(userInfo);
                 }
                 else
@@ -137,13 +149,13 @@ namespace Forum.Presentation.Controllers
                     userInfo = info;
                     userInfo.User = user;
                     userInfo.UpdateUserAvatar = updateAvatarModel;
-
+                    userInfo.UpdateUserPassword = updatePasswordModel;
 
                     var friendList = await _userFriendQuery.GetByUserId(user.Id);
                     userInfo.UserFriend = friendList.ToList();
 
                     ViewBag.IsOwnerProfile = true;
-                    TempData["LogedUserId"] = loggedid;
+                    TempData["LoggedUserId"] = loggedid;
                     return View(userInfo);
                 }
 
@@ -213,7 +225,14 @@ namespace Forum.Presentation.Controllers
         {
             if (!ModelState.IsValid)
             {
-                _toastNotification.AddErrorToastMessage("An unexpected error occur");
+                foreach (var item in ModelState.Values)
+                {
+                    foreach (var error in item.Errors)
+                    {
+                        _toastNotification.AddErrorToastMessage(error.ErrorMessage);  
+                    }
+                }
+
                 return RedirectToAction("Index", "User", new { loggedid = model.UserId, profileid = Guid.Empty, isowner = 1 });
             }
 
@@ -288,9 +307,29 @@ namespace Forum.Presentation.Controllers
 
         }
 
-        public async Task<IActionResult> Friends(Guid userId)
+      
+        public async Task<IActionResult> Friends(Guid userid)
         {
-            return View();
+
+            var loggedUserName = User.Identity.Name;
+            var loggedUser = await _userManager.FindByNameAsync(loggedUserName);
+
+            //current logged user
+            var currentuser = await _userQuery.GetByIdentityId(Guid.Parse(loggedUser.Id));
+
+            var userToFollow = await _userQuery.GetById(userid);
+
+            var command = new AddUserFriendCommand(currentuser.Id, userToFollow.Id);
+            await _mediatorHandler.SendCommand(command);
+
+            if(IsvalidOpperation())
+            {
+                _toastNotification.AddSuccessToastMessage("You are Foloowing " + userToFollow.Name);
+                return RedirectToAction("Index", "User", new { loggedid = currentuser.Id, profileid = userToFollow.IdentityId, isowner = 0 });
+            }
+
+            _toastNotification.AddSuccessToastMessage("A error accoured to follow " + userToFollow.Name);
+            return RedirectToAction("Index", "User", new { loggedid = currentuser.Id, profileid = userToFollow.IdentityId, isowner = 0 });
         }
 
         [HttpPost]
@@ -323,11 +362,17 @@ namespace Forum.Presentation.Controllers
         {
             if (!ModelState.IsValid)
             {
-                _toastNotification.AddErrorToastMessage("An unexpected error occur");
+                foreach (var item in ModelState.Values)
+                {
+                    foreach (var error in item.Errors)
+                    {
+                        _toastNotification.AddErrorToastMessage(error.ErrorMessage);
+                    }
+                }
                 return RedirectToAction("Index", "User", new { loggedid = model.IdentityId, profileid = Guid.Empty, isowner = 1 });
             }
 
-            var userData = await _userQuery.GetByIdentityId(model.Id);
+            var userData = await _userQuery.GetById(model.Id);
             if (userData == null)
             {
                 _toastNotification.AddErrorToastMessage("User not found");
@@ -374,8 +419,8 @@ namespace Forum.Presentation.Controllers
 
                 }
             }
-
-            return View();
+            _toastNotification.AddSuccessToastMessage(" password updated successfully.");
+            return RedirectToAction("Index", "User", new { loggedid = model.IdentityId, profileid = Guid.Empty, isowner = 1 });
         }
 
         [HttpPost]

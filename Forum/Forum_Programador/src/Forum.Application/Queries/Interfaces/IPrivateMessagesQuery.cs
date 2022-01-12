@@ -12,5 +12,6 @@ namespace Forum.Application.Queries.Interfaces
         Task<IEnumerable<PrivateMessagesDTO>> GetBySenderyId(Guid senderId);
         Task<IEnumerable<PrivateMessagesDTO>> GetByRecipientId(Guid userId);
         Task<IEnumerable<PrivateMessagesDTO>> GetAll();
+
     }
 }

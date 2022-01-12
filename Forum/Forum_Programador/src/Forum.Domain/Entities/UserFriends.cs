@@ -11,6 +11,7 @@ namespace Forum.Domain.Entities
 
         public User User { get; private set; }
         public User Friend { get; private set; }
+        public bool IsSeen { get; private set; }
 
         public UserFriends(Guid userId, Guid friendId)
         {

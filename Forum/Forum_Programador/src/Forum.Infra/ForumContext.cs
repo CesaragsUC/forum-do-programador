@@ -1,4 +1,5 @@
 ﻿using Forum.Core;
+using Forum.Core.Communication.Mediator;
 using Forum.Core.Messages;
 using Forum.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -10,10 +11,11 @@ namespace Forum.Infra
 {
     public class ForumContext : DbContext ,IUnitOfWork
     {
+        private readonly IMediatorHandler _mediatorHandler;
 
-        public ForumContext(DbContextOptions<ForumContext> options):base(options)
+        public ForumContext(DbContextOptions<ForumContext> options, IMediatorHandler rebusHandler) :base(options)
         {
-
+            _mediatorHandler = rebusHandler ?? throw new ArgumentNullException(nameof(rebusHandler));
         }
 
         public DbSet<User> Users { get; set; }
@@ -23,6 +25,7 @@ namespace Forum.Infra
         public DbSet<Comments> Comments { get; set; }
         public DbSet<Area> Areas { get; set; }
         public DbSet<PrivateMessages> PrivateMessages { get; set; }
+        public DbSet<MessageComment> MessageComments { get; set; }
         public DbSet<TopicViews> TopicViews { get; set; }
         public DbSet<UserInformation> UserInformations { get; set; }
         public DbSet<UserFriends> UserFriends { get; set; }
@@ -57,16 +60,11 @@ namespace Forum.Infra
                      entry.Property("CreationDate").IsModified = false;
 
             }
-            try
-            {
-                return await base.SaveChangesAsync() > 0;
-            }
-            catch (Exception ex )
-            {
 
-                throw;
-            }
+            var success = await base.SaveChangesAsync() > 0;
+            if (success) await _mediatorHandler.PublishEvents(this);
 
+            return success;
         }
     }
 }

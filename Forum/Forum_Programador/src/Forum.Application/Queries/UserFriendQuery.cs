@@ -76,8 +76,11 @@ namespace Forum.Application.Queries
 
             foreach (var f in userFriends)
             {
+                //current profile user
                 var user = await _userRepository.GetById(userId);
-                var userFriend = await _userRepository.GetById(f.FriendId);
+
+                //his friend
+                var userFriend = await _userRepository.GetById(f.User.Id);
 
                 var userDTO = new UserDTO
                 {

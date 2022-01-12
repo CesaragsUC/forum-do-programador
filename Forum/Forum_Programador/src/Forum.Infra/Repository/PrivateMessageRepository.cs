@@ -23,6 +23,11 @@ namespace Forum.Infra.Repository
             _context.PrivateMessages.Add(message);
         }
 
+        public void AddMessageComment(MessageComment messageComment)
+        {
+            _context.MessageComments.Add(messageComment);
+        }
+
         public void Delete(PrivateMessages message)
         {
             _context.PrivateMessages.Remove(message);
@@ -40,9 +45,9 @@ namespace Forum.Infra.Repository
                 .Include(r=>r.Recipient).AsNoTracking().ToListAsync();
         }
 
-        public async Task<PrivateMessages> GetById(Guid id)
+        public async Task<PrivateMessages> GetById(Guid msgId)
         {
-            return  _context.PrivateMessages.Where(x=> x.Id == id).
+            return   _context.PrivateMessages.Where(x=> x.Id == msgId).
                                 Include(u => u.Sender).
                                  Include(r => r.Recipient).FirstOrDefault();
         }
@@ -51,6 +56,7 @@ namespace Forum.Infra.Repository
         {
             return await _context.PrivateMessages.Where(x => x.RecipientId == userId)
                                 .Include(u => u.Sender)
+                                .Include(m=>m.MessageComments)
                                 .Include(r => r.Recipient).AsNoTracking().ToListAsync();
         }
 
@@ -58,6 +64,7 @@ namespace Forum.Infra.Repository
         {
             return await _context.PrivateMessages.Where(x => x.SenderId == senderId)
                                 .Include(u => u.Sender)
+                                .Include(m => m.MessageComments)
                                 .Include(r => r.Recipient).AsNoTracking().ToListAsync();
         }
 
@@ -65,6 +72,7 @@ namespace Forum.Infra.Repository
         {
             return await _context.PrivateMessages.Where(x => x.Subject.Contains(subject))
                                          .Include(u => u.Sender)
+                                         .Include(m => m.MessageComments)
                                          .Include(r => r.Recipient).AsNoTracking().ToListAsync();
         }
 

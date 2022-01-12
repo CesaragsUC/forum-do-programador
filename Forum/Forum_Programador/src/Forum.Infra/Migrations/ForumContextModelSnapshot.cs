@@ -65,6 +65,37 @@ namespace Forum.Infra.Migrations
                     b.ToTable("Comments");
                 });
 
+            modelBuilder.Entity("Forum.Domain.Entities.MessageComment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsSeen")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("PrivateMessageId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PrivateMessageId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("MessageComment");
+                });
+
             modelBuilder.Entity("Forum.Domain.Entities.PrivateMessages", b =>
                 {
                     b.Property<Guid>("Id")
@@ -73,6 +104,9 @@ namespace Forum.Infra.Migrations
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsReplied")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsSeen")
                         .HasColumnType("bit");
@@ -86,10 +120,6 @@ namespace Forum.Infra.Migrations
                     b.Property<string>("Subject")
                         .IsRequired()
                         .HasColumnType("varchar(100)");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -267,6 +297,9 @@ namespace Forum.Infra.Migrations
                     b.Property<Guid>("FriendId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("IsSeen")
+                        .HasColumnType("bit");
+
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
@@ -334,6 +367,23 @@ namespace Forum.Infra.Migrations
                         .IsRequired();
 
                     b.Navigation("Topic");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Forum.Domain.Entities.MessageComment", b =>
+                {
+                    b.HasOne("Forum.Domain.Entities.PrivateMessages", "PrivateMessages")
+                        .WithMany("MessageComments")
+                        .HasForeignKey("PrivateMessageId")
+                        .IsRequired();
+
+                    b.HasOne("Forum.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .IsRequired();
+
+                    b.Navigation("PrivateMessages");
 
                     b.Navigation("User");
                 });
@@ -412,6 +462,11 @@ namespace Forum.Infra.Migrations
             modelBuilder.Entity("Forum.Domain.Entities.Area", b =>
                 {
                     b.Navigation("Sections");
+                });
+
+            modelBuilder.Entity("Forum.Domain.Entities.PrivateMessages", b =>
+                {
+                    b.Navigation("MessageComments");
                 });
 
             modelBuilder.Entity("Forum.Domain.Entities.Topic", b =>

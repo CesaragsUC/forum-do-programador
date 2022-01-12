@@ -17,7 +17,7 @@ namespace Forum.Core.DomainObjects
 
         private List<Event> _notifications;
 
-        private IReadOnlyCollection<Event> Notifications => _notifications?.AsReadOnly();
+        public IReadOnlyCollection<Event> Notifications => _notifications?.AsReadOnly();
 
         public void AddEvent(Event _event)
         {
