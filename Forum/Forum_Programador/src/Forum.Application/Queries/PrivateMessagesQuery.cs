@@ -131,7 +131,7 @@ namespace Forum.Application.Queries
 
         public async Task<IEnumerable<PrivateMessagesDTO>> GetByRecipientId(Guid userId)
         {
-            var privatemessage = await _privateMessageRepository.GetByRecipientId(userId);
+            var messagesReceived = await _privateMessageRepository.GetByRecipientId(userId);
 
             var listMessagesDTO = new List<PrivateMessagesDTO>();
 
@@ -139,11 +139,13 @@ namespace Forum.Application.Queries
 
            
 
-            IEnumerable<PrivateMessages> _myprivatemessages;
+            IEnumerable<PrivateMessages> myRepliedMessages;
 
-            if (privatemessage.Any())
+            if (messagesReceived.Any())
             {
-                foreach (var message in privatemessage)
+
+                //all messages send to me
+                foreach (var message in messagesReceived)
                 {
 
                     var privateMessagesDTO = new PrivateMessagesDTO
@@ -182,7 +184,7 @@ namespace Forum.Application.Queries
                         UserTypeId = message.Recipient.UserTypeId
                     };
 
-                    foreach (var comment in message.MessageComments)
+                    foreach (var comment in message.MessageComments.OrderBy(c=>c.CreationDate))
                     {
 
                         var user = await _userRepository.GetById(comment.UserId);
@@ -221,19 +223,127 @@ namespace Forum.Application.Queries
                     privateMessagesDTO.Recipient = recipientDTO;
                     privateMessagesDTO.Sender = senderDTO;
                     privateMessagesDTO.Comments = commentsDTO;
+                    privateMessagesDTO.LastMessageDate = commentsDTO.Max(d => d.CreationDate);
 
-                    listMessagesDTO.Add(privateMessagesDTO);
+                    var lastUserComent = commentsDTO.OrderBy(c => c.UserId)
+                        .OrderByDescending(x => x.CreationDate)
+                        .Select(x => x.User.Name)
+                        .FirstOrDefault();
+                    privateMessagesDTO.LastUserComment = lastUserComent;
+
+                   listMessagesDTO.Add(privateMessagesDTO);
                 }
-            }
-            else
-            {
-                _myprivatemessages = await _privateMessageRepository.GetBySenderyId(userId);
 
-                var totalComments = _myprivatemessages.Where(x => x.IsReplied);
+
+                //all my messages replied, should appears on my box too
+                myRepliedMessages = await _privateMessageRepository.GetBySenderyId(userId);
+
+                var totalComments = myRepliedMessages.Where(x => x.IsReplied);
 
                 if (totalComments.Any())
                 {
-                    foreach (var message in _myprivatemessages)
+                    foreach (var rpm in myRepliedMessages)
+                    {
+
+                        var privateMessages = new PrivateMessagesDTO
+                        {
+                            Id = rpm.Id,
+                            CreationDate = rpm.CreationDate,
+                            IsSeen = rpm.IsSeen,
+                            RecipientId = rpm.RecipientId,
+                            SenderId = rpm.SenderId,
+                            Subject = rpm.Subject,
+                            TimeAgo = TimeAgo.GetTimeAgo(rpm.CreationDate),
+                            IsReplied = rpm.IsReplied
+
+                        };
+
+                        var sender = new UserDTO
+                        {
+                            Id = rpm.Sender.Id,
+                            Avatar = rpm.Sender.Avatar,
+                            CreationDate = rpm.Sender.CreationDate,
+                            Email = rpm.Sender.Email,
+                            IdentityId = rpm.Sender.IdentityId,
+                            LastActivity = rpm.Sender.LastActivity,
+                            Name = rpm.Sender.Name,
+                            UserTypeId = rpm.Sender.UserTypeId
+                        };
+
+                        var recipient = new UserDTO
+                        {
+                            Id = rpm.Recipient.Id,
+                            Avatar = rpm.Recipient.Avatar,
+                            CreationDate = rpm.Recipient.CreationDate,
+                            Email = rpm.Recipient.Email,
+                            IdentityId = rpm.Recipient.IdentityId,
+                            LastActivity = rpm.Recipient.LastActivity,
+                            Name = rpm.Recipient.Name,
+                            UserTypeId = rpm.Recipient.UserTypeId
+                        };
+
+                        foreach (var comment in rpm.MessageComments.OrderBy(c => c.CreationDate))
+                        {
+
+                            var user = await _userRepository.GetById(comment.UserId);
+
+                            var userDTO = new UserDTO
+                            {
+                                Id = user.Id,
+                                Name = user.Name,
+                                Email = user.Email,
+                                IdentityId = user.IdentityId,
+                                LastActivity = user.LastActivity,
+                                UserTypeId = user.UserTypeId,
+                                CreationDate = user.CreationDate,
+                                Avatar = user.Avatar
+                            };
+
+                            var cm = new MessageCommentDTO
+                            {
+                                Id = comment.Id,
+                                CreationDate = comment.CreationDate,
+                                IsSeen = comment.IsSeen,
+                                PrivateMessageId = comment.PrivateMessageId,
+                                Text = comment.Text,
+                                TimeAgo = TimeAgo.GetTimeAgo(rpm.CreationDate),
+                                UserId = comment.UserId,
+                                User = userDTO,
+                                PrivateMessages = privateMessages
+
+
+                            };
+                            commentsDTO.Add(cm);
+
+                        }
+
+
+                        privateMessages.Recipient = recipient;
+                        privateMessages.Sender = sender;
+                        privateMessages.Comments = commentsDTO;
+
+                        privateMessages.LastMessageDate = commentsDTO.Max(d => d.CreationDate);
+
+                        var lastUserComent = commentsDTO.OrderBy(c => c.UserId)
+                            .OrderByDescending(x => x.CreationDate)
+                            .Select(x => x.User.Name)
+                            .FirstOrDefault();
+                        privateMessages.LastUserComment = lastUserComent;
+
+                        listMessagesDTO.Add(privateMessages);
+                    }
+                }
+
+            }
+            else
+            {
+                myRepliedMessages = await _privateMessageRepository.GetBySenderyId(userId);
+
+                var totalComments = myRepliedMessages.Where(x => x.IsReplied);
+
+                if (totalComments.Any())
+                {
+                    foreach (var message in myRepliedMessages)
                     {
 
                         var privateMessagesDTO = new PrivateMessagesDTO
@@ -312,6 +422,14 @@ namespace Forum.Application.Queries
                         privateMessagesDTO.Recipient = recipientDTO;
                         privateMessagesDTO.Sender = senderDTO;
                         privateMessagesDTO.Comments = commentsDTO;
+
+                        privateMessagesDTO.LastMessageDate = commentsDTO.Max(d => d.CreationDate);
+
+                        var lastUserComent = commentsDTO.OrderBy(c => c.UserId)
+                            .OrderByDescending(x => x.CreationDate)
+                            .Select(x => x.User.Name)
+                            .FirstOrDefault();
+                        privateMessagesDTO.LastUserComment = lastUserComent;
 
                         listMessagesDTO.Add(privateMessagesDTO);
                     }

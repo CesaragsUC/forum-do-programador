@@ -70,7 +70,7 @@ namespace Forum.Presentation.Controllers
 
             var messages = await _privateMessagesQuery.GetByRecipientId(user.Id);
 
-            return View(messages);
+            return View(messages.OrderByDescending(c => c.CreationDate));
         }
 
         [HttpGet]
@@ -93,7 +93,13 @@ namespace Forum.Presentation.Controllers
             TempData["MessageId"] = messageid;
 
             var messages = await _messaCommentsQuery.GetByMessageId(messageid);
-            return View(messages);
+
+            var senderId = messages.FirstOrDefault(x => x.UserId != user.Id).UserId;
+
+            var command = new UpdateIsSeenMessagesCommand(messageid, senderId, user.Id);
+            await _mediatorHandler.SendCommand(command);
+
+            return View(messages.OrderBy(c => c.CreationDate));
         }
 
         [HttpGet]

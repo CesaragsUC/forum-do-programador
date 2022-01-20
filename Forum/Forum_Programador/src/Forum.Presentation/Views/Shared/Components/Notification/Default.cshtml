@@ -1,2 +1,11 @@
 ﻿@model int
-<span class="fa fa-bell"></span> @Model
+@{
+    if (@Model > 0)
+    {
+        <span class="fa fa-envelope" style="color: red;"></span> @Model
+    }
+    else
+    {
+        <span class="fa fa-envelope"></span> @Model 
+    }
+}

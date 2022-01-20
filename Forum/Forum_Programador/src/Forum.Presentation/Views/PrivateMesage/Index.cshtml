@@ -36,24 +36,45 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="forum-icon">
-                                                <i class="fa fa-envelope" style="font-size:20px"></i>
+                                                @{
+                                                    if (!message.IsSeen)
+                                                    {
+                                                        <i class="fa fa-envelope" style="color: #ff8508; font-size: 20px"></i>
+                                                    }
+                                                    else
+                                                    {
+                                                        <i class="fa fa-envelope" style="color: black; font-size: 20px"></i>
+                                                    }
+                                                }
+                                               
                                             </div>
-                                            <a class="forum-item-title" asp-controller="PrivateMesage" asp-action="ViewMessages" asp-route-messageId="@message.Id">@message.Subject</a>
+                                            @{
+                                                if (!message.IsSeen)
+                                                {
+                                                    <a class="forum-item-title"  style="color: #ff8508;" asp-controller="PrivateMesage" asp-action="ViewMessages" asp-route-messageId="@message.Id">@message.Subject</a>
+                                                }
+                                                else
+                                                {
+                                                    <a class="forum-item-title" style="color: black;" asp-controller="PrivateMesage" asp-action="ViewMessages" asp-route-messageId="@message.Id">@message.Subject</a>
+                                                }
+                                            }
+                                            
+                                            <div class="forum-sub-title"> <strong>Created by:</strong> @message.Sender.Name @message.TimeAgo</div>
                                         </div>
                                         <div class="col-md-3 forum-info">
                                             <span class="views-number">
-                                                @message.CreationDate.ToString("dd/mm/yyyy")
+                                                @message.LastMessageDate.ToString("dd/MM/yyyy")
                                             </span>
                                             <div>
-                                                <small>Date </small>
+                                                <small>Last update </small>
                                             </div>
                                         </div>
                                         <div class="col-md-3 forum-info">
                                             <span class="views-number">
-                                                <strong>@message.Sender.Name</strong> 
+                                                <strong>@message.LastUserComment</strong> 
                                             </span>
                                             <div>
-                                                <small> @message.TimeAgo </small>
+                                                <small> last replied </small>
                                             </div>
                                         </div>
 

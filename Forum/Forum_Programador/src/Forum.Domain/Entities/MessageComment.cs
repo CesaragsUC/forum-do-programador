@@ -32,7 +32,7 @@ namespace Forum.Domain.Entities
 
         }
 
-        public void MessageSeen()
+        public void SetIsSeen()
         {
             IsSeen = true;
         }

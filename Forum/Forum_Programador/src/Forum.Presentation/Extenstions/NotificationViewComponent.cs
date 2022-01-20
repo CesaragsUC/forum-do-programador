@@ -3,28 +3,43 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace Forum.Presentation.Extenstions
 {
     public class NotificationViewComponent : ViewComponent
     {
         private readonly IPrivateMessagesQuery _privateMessagesQuery;
+        private readonly IMessaCommentsQuery _messaCommentsQuery;
+        private readonly IUserQuery _userQuery;
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        // TODO: Obter cliente logado
-        protected Guid ClienteId = Guid.Parse("4885e451-b0e4-4490-b959-04fabc806d32");
-
-
-        public NotificationViewComponent(IPrivateMessagesQuery privateMessagesQuery)
+        public NotificationViewComponent(IPrivateMessagesQuery privateMessagesQuery,
+            IMessaCommentsQuery messaCommentsQuery,
+            SignInManager<IdentityUser> signInManager,
+                UserManager<IdentityUser> userManager,
+            IUserQuery userQuery)
         {
             _privateMessagesQuery = privateMessagesQuery;
+            _messaCommentsQuery = messaCommentsQuery;
+            _signInManager = signInManager;
+            _userManager = userManager;
+            _userQuery = userQuery;
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var message = await _privateMessagesQuery.GetAll();
-            var itens = message.ToList()?.Count ?? 0; //aqui vou retornar total de msg nao lidas
 
-            return View(itens);
+            var loggedUserName = User.Identity.Name;
+            var loggedUser = await _userManager.FindByNameAsync(loggedUserName);
+
+            //current logged user
+            var user = await _userQuery.GetByIdentityId(Guid.Parse(loggedUser.Id));
+
+            var result =  _messaCommentsQuery.GetMessagesAndRepliesNotReaded(user.Id);
+
+            return View(result);
         }
     }
 }

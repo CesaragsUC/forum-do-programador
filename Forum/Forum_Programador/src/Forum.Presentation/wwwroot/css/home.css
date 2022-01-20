@@ -137,9 +137,9 @@ a.forum-item-title {
     color: #1ab394;
 }
 
-.forum-item.active a.forum-item-title {
+/*.forum-item.active a.forum-item-title {
     color: #1ab394;
-}
+}*/
 
 @media (max-width: 992px) {
     .forum-info {

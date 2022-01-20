@@ -10,6 +10,7 @@ namespace Forum.Application.Queries.Interfaces
         Task<IEnumerable<MessageCommentDTO>> GetByMessageId(Guid messageId);
         Task<IEnumerable<MessageCommentDTO>> GetByUserId(Guid userId);
         Task<IEnumerable<MessageCommentDTO>> GetAll();
+        int GetMessagesAndRepliesNotReaded(Guid loggedUserId);
 
     }
 }

@@ -1,4 +1,5 @@
-﻿using Forum.Application.Commands.PrivateMessages;
+﻿using System.Linq;
+using Forum.Application.Commands.PrivateMessages;
 using Forum.Application.Extensions;
 using Forum.Core.Communication.Mediator;
 using Forum.Domain.Interfaces;
@@ -12,22 +13,24 @@ namespace Forum.Application.Handler.Command
 {
     public class PrivateMessagesCommandHandler : ValidateComandBase,
                  IRequestHandler<AddPrivateMessagesCommand, bool>,
-                 IRequestHandler<UpdatePrivateMessagesCommand, bool>,
+                 IRequestHandler<UpdateIsSeenMessagesCommand, bool>,
                  IRequestHandler<DeletePrivateMessagesCommand, bool>,
                  IRequestHandler<AddMessagesCommentCommand,bool>
     {
         private readonly IMediatorHandler _mediatorHandler;
         private readonly IPrivateMessageRepository _privateMessageRepository;
+        private readonly IMessageCommentRepository _messageCommentRepository;
         private readonly IUserRepository _userRepository;
 
         public PrivateMessagesCommandHandler(IMediatorHandler mediatorHandler,
             IPrivateMessageRepository privateMessageRepository,
             ICommentRepository commentRepository,
-            IUserRepository userRepository) : base(mediatorHandler)
+            IUserRepository userRepository, IMessageCommentRepository messageCommentRepository) : base(mediatorHandler)
         {
             _mediatorHandler = mediatorHandler;
             _privateMessageRepository = privateMessageRepository;
             _userRepository = userRepository;
+            _messageCommentRepository = messageCommentRepository;
         }
 
         public async Task<bool> Handle(DeletePrivateMessagesCommand command, CancellationToken cancellationToken)
@@ -52,11 +55,26 @@ namespace Forum.Application.Handler.Command
             return await _privateMessageRepository.UnitOfWork.Commit();
         }
 
-        public async Task<bool> Handle(UpdatePrivateMessagesCommand command, CancellationToken cancellationToken)
+        public async Task<bool> Handle(UpdateIsSeenMessagesCommand command, CancellationToken cancellationToken)
         {
             if (!ValidateCommand(command)) return false;
 
-            throw new System.NotImplementedException();
+            var pm = await _privateMessageRepository.GetById(command.MessagetId);
+            pm.SetIsSeen();
+            _privateMessageRepository.Update(pm);
+
+            var msgComments = await _messageCommentRepository.GetByMessageId(command.MessagetId);
+
+            var comments = msgComments.Where(x => x.UserId == command.SenderId && !x.IsSeen);
+
+            foreach (var cm in comments)
+            {
+                var comment = await _messageCommentRepository.GetById(cm.Id);
+                comment.SetIsSeen();
+                _privateMessageRepository.UpdateMessageComment(comment);
+            }
+
+            return await _messageCommentRepository.UnitOfWork.Commit();
         }
 
         public async Task<bool> Handle(AddMessagesCommentCommand command, CancellationToken cancellationToken)
@@ -73,6 +91,7 @@ namespace Forum.Application.Handler.Command
             }
 
             pm.SetIsReplied();
+            pm.RemoveIsSeen();
 
             _privateMessageRepository.Update(pm);
             _privateMessageRepository.AddMessageComment(messageComment);

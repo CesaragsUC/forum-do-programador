@@ -12,6 +12,8 @@ namespace Forum.Application.DTO
         public Guid SenderId { get;  set; }
         public Guid RecipientId { get;  set; }
         public DateTime CreationDate { get;  set; }
+        public DateTime LastMessageDate { get; set; }
+        public string LastUserComment { get; set; }
         public bool IsSeen { get;  set; }
         public bool IsReplied { get; set; }
         public string Subject { get;  set; }

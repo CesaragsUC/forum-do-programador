@@ -34,10 +34,15 @@ namespace Forum.Domain.Entities
             _messageComments = new List<MessageComment>();
         }
         
-        public void MessageSeen()
+        public void SetIsSeen()
         {
             IsSeen = true;
         }
+        public void RemoveIsSeen()
+        {
+            IsSeen = false;
+        }
+
 
         public void SetIsReplied()
         {

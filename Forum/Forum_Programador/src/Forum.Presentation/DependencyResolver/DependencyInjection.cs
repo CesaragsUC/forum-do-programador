@@ -87,7 +87,7 @@ namespace Forum.Presentation.DependencyResolver
             services.AddScoped<IRequestHandler<DeleteComentCommand, bool>, CommentCommandHandler>();
 
             services.AddScoped<IRequestHandler<AddPrivateMessagesCommand, bool>, PrivateMessagesCommandHandler>();
-            services.AddScoped<IRequestHandler<UpdatePrivateMessagesCommand, bool>, PrivateMessagesCommandHandler>();
+            services.AddScoped<IRequestHandler<UpdateIsSeenMessagesCommand, bool>, PrivateMessagesCommandHandler>();
             services.AddScoped<IRequestHandler<DeletePrivateMessagesCommand, bool>, PrivateMessagesCommandHandler>();
             services.AddScoped<IRequestHandler<AddMessagesCommentCommand, bool>, PrivateMessagesCommandHandler>();
             

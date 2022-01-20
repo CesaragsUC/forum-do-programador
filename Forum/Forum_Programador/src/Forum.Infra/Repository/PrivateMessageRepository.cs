@@ -45,6 +45,11 @@ namespace Forum.Infra.Repository
                 .Include(r=>r.Recipient).AsNoTracking().ToListAsync();
         }
 
+        public  void UpdateMessageComment(MessageComment messageComment)
+        {
+            _context.MessageComments.Update(messageComment);
+        }
+
         public async Task<PrivateMessages> GetById(Guid msgId)
         {
             return   _context.PrivateMessages.Where(x=> x.Id == msgId).
@@ -57,15 +62,26 @@ namespace Forum.Infra.Repository
             return await _context.PrivateMessages.Where(x => x.RecipientId == userId)
                                 .Include(u => u.Sender)
                                 .Include(m=>m.MessageComments)
-                                .Include(r => r.Recipient).AsNoTracking().ToListAsync();
+                                .Include(r => r.Recipient)
+                                .OrderBy(x=>x.CreationDate).AsNoTracking().ToListAsync();
         }
+        public async Task<IEnumerable<PrivateMessages>> GetByRecipientOrSenderId(Guid userId)
+        {
+            return await _context.PrivateMessages.Where(x => x.RecipientId == userId || x.SenderId == userId)
+                .Include(u => u.Sender)
+                .Include(m => m.MessageComments)
+                .Include(r => r.Recipient)
+                .OrderBy(x => x.CreationDate).AsNoTracking().ToListAsync();
+        }
+
 
         public async Task<IEnumerable<PrivateMessages>> GetBySenderyId(Guid senderId)
         {
             return await _context.PrivateMessages.Where(x => x.SenderId == senderId)
                                 .Include(u => u.Sender)
                                 .Include(m => m.MessageComments)
-                                .Include(r => r.Recipient).AsNoTracking().ToListAsync();
+                                .Include(r => r.Recipient)
+                                .OrderBy(x => x.CreationDate).AsNoTracking().ToListAsync();
         }
 
         public async Task<IEnumerable<PrivateMessages>> GetBySubject(string subject)
@@ -73,7 +89,8 @@ namespace Forum.Infra.Repository
             return await _context.PrivateMessages.Where(x => x.Subject.Contains(subject))
                                          .Include(u => u.Sender)
                                          .Include(m => m.MessageComments)
-                                         .Include(r => r.Recipient).AsNoTracking().ToListAsync();
+                                         .Include(r => r.Recipient)
+                                         .OrderBy(x => x.CreationDate).AsNoTracking().ToListAsync();
         }
 
         public void Update(PrivateMessages message)

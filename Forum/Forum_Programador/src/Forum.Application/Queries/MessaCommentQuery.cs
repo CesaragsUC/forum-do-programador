@@ -4,6 +4,7 @@ using Forum.Application.Queries.Interfaces;
 using Forum.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Forum.Application.Queries
@@ -12,12 +13,15 @@ namespace Forum.Application.Queries
     {
 
         private readonly IMessageCommentRepository _messageCommentRepository;
+        private readonly IPrivateMessageRepository _privateMessageRepository;
         private readonly IUserRepository _userRepository;
 
-        public MessaCommentQuery(IMessageCommentRepository messageCommentRepository, IUserRepository userRepository)
+        public MessaCommentQuery(IMessageCommentRepository messageCommentRepository, IUserRepository userRepository,
+            IPrivateMessageRepository privateMessageRepository)
         {
             _messageCommentRepository = messageCommentRepository;
             _userRepository = userRepository;
+            _privateMessageRepository = privateMessageRepository;
         }
 
 
@@ -139,6 +143,61 @@ namespace Forum.Application.Queries
             }
 
             return commentsDTO;
+        }
+
+        public int GetMessagesAndRepliesNotReaded(Guid loggedUserId)
+        {
+            int totalNotReaded = 0;
+
+            var messageList = _privateMessageRepository.GetByRecipientId(loggedUserId).Result;
+
+            var messagesNotSeen = messageList.Where(x => !x.IsSeen);
+
+            totalNotReaded = messagesNotSeen.Count();
+
+            if (messagesNotSeen.Any())
+            {
+                //get all coments not readed
+                //foreach (var message in messagesNotSeen)
+                //{
+                //    var comments = _messageCommentRepository.GetByMessageId(message.Id).Result;
+
+                //    var senderId = comments.FirstOrDefault(x => x.UserId != loggedUserId).UserId;
+
+                //    var result = comments.Where(x => x.UserId == senderId && !x.IsSeen);
+
+                //    //if (result.Any())
+                //    //    totalNotReaded++;
+
+
+                //}
+            }
+            else
+            {
+                var messageRepliedList = _privateMessageRepository.GetBySenderyId(loggedUserId).Result;
+                var messagesRepliedNotSeen = messageRepliedList.Where(x => !x.IsSeen && x.IsReplied);
+
+                totalNotReaded = messagesRepliedNotSeen.Count();
+
+                //get all coments not readed
+                //foreach (var message in messagesRepliedNotSeen)
+                //{
+                //    var comments = _messageCommentRepository.GetByMessageId(message.Id).Result;
+
+                //    var senderId = comments.FirstOrDefault(x => x.UserId != loggedUserId).UserId;
+
+                //    var result = comments.Where(x => x.UserId == senderId && !x.IsSeen);
+
+                //    //if (result.Any())
+                //    //    totalNotReaded++;
+
+
+                //}
+
+            }
+
+
+            return totalNotReaded;
         }
     }
 }
