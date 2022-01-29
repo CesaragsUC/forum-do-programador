@@ -61,14 +61,22 @@ namespace Forum.Application.Handler.Command
 
             var pm = await _privateMessageRepository.GetById(command.MessagetId);
             pm.SetIsSeen();
+
+            if (pm.SenderId == command.LoggedUserId)
+                pm.SetSenderCommentsReaded();
+            else
+                pm.SetRecipientCommentsReaded();
+
             _privateMessageRepository.Update(pm);
 
             var msgComments = await _messageCommentRepository.GetByMessageId(command.MessagetId);
 
+            //get all comments from this message sent to me
             var comments = msgComments.Where(x => x.UserId == command.SenderId && !x.IsSeen);
 
             foreach (var cm in comments)
             {
+                //set them to readed
                 var comment = await _messageCommentRepository.GetById(cm.Id);
                 comment.SetIsSeen();
                 _privateMessageRepository.UpdateMessageComment(comment);
@@ -91,7 +99,12 @@ namespace Forum.Application.Handler.Command
             }
 
             pm.SetIsReplied();
-            pm.RemoveIsSeen();
+            //pm.RemoveIsSeen();
+
+            if (pm.SenderId == command.UserId)
+                pm.SetRecipientCommentsNotReaded();
+            else
+                pm.SetSenderCommentsNotReaded();
 
             _privateMessageRepository.Update(pm);
             _privateMessageRepository.AddMessageComment(messageComment);

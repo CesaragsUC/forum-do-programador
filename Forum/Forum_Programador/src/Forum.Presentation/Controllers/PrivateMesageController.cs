@@ -67,6 +67,7 @@ namespace Forum.Presentation.Controllers
             }
             var user = await _userQuery.GetByIdentityId(userid);
             TempData["LoggedUserId"] = userid;
+            TempData["AppLoggedUserId"] = user.Id;
 
             var messages = await _privateMessagesQuery.GetByRecipientId(user.Id);
 
@@ -90,6 +91,7 @@ namespace Forum.Presentation.Controllers
 
             var user = await _userQuery.GetByIdentityId(Guid.Parse(identityUser.Id));
             TempData["LoggedUserId"] = user.IdentityId;
+            TempData["AppLoggedUserId"] = user.Id;
             TempData["MessageId"] = messageid;
 
             var messages = await _messaCommentsQuery.GetByMessageId(messageid);

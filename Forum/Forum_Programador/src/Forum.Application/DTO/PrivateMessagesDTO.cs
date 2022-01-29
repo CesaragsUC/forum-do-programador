@@ -19,7 +19,8 @@ namespace Forum.Application.DTO
         public string Subject { get;  set; }
         public UserDTO Recipient { get;  set; }
         public UserDTO Sender { get;  set; }
-
+        public bool SenderCommentsNotReaded { get;  set; }
+        public bool RecipientCommentsNotReaded { get;  set; }
         public string TimeAgo { get; set; }
 
         public List<MessageCommentDTO> Comments { get; set; }

@@ -4,14 +4,16 @@ using Forum.Infra;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Forum.Infra.Migrations
 {
     [DbContext(typeof(ForumContext))]
-    partial class ForumContextModelSnapshot : ModelSnapshot
+    [Migration("20220128010019_update privatemessage table")]
+    partial class updateprivatemessagetable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -102,6 +104,9 @@ namespace Forum.Infra.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("SenderCommentsNotReaded")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
@@ -111,14 +116,8 @@ namespace Forum.Infra.Migrations
                     b.Property<bool>("IsSeen")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("RecipientCommentsNotReaded")
-                        .HasColumnType("bit");
-
                     b.Property<Guid>("RecipientId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("SenderCommentsNotReaded")
-                        .HasColumnType("bit");
 
                     b.Property<Guid>("SenderId")
                         .HasColumnType("uniqueidentifier");

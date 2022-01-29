@@ -11,6 +11,8 @@ namespace Forum.Domain.Entities
         public Guid RecipientId { get; private set; }
         public DateTime CreationDate { get; private set; }
         public bool IsSeen { get; private set; }
+        public bool SenderCommentsNotReaded { get; private set; }
+        public bool RecipientCommentsNotReaded { get; private set; }
         public bool IsReplied { get; set; }
         public string Subject { get; private set; }
         public User Recipient { get; private set; }
@@ -38,6 +40,24 @@ namespace Forum.Domain.Entities
         {
             IsSeen = true;
         }
+        public void SetSenderCommentsReaded()
+        {
+            SenderCommentsNotReaded = false;
+        }
+        public void SetRecipientCommentsReaded()
+        {
+            RecipientCommentsNotReaded = false;
+        }
+
+        public void SetSenderCommentsNotReaded()
+        {
+            SenderCommentsNotReaded = true;
+        }
+        public void SetRecipientCommentsNotReaded()
+        {
+            RecipientCommentsNotReaded = true;
+        }
+
         public void RemoveIsSeen()
         {
             IsSeen = false;

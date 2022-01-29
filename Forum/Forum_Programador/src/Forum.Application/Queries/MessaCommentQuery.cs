@@ -149,53 +149,14 @@ namespace Forum.Application.Queries
         {
             int totalNotReaded = 0;
 
-            var messageList = _privateMessageRepository.GetByRecipientId(loggedUserId).Result;
+            var messageReceivedList = _privateMessageRepository.GetByRecipientId(loggedUserId).Result;
+            var messageSentList = _privateMessageRepository.GetBySenderyId(loggedUserId).Result;
 
-            var messagesNotSeen = messageList.Where(x => !x.IsSeen);
+            var messagesReceviedNotSeen = messageReceivedList.Where(x => !x.IsSeen || x.RecipientCommentsNotReaded);
+            var messagesSentNotSeen = messageSentList.Where(x => x.SenderCommentsNotReaded);
 
-            totalNotReaded = messagesNotSeen.Count();
-
-            if (messagesNotSeen.Any())
-            {
-                //get all coments not readed
-                //foreach (var message in messagesNotSeen)
-                //{
-                //    var comments = _messageCommentRepository.GetByMessageId(message.Id).Result;
-
-                //    var senderId = comments.FirstOrDefault(x => x.UserId != loggedUserId).UserId;
-
-                //    var result = comments.Where(x => x.UserId == senderId && !x.IsSeen);
-
-                //    //if (result.Any())
-                //    //    totalNotReaded++;
-
-
-                //}
-            }
-            else
-            {
-                var messageRepliedList = _privateMessageRepository.GetBySenderyId(loggedUserId).Result;
-                var messagesRepliedNotSeen = messageRepliedList.Where(x => !x.IsSeen && x.IsReplied);
-
-                totalNotReaded = messagesRepliedNotSeen.Count();
-
-                //get all coments not readed
-                //foreach (var message in messagesRepliedNotSeen)
-                //{
-                //    var comments = _messageCommentRepository.GetByMessageId(message.Id).Result;
-
-                //    var senderId = comments.FirstOrDefault(x => x.UserId != loggedUserId).UserId;
-
-                //    var result = comments.Where(x => x.UserId == senderId && !x.IsSeen);
-
-                //    //if (result.Any())
-                //    //    totalNotReaded++;
-
-
-                //}
-
-            }
-
+            totalNotReaded = messagesReceviedNotSeen.Count();
+            totalNotReaded += messagesSentNotSeen.Count();
 
             return totalNotReaded;
         }

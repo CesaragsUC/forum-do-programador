@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Messages";
     var loggedUserId = TempData["LoggedUserId"];
+    var apploggedUserId = TempData["AppLoggedUserId"];
 }
 
 <link href="~/css/home.css" rel="stylesheet" />
@@ -37,28 +38,41 @@
                                         <div class="col-md-6">
                                             <div class="forum-icon">
                                                 @{
-                                                    if (!message.IsSeen)
+                                                    if (!message.IsSeen || message.SenderId == Guid.Parse(apploggedUserId.ToString()) && message.SenderCommentsNotReaded)
                                                     {
                                                         <i class="fa fa-envelope" style="color: #ff8508; font-size: 20px"></i>
+                                                    }
+                                                    else if (!message.IsSeen || message.RecipientId == Guid.Parse(apploggedUserId.ToString()) && message.RecipientCommentsNotReaded)
+                                                    {
+                                                        <i class="fa fa-envelope" style="color: #ff8508; font-size: 20px"></i>
+
                                                     }
                                                     else
                                                     {
                                                         <i class="fa fa-envelope" style="color: black; font-size: 20px"></i>
                                                     }
+
                                                 }
-                                               
+
                                             </div>
                                             @{
-                                                if (!message.IsSeen)
+
+                                                if (!message.IsSeen || message.SenderId == Guid.Parse(apploggedUserId.ToString()) && message.SenderCommentsNotReaded)
                                                 {
-                                                    <a class="forum-item-title"  style="color: #ff8508;" asp-controller="PrivateMesage" asp-action="ViewMessages" asp-route-messageId="@message.Id">@message.Subject</a>
+                                                    <a class="forum-item-title" style="color: #ff8508;" asp-controller="PrivateMesage" asp-action="ViewMessages" asp-route-messageId="@message.Id">@message.Subject</a>
+                                                }
+                                                else if (!message.IsSeen || message.RecipientId == Guid.Parse(apploggedUserId.ToString()) && message.RecipientCommentsNotReaded)
+                                                {
+                                                    <a class="forum-item-title" style="color: #ff8508;" asp-controller="PrivateMesage" asp-action="ViewMessages" asp-route-messageId="@message.Id">@message.Subject</a>
                                                 }
                                                 else
                                                 {
                                                     <a class="forum-item-title" style="color: black;" asp-controller="PrivateMesage" asp-action="ViewMessages" asp-route-messageId="@message.Id">@message.Subject</a>
                                                 }
+
+
                                             }
-                                            
+
                                             <div class="forum-sub-title"> <strong>Created by:</strong> @message.Sender.Name @message.TimeAgo</div>
                                         </div>
                                         <div class="col-md-3 forum-info">
@@ -71,7 +85,7 @@
                                         </div>
                                         <div class="col-md-3 forum-info">
                                             <span class="views-number">
-                                                <strong>@message.LastUserComment</strong> 
+                                                <strong>@message.LastUserComment</strong>
                                             </span>
                                             <div>
                                                 <small> last replied </small>

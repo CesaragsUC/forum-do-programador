@@ -42,8 +42,9 @@ namespace Forum.Application.Queries
                     RecipientId = pm.RecipientId,
                     SenderId = pm.SenderId,
                     Subject = pm.Subject,
-                    IsReplied = pm.IsReplied
-
+                    IsReplied = pm.IsReplied,
+                    SenderCommentsNotReaded = pm.SenderCommentsNotReaded,
+                    RecipientCommentsNotReaded =  pm.RecipientCommentsNotReaded
                 };
 
                 var senderDTO = new UserDTO
@@ -96,7 +97,8 @@ namespace Forum.Application.Queries
                 RecipientId = privatemessage.RecipientId,
                 SenderId = privatemessage.SenderId,
                 Subject = privatemessage.Subject,
-                IsReplied = privatemessage.IsReplied
+                SenderCommentsNotReaded = privatemessage.SenderCommentsNotReaded,
+                RecipientCommentsNotReaded = privatemessage.RecipientCommentsNotReaded
             };
 
             var senderDTO = new UserDTO
@@ -137,14 +139,12 @@ namespace Forum.Application.Queries
 
             var commentsDTO = new List<MessageCommentDTO>();
 
-           
-
             IEnumerable<PrivateMessages> myRepliedMessages;
-
+          
+            //all messages send to me
             if (messagesReceived.Any())
             {
 
-                //all messages send to me
                 foreach (var message in messagesReceived)
                 {
 
@@ -156,7 +156,9 @@ namespace Forum.Application.Queries
                         RecipientId = message.RecipientId,
                         SenderId = message.SenderId,
                         Subject = message.Subject,
-                        TimeAgo = TimeAgo.GetTimeAgo(message.CreationDate)
+                        TimeAgo = TimeAgo.GetTimeAgo(message.CreationDate),
+                        SenderCommentsNotReaded = message.SenderCommentsNotReaded,
+                        RecipientCommentsNotReaded = message.RecipientCommentsNotReaded
 
                     };
 
@@ -225,24 +227,23 @@ namespace Forum.Application.Queries
                     privateMessagesDTO.Comments = commentsDTO;
                     privateMessagesDTO.LastMessageDate = commentsDTO.Max(d => d.CreationDate);
 
-                    var lastUserComent = commentsDTO.OrderBy(c => c.UserId)
-                        .OrderByDescending(x => x.CreationDate)
-                        .Select(x => x.User.Name)
-                        .FirstOrDefault();
+                    var lastUserComent = commentsDTO.Where(x=>x.PrivateMessageId == message.Id).OrderByDescending(x => x.CreationDate)
+                        .Select(x => x.User.Name).FirstOrDefault();
+
                     privateMessagesDTO.LastUserComment = lastUserComent;
 
                    listMessagesDTO.Add(privateMessagesDTO);
                 }
 
 
-                //all my messages replied, should appears on my box too
+                //here we get all messages that i sent to a ser and was answered to me.
                 myRepliedMessages = await _privateMessageRepository.GetBySenderyId(userId);
 
-                var totalComments = myRepliedMessages.Where(x => x.IsReplied);
+                var totalPMReplied = myRepliedMessages.Where(x => x.IsReplied);
 
-                if (totalComments.Any())
+                if (totalPMReplied.Any())
                 {
-                    foreach (var rpm in myRepliedMessages)
+                    foreach (var rpm in totalPMReplied)
                     {
 
                         var privateMessages = new PrivateMessagesDTO
@@ -254,7 +255,9 @@ namespace Forum.Application.Queries
                             SenderId = rpm.SenderId,
                             Subject = rpm.Subject,
                             TimeAgo = TimeAgo.GetTimeAgo(rpm.CreationDate),
-                            IsReplied = rpm.IsReplied
+                            IsReplied = rpm.IsReplied,
+                            SenderCommentsNotReaded = rpm.SenderCommentsNotReaded,
+                            RecipientCommentsNotReaded = rpm.RecipientCommentsNotReaded
 
                         };
 
@@ -324,10 +327,8 @@ namespace Forum.Application.Queries
 
                         privateMessages.LastMessageDate = commentsDTO.Max(d => d.CreationDate);
 
-                        var lastUserComent = commentsDTO.OrderBy(c => c.UserId)
-                            .OrderByDescending(x => x.CreationDate)
-                            .Select(x => x.User.Name)
-                            .FirstOrDefault();
+                        var lastUserComent = commentsDTO.Where(x=>x.PrivateMessageId == rpm.Id).OrderByDescending(x => x.CreationDate)
+                            .Select(x => x.User.Name).FirstOrDefault();
                         privateMessages.LastUserComment = lastUserComent;
 
                         listMessagesDTO.Add(privateMessages);
@@ -339,9 +340,9 @@ namespace Forum.Application.Queries
             {
                 myRepliedMessages = await _privateMessageRepository.GetBySenderyId(userId);
 
-                var totalComments = myRepliedMessages.Where(x => x.IsReplied);
+                var totalMessagess = myRepliedMessages.Where(x => x.IsReplied);
 
-                if (totalComments.Any())
+                if (totalMessagess.Any())
                 {
                     foreach (var message in myRepliedMessages)
                     {
@@ -355,7 +356,9 @@ namespace Forum.Application.Queries
                             SenderId = message.SenderId,
                             Subject = message.Subject,
                             TimeAgo = TimeAgo.GetTimeAgo(message.CreationDate),
-                            IsReplied = message.IsReplied
+                            IsReplied = message.IsReplied,
+                            SenderCommentsNotReaded = message.SenderCommentsNotReaded,
+                            RecipientCommentsNotReaded = message.RecipientCommentsNotReaded
 
                         };
 
@@ -424,11 +427,8 @@ namespace Forum.Application.Queries
                         privateMessagesDTO.Comments = commentsDTO;
 
                         privateMessagesDTO.LastMessageDate = commentsDTO.Max(d => d.CreationDate);
-
-                        var lastUserComent = commentsDTO.OrderBy(c => c.UserId)
-                            .OrderByDescending(x => x.CreationDate)
-                            .Select(x => x.User.Name)
-                            .FirstOrDefault();
+                        var lastUserComent = commentsDTO.Where(x=>x.PrivateMessageId == message.Id).OrderByDescending(x => x.CreationDate)
+                            .Select(x => x.User.Name).FirstOrDefault();
                         privateMessagesDTO.LastUserComment = lastUserComent;
 
                         listMessagesDTO.Add(privateMessagesDTO);

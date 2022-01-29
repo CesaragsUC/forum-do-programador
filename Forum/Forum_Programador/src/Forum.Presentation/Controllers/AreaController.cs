@@ -8,9 +8,12 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Forum.Presentation.Configuration;
 
 namespace Forum.Presentation.Controllers
 {
+    [Authorize]
     public class AreaController : ControllerBase
     {
         private readonly IMediatorHandler _mediatorHandler;
@@ -25,6 +28,7 @@ namespace Forum.Presentation.Controllers
             _areaQuery = areaQuery;
         }
 
+        [ClaimsAuthorize("Admin", "List")]
         public async Task<IActionResult> Index(int pg = 1)
         {
             var areas = await _areaQuery.GetAll();
@@ -121,6 +125,7 @@ namespace Forum.Presentation.Controllers
 
         [HttpPost]
         [Route("update-area")]
+
         public async Task<IActionResult> Update(AreaDTO area)
         {
             if (!ModelState.IsValid) 

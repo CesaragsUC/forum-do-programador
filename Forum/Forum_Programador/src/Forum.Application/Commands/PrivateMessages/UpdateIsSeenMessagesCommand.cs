@@ -9,13 +9,13 @@ namespace Forum.Application.Commands.PrivateMessages
 
         public Guid MessagetId { get; private set; }
         public Guid SenderId { get; private set; }
-        public Guid RecipientId { get; private set; }
+        public Guid LoggedUserId { get; private set; }
 
-        public UpdateIsSeenMessagesCommand(Guid messageId, Guid senderId, Guid recipientId)
+        public UpdateIsSeenMessagesCommand(Guid messageId, Guid senderId, Guid loggeduserid)
         {
             MessagetId = messageId;
             SenderId = senderId;
-            RecipientId = recipientId;
+            LoggedUserId = loggeduserid;
             AggregateId = messageId;
 
         }
@@ -33,7 +33,7 @@ namespace Forum.Application.Commands.PrivateMessages
         {
             RuleFor(x => x.MessagetId).NotEqual(Guid.Empty).WithMessage("Invalid Id.");
             RuleFor(x => x.SenderId).NotEqual(Guid.Empty).WithMessage("Invalid RecipientId.");
-            RuleFor(x => x.RecipientId).NotEqual(Guid.Empty).WithMessage("Invalid  SenderId.");
+            RuleFor(x => x.LoggedUserId).NotEqual(Guid.Empty).WithMessage("Invalid  SenderId.");
         }
 
     }
