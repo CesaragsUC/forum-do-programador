@@ -4,6 +4,7 @@ using Forum.Presentation.DependencyResolver;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,6 +35,11 @@ namespace Forum.Presentation
             services.AddEmailServiceConfig(Configuration);
             services.AddToastrConfig(Configuration);
 
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.AccessDeniedPath = new PathString("/Home/AccessDenied");
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,15 +48,18 @@ namespace Forum.Presentation
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseExceptionHandler("/erro/500");
+                app.UseStatusCodePagesWithRedirects("/erro/{0}");
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseExceptionHandler("/erro/500");
+                app.UseStatusCodePagesWithRedirects("/erro/{0}");
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCookiePolicy();
 
             app.UseRouting();
 
@@ -59,6 +68,8 @@ namespace Forum.Presentation
             app.UseAuthorization();
 
             app.UseNToastNotify();
+
+
 
             //https://aregcode.com/blog/2019/dotnetcore-understanding-aspnet-endpoint-routing/
             app.UseEndpoints(endpoints =>

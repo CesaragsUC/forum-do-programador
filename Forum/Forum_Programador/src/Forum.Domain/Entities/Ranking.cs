@@ -7,11 +7,11 @@ namespace Forum.Domain.Entities
     {
         public Guid UserId { get; private set; }
 
-        public Guid UserSentPointId { get; private set; }
+        public Guid UserSentId { get; private set; }
         public int Point { get; private set; }
         public Guid TopicId { get; private set; }
 
-        public int CommentId { get; private set; }
+        public Guid CommentId { get; private set; }
 
         public DateTime CreationDate { get; private set; }
 
@@ -20,13 +20,22 @@ namespace Forum.Domain.Entities
         {
 
         }
-        public Ranking(Guid userId,Guid userGivePointId,int point,Guid topicId,int commentId)
+        public Ranking(Guid userId,Guid userGivePointId,Guid topicId,Guid commentId)
         {
             UserId = userId;
-            UserSentPointId = userGivePointId;
-            Point = point;
+            UserSentId = userGivePointId;
             TopicId = topicId;
             CommentId = commentId;
+        }
+
+        public void AddPoint()
+        {
+            Point ++;
+        }
+
+        public void RemovePoint()
+        {
+            Point--;
         }
 
     }

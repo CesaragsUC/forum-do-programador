@@ -19,5 +19,7 @@ namespace Forum.Application.DTO
         public DateTime CreationDate { get;  set; }
 
         public DateTime LastActivity { get;  set; }
+
+        public bool IsBanned { get;  set; }
     }
 }

@@ -28,7 +28,7 @@ namespace Forum.Presentation.Controllers
             _areaQuery = areaQuery;
         }
 
-        [ClaimsAuthorize("Admin", "List")]
+        [ClaimsAuthorize("Areas", "List")]
         public async Task<IActionResult> Index(int pg = 1)
         {
             var areas = await _areaQuery.GetAll();
@@ -62,6 +62,7 @@ namespace Forum.Presentation.Controllers
 
         [HttpGet]
         [Route("add-area")]
+        [ClaimsAuthorize("Areas", "Add")]
         public async Task<IActionResult> Create()
         {
             return View();
@@ -69,6 +70,7 @@ namespace Forum.Presentation.Controllers
 
         [HttpPost]
         [Route("add-area")]
+        [ClaimsAuthorize("Areas", "Add")]
         public async Task<IActionResult> Create(AreaDTO area)
         {
             if (!ModelState.IsValid) return View(area);
@@ -89,6 +91,7 @@ namespace Forum.Presentation.Controllers
 
         [HttpDelete]
         [Route("delete-area")]
+        [ClaimsAuthorize("Areas", "Delete")]
         public async Task<IActionResult> Delete(Guid id)
         {
             if (id == Guid.Empty) return BadRequest("Invalid Id");
@@ -111,6 +114,7 @@ namespace Forum.Presentation.Controllers
 
         [HttpGet]
         [Route("update-area")]
+        [ClaimsAuthorize("Areas", "Update")]
         public async Task<IActionResult> Update(Guid id)
         {
             if (id == Guid.Empty)
@@ -125,7 +129,7 @@ namespace Forum.Presentation.Controllers
 
         [HttpPost]
         [Route("update-area")]
-
+        [ClaimsAuthorize("Areas", "Update")]
         public async Task<IActionResult> Update(AreaDTO area)
         {
             if (!ModelState.IsValid) 

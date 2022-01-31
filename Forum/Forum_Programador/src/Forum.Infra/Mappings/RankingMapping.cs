@@ -24,7 +24,7 @@ namespace Forum.Infra.Mappings
             builder.Property(r => r.UserId)
                 .IsRequired();
 
-            builder.Property(r => r.UserSentPointId)
+            builder.Property(r => r.UserSentId)
                 .IsRequired();
 
             builder.ToTable("Rankings");

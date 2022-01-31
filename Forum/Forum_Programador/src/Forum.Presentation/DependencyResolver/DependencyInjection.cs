@@ -2,8 +2,11 @@
 using Forum.Application.Commands.Area;
 using Forum.Application.Commands.Comments;
 using Forum.Application.Commands.PrivateMessages;
+using Forum.Application.Commands.Ranking;
+using Forum.Application.Commands.ReportUser;
 using Forum.Application.Commands.Section;
 using Forum.Application.Commands.TopicViews;
+using Forum.Application.Commands.User;
 using Forum.Application.Commands.UserFirend;
 using Forum.Application.Commands.UserInfo;
 using Forum.Application.Events;
@@ -45,6 +48,7 @@ namespace Forum.Presentation.DependencyResolver
             services.AddScoped<IUserInformationRepository, UserInformationRepository>();
             services.AddScoped<IUserFriendRepository, UserFriendRepository>();
             services.AddScoped<IMessageCommentRepository, MessageCommentRepository>();
+            services.AddScoped<IReportUserRepository, ReportUserRepository>();
 
 
             //Queries
@@ -59,6 +63,7 @@ namespace Forum.Presentation.DependencyResolver
             services.AddScoped<IUserInformationfoQuery, UserInformationfoQuery>();
             services.AddScoped<IUserFriendQuery, UserFriendQuery>();
             services.AddScoped<IMessaCommentsQuery, MessaCommentQuery>();
+            services.AddScoped<IReportUserQuery, ReportUserQuery>();
 
             //Events
             services.AddScoped<INotificationHandler<TopicCreatedEvent>, TopicHandlerEvent>();
@@ -101,11 +106,16 @@ namespace Forum.Presentation.DependencyResolver
             services.AddScoped<IRequestHandler<DeleteUserCommand, bool>, UserCommandHandler>();
             services.AddScoped<IRequestHandler<UpdateUserInformationCommand, bool>, UserCommandHandler>();
             services.AddScoped<IRequestHandler<AddUserInformationCommand, bool>, UserCommandHandler>();
+            services.AddScoped<IRequestHandler<BanUserCommand, bool>, UserCommandHandler>();
+            services.AddScoped<IRequestHandler<UnBanUserCommand, bool>, UserCommandHandler>();
 
             services.AddScoped<IRequestHandler<AddUserFriendCommand, bool>, UserFriendCommandHandler>();
             services.AddScoped<IRequestHandler<DeleteUserFriendCommand, bool>, UserFriendCommandHandler>();
 
+            services.AddScoped<IRequestHandler<AddReportCommand, bool>, ReportUserCommandHandler>();
 
+            services.AddScoped<IRequestHandler<AddScoreCommand, bool>, RankingCommandHandler>();
+            services.AddScoped<IRequestHandler<RemoveScoreCommand, bool>, RankingCommandHandler>();
 
         }
 

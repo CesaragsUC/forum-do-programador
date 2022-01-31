@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Forum.Infra.Migrations
 {
     [DbContext(typeof(ForumContext))]
-    [Migration("20211218154755_add new colunm userfriend")]
-    partial class addnewcolunmuserfriend
+    [Migration("20220131163122_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -67,7 +67,7 @@ namespace Forum.Infra.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("Forum.Domain.Entities.PrivateMessages", b =>
+            modelBuilder.Entity("Forum.Domain.Entities.MessageComment", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -79,8 +79,48 @@ namespace Forum.Infra.Migrations
                     b.Property<bool>("IsSeen")
                         .HasColumnType("bit");
 
+                    b.Property<Guid>("PrivateMessageId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PrivateMessageId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("MessageComment");
+                });
+
+            modelBuilder.Entity("Forum.Domain.Entities.PrivateMessages", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsReplied")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSeen")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("RecipientCommentsNotReaded")
+                        .HasColumnType("bit");
+
                     b.Property<Guid>("RecipientId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("SenderCommentsNotReaded")
+                        .HasColumnType("bit");
 
                     b.Property<Guid>("SenderId")
                         .HasColumnType("uniqueidentifier");
@@ -88,10 +128,6 @@ namespace Forum.Infra.Migrations
                     b.Property<string>("Subject")
                         .IsRequired()
                         .HasColumnType("varchar(100)");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -108,8 +144,8 @@ namespace Forum.Infra.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("CommentId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("CommentId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
@@ -123,12 +159,36 @@ namespace Forum.Infra.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("UserSentPointId")
+                    b.Property<Guid>("UserSentId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.ToTable("Rankings");
+                });
+
+            modelBuilder.Entity("Forum.Domain.Entities.ReportUsers", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserSendReportId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ReportUsers");
                 });
 
             modelBuilder.Entity("Forum.Domain.Entities.Section", b =>
@@ -242,6 +302,9 @@ namespace Forum.Infra.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsBanned")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("LastActivity")
                         .HasColumnType("datetime2");
 
@@ -343,6 +406,23 @@ namespace Forum.Infra.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Forum.Domain.Entities.MessageComment", b =>
+                {
+                    b.HasOne("Forum.Domain.Entities.PrivateMessages", "PrivateMessages")
+                        .WithMany("MessageComments")
+                        .HasForeignKey("PrivateMessageId")
+                        .IsRequired();
+
+                    b.HasOne("Forum.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .IsRequired();
+
+                    b.Navigation("PrivateMessages");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Forum.Domain.Entities.PrivateMessages", b =>
                 {
                     b.HasOne("Forum.Domain.Entities.User", "Recipient")
@@ -417,6 +497,11 @@ namespace Forum.Infra.Migrations
             modelBuilder.Entity("Forum.Domain.Entities.Area", b =>
                 {
                     b.Navigation("Sections");
+                });
+
+            modelBuilder.Entity("Forum.Domain.Entities.PrivateMessages", b =>
+                {
+                    b.Navigation("MessageComments");
                 });
 
             modelBuilder.Entity("Forum.Domain.Entities.Topic", b =>

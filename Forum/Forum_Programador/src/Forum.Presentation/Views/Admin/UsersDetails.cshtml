@@ -1,0 +1,61 @@
+﻿
+@model Forum.Application.DTO.UserInformationDTO
+
+<link href="~/css/user-details/user-details.css" rel="stylesheet" />
+
+<section class="section about-section gray-bg" id="about">
+    <div class="container">
+        <div class="row align-items-center flex-row-reverse">
+            <div class="col-lg-6">
+                <div class="about-text go-to">
+                    <h3 class="dark-color">About @Model.User.Name</h3>
+                    <h6 class="theme-color lead">@Model.Occupation</h6>
+
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="about-avatar">
+                    @{
+                        if (Model.User.Avatar != null)
+                        {
+                            <img src="~/images/@Model.User.Avatar" alt="Admin" class="rounded-circle" width="150">
+                        }
+                        else
+                        {
+                            <img src="https://i.imgur.com/4p8FljH.png" alt="Admin" class="rounded-circle" width="150">
+                        }
+                    }
+
+                </div>
+            </div>
+        </div>
+        <div class="counter">
+            <div class="row">
+                <div class="col-6 col-lg-3">
+                    <div class="count-data text-center">
+                        <h6 class="count h2" data-to="500" data-speed="500">@ViewBag.TotalPosts</h6>
+                        <p class="m-0px font-w-600">Total Posts</p>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-3">
+                    <div class="count-data text-center">
+                        <h6 class="count h2" data-to="150" data-speed="150">@ViewBag.TotalReports</h6>
+                        <p class="m-0px font-w-600">Total Reports</p>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-3">
+                    <div class="count-data text-center">
+                        <h6 class="count h2" data-to="850" data-speed="850">@ViewBag.TotalScore</h6>
+                        <p class="m-0px font-w-600">Score</p>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-3">
+                    <div class="count-data text-center">
+                        <h6 class="count h2" data-to="190" data-speed="190">@ViewBag.TotalFirends</h6>
+                        <p class="m-0px font-w-600">Friends</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

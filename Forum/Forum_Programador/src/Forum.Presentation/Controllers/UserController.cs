@@ -332,14 +332,9 @@ namespace Forum.Presentation.Controllers
             return RedirectToAction("Index", "User", new { loggedid = currentuser.Id, profileid = userToFollow.IdentityId, isowner = 0 });
         }
 
-        [HttpPost]
-        public async Task<IActionResult> BanUser(Guid userId)
-        {
-            return View();
-        }
 
         [HttpPost]
-        public async Task<IActionResult> WeekBan(Guid userId)
+        public async Task<IActionResult> Reportuser(Guid userId)
         {
             return View();
         }

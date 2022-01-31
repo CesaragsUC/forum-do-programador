@@ -12,7 +12,7 @@ namespace Forum.Domain.Interfaces
     {
         Task<Topic> GetById(Guid id);
         Task<IEnumerable<Topic>> GetBySectionId(Guid sectionId);
-        Task<Topic> GetByUserId(Guid userId);
+        Task<IEnumerable<Topic>> GetByUserId(Guid userId);
         Task<IEnumerable<Topic>> GetAll();
         void Add(Topic topic);
         void AddComment(Comments comment);

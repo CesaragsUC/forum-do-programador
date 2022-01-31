@@ -11,10 +11,11 @@ namespace Forum.Domain.Interfaces
         public void Add(Ranking topic);
         public void Delete(Ranking topic);
         public void Update(Ranking topic);
-        Task<User> GetById(Ranking id);
+        Task<Ranking> GetById(Guid id);
         Task<IEnumerable<Ranking>> GetAll();
-        Task<IEnumerable<Ranking>> GetByUserId();
-        Task<IEnumerable<Ranking>> GetByCommentId();
-        Task<IEnumerable<Ranking>> GetByTopicId();
+        Task<IEnumerable<Ranking>> GetByUserId(Guid userId);
+        Task<IEnumerable<Ranking>> GetByCommentId(Guid commentId);
+        Task<IEnumerable<Ranking>> GetByTopicId(Guid topicid);
+        Task<Ranking> GetByCommentAndUserId(Guid commentId,Guid userId);
     }
 }

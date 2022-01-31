@@ -442,3 +442,8 @@ F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Prese
 F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\obj\Debug\net5.0\Razor\Views\PrivateMesage\Index.cshtml.g.cs
 F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\obj\Debug\net5.0\Razor\Views\PrivateMesage\Send.cshtml.g.cs
 F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\obj\Debug\net5.0\Razor\Views\PrivateMesage\ViewMessages.cshtml.g.cs
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\obj\Debug\net5.0\Razor\Views\Home\AccessDenied.cshtml.g.cs
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\obj\Debug\net5.0\Razor\Views\Admin\Topics.cshtml.g.cs
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\obj\Debug\net5.0\Razor\Views\Admin\UserReports.cshtml.g.cs
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\obj\Debug\net5.0\Razor\Views\Admin\Users.cshtml.g.cs
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Presentation\obj\Debug\net5.0\Razor\Views\Admin\UsersDetails.cshtml.g.cs

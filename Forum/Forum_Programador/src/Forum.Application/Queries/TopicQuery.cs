@@ -221,5 +221,50 @@ namespace Forum.Application.Queries
 
             return topicList;
         }
+
+        public async Task<IEnumerable<TopicDTO>> GetByUserCreatorId(Guid userId)
+        {
+            var topicList = await _topicRepository.GetByUserId(userId);
+            if (!topicList.Any()) return null;
+
+            var topicsDTO = new List<TopicDTO>();
+
+
+            foreach (var item in topicList)
+            {
+                var comments = new List<CommentsDTO>();
+
+                var topicTotalViews = await _topicViewsRepository.GetByTopicId(item.Id);
+
+                foreach (var cm in item.Coments)
+                {
+                    var coment = new CommentsDTO
+                    {
+                        Id = cm.Id,
+                        CommentId = cm.CommentId,
+                        CreationDate = cm.CreationDate,
+                        Text = cm.Text,
+                        TopicId = cm.TopicId,
+                        UserId = cm.UserId
+                    };
+
+                    comments.Add(coment);
+                }
+
+                var topicModel = new TopicDTO
+                {
+                    Id = item.Id,
+                    Title = item.Title,
+                    Coments = comments,
+                    TotalViews = topicTotalViews.Count()
+
+                };
+
+                topicsDTO.Add(topicModel);
+
+            }
+
+            return topicsDTO;
+        }
     }
 }

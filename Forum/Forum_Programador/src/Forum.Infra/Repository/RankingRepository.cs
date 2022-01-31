@@ -4,6 +4,8 @@ using Forum.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace Forum.Infra.Repository
@@ -37,9 +39,9 @@ namespace Forum.Infra.Repository
             return await _context.Rankings.AsNoTracking().ToListAsync();
         }
 
-        public Task<IEnumerable<Ranking>> GetByCommentId()
+        public async Task<IEnumerable<Ranking>> GetByCommentId(Guid commentId)
         {
-            throw new NotImplementedException();
+            return await _context.Rankings.Where(c=>c.CommentId == commentId).AsNoTracking().ToListAsync();
         }
 
         public async Task<Ranking> GetById(Guid id)
@@ -47,19 +49,20 @@ namespace Forum.Infra.Repository
             return await _context.Rankings.FirstOrDefaultAsync(u => u.Id == id);
         }
 
-        public Task<User> GetById(Ranking id)
+
+        public async Task<IEnumerable<Ranking>> GetByTopicId(Guid topicId)
         {
-            throw new NotImplementedException();
+            return await _context.Rankings.Where(c => c.TopicId == topicId).AsNoTracking().ToListAsync();
         }
 
-        public Task<IEnumerable<Ranking>> GetByTopicId()
+        public async Task<Ranking> GetByCommentAndUserId(Guid commentId, Guid userId)
         {
-            throw new NotImplementedException();
+            return await _context.Rankings.FirstOrDefaultAsync(u => u.CommentId == commentId && u.UserId == userId);
         }
 
-        public Task<IEnumerable<Ranking>> GetByUserId()
+        public async Task<IEnumerable<Ranking>> GetByUserId(Guid userId)
         {
-            throw new NotImplementedException();
+            return await _context.Rankings.Where(c => c.UserId == userId).AsNoTracking().ToListAsync();
         }
 
         public void Update(Ranking ranking)

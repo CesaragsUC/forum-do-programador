@@ -12,13 +12,13 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Forum.Application.Commands.User;
 
 namespace Forum.Application.Handler.Command
 {
     public class UserFriendCommandHandler : ValidateComandBase,
         IRequestHandler<AddUserFriendCommand,bool>,
          IRequestHandler<DeleteUserFriendCommand, bool>
-
 
     {
         private readonly IMediatorHandler _mediatorHandler;
@@ -63,5 +63,7 @@ namespace Forum.Application.Handler.Command
 
             return await _userFriendRepository.UnitOfWork.Commit();
         }
+
+
     }
 }

@@ -23,6 +23,7 @@ namespace Forum.Infra
         public DbSet<Section> Sections { get; set; }
         public DbSet<Topic> Topics { get; set; }
         public DbSet<Comments> Comments { get; set; }
+        public DbSet<ReportUsers> ReportUsers { get; set; }
         public DbSet<Area> Areas { get; set; }
         public DbSet<PrivateMessages> PrivateMessages { get; set; }
         public DbSet<MessageComment> MessageComments { get; set; }

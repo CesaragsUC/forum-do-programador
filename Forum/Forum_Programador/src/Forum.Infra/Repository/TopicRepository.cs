@@ -59,9 +59,9 @@ namespace Forum.Infra.Repository
         }
 
 
-        public async Task<Topic> GetByUserId(Guid userId)
+        public async Task<IEnumerable<Topic>> GetByUserId(Guid userId)
         {
-            return await _context.Topics.FirstOrDefaultAsync(u => u.UserId == userId);
+            return await _context.Topics.Where(u => u.UserId == userId).AsNoTracking().ToListAsync();
         }
 
         public void Update(Topic topic)

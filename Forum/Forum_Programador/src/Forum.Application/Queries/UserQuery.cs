@@ -33,7 +33,8 @@ namespace Forum.Application.Queries
                     LastActivity = item.LastActivity,
                     UserTypeId = item.UserTypeId,
                     CreationDate = item.CreationDate,
-                    Avatar = item.Avatar
+                    Avatar = item.Avatar,
+                    IsBanned = item.IsBanned
                 };
                 userList.Add(user);
             }
@@ -55,7 +56,8 @@ namespace Forum.Application.Queries
                 LastActivity = user.LastActivity,
                 UserTypeId = user.UserTypeId,
                 CreationDate = user.CreationDate,
-                Avatar = user.Avatar
+                Avatar = user.Avatar,
+                IsBanned = user.IsBanned
             };
 
             return userModel;
@@ -75,7 +77,8 @@ namespace Forum.Application.Queries
                 LastActivity = user.LastActivity,
                 UserTypeId = user.UserTypeId,
                 CreationDate = user.CreationDate,
-                Avatar = user.Avatar
+                Avatar = user.Avatar,
+                IsBanned = user.IsBanned
             };
 
             return userModel;
@@ -93,7 +96,8 @@ namespace Forum.Application.Queries
                 LastActivity = user.LastActivity,
                 UserTypeId = user.UserTypeId,
                 CreationDate = user.CreationDate,
-                Avatar = user.Avatar
+                Avatar = user.Avatar,
+                IsBanned = user.IsBanned
             };
             return userModel;
         }

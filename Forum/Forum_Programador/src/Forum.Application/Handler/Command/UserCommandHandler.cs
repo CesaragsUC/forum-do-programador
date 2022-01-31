@@ -1,4 +1,5 @@
-﻿using Forum.Application.Commands.UserFirend;
+﻿using System;
+using Forum.Application.Commands.UserFirend;
 using Forum.Application.Commands.UserInfo;
 using Forum.Application.Extensions;
 using Forum.Core.Communication.Mediator;
@@ -8,6 +9,7 @@ using Forum.Domain.Interfaces;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
+using Forum.Application.Commands.User;
 
 namespace Forum.Application.Handler.Command
 {
@@ -16,7 +18,9 @@ namespace Forum.Application.Handler.Command
          IRequestHandler<UpdateUserAvatarCommand, bool>,
          IRequestHandler<DeleteUserCommand, bool>,
         IRequestHandler<UpdateUserInformationCommand, bool>,
-        IRequestHandler<AddUserInformationCommand, bool>
+        IRequestHandler<AddUserInformationCommand, bool>,
+        IRequestHandler<BanUserCommand, bool>,
+        IRequestHandler<UnBanUserCommand, bool>
 
     {
         private readonly IMediatorHandler _mediatorHandler;
@@ -140,6 +144,41 @@ namespace Forum.Application.Handler.Command
 
 
             _userRepository.AddUserInformation(userInfo);
+
+            return await _userRepository.UnitOfWork.Commit();
+        }
+
+        public async Task<bool> Handle(BanUserCommand command, CancellationToken cancellationToken)
+        {
+            if (!ValidateCommand(command)) return false;
+
+            var user = await _userRepository.GetById(command.UserId);
+            if (user == null)
+            {
+                await _mediatorHandler.PublishDomainNotification(new DomainNotification(command.MessageType, "User not found!"));
+                return false;
+            }
+
+            user.BanUser();
+
+            _userRepository.Update(user);
+
+            return await _userRepository.UnitOfWork.Commit();
+        }
+
+        public async Task<bool> Handle(UnBanUserCommand command, CancellationToken cancellationToken)
+        {
+            if (!ValidateCommand(command)) return false;
+            var user = await _userRepository.GetById(command.UserId);
+            if (user == null)
+            {
+                await _mediatorHandler.PublishDomainNotification(new DomainNotification(command.MessageType, "User not found!"));
+                return false;
+            }
+
+            user.UnBanUser();
+
+            _userRepository.Update(user);
 
             return await _userRepository.UnitOfWork.Commit();
         }

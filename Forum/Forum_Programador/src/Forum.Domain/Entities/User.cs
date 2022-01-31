@@ -12,6 +12,8 @@ namespace Forum.Domain.Entities
         public string Email { get; private set; }
         public bool IsActive { get; private set; }
 
+        public bool IsBanned { get; private set; }
+
         public string Avatar { get; private set; }
 
         public int UserTypeId { get; private set; }
@@ -68,6 +70,15 @@ namespace Forum.Domain.Entities
         public void UpdateAvatar(string avatar)
         {
             Avatar = avatar;
+        }
+
+        public void BanUser()
+        {
+            IsBanned = true;
+        }
+        public void UnBanUser()
+        {
+            IsBanned = false;
         }
     }
 }

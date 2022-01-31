@@ -11,9 +11,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Forum.Presentation.Configuration;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Forum.Presentation.Controllers
 {
+    [Authorize]
     public class SectionController : ControllerBase
     {
         private readonly IMediatorHandler _mediatorHandler;
@@ -38,6 +41,7 @@ namespace Forum.Presentation.Controllers
         //public IActionResult Index() => View(); //only in NET Core 5
 
         [Route("sections")]
+        [ClaimsAuthorize("Section", "List")]
         public async Task<IActionResult> Index(int pg = 1)
         {
             var sections = await _sectionQuery.GetAll();
@@ -70,6 +74,7 @@ namespace Forum.Presentation.Controllers
 
         [HttpGet]
         [Route("add-section")]
+        [ClaimsAuthorize("Section", "Add")]
         public async Task<IActionResult> Create()
         {
             ViewBag.Areas = new SelectList(await _areaQuery.GetAll(), "Id", "Name");
@@ -78,6 +83,7 @@ namespace Forum.Presentation.Controllers
 
         [HttpPost]
         [Route("add-section")]
+        [ClaimsAuthorize("Section", "Add")]
         public async Task<IActionResult> Create(SectionDTO section)
         {
 
@@ -99,6 +105,7 @@ namespace Forum.Presentation.Controllers
 
         [HttpGet]
         [Route("update-section")]
+        [ClaimsAuthorize("Section", "Update")]
         public async Task<IActionResult> Update(Guid id)
         {
             if (id == Guid.Empty)
@@ -118,6 +125,7 @@ namespace Forum.Presentation.Controllers
 
         [HttpPost]
         [Route("update-section")]
+        [ClaimsAuthorize("Section", "Update")]
         public async Task<IActionResult> Update(SectionDTO model)
         {
             if (!ModelState.IsValid) return View(model);
@@ -138,6 +146,7 @@ namespace Forum.Presentation.Controllers
 
         [HttpDelete]
         [Route("delete-section")]
+        [ClaimsAuthorize("Section", "Delete")]
         public async Task<IActionResult> Delete(Guid id)
         {
             if (id == Guid.Empty) return BadRequest("Invalid Id");
@@ -161,6 +170,7 @@ namespace Forum.Presentation.Controllers
 
         [HttpPut]
         [Route("inative-section")]
+        [ClaimsAuthorize("Section", "Delete")]
         public async Task<IActionResult> Inative(Guid id, bool active)
         {
             if (id == Guid.Empty)

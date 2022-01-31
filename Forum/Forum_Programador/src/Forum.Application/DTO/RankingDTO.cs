@@ -16,7 +16,7 @@ namespace Forum.Application.DTO
         public int Point { get;  set; }
         public Guid TopicId { get;  set; }
 
-        public int CommentId { get;  set; }
+        public Guid CommentId { get;  set; }
 
         public DateTime CreationDate { get;  set; }
     }

@@ -10,5 +10,6 @@ namespace Forum.Application.Queries.Interfaces
         Task<TopicDTO> GetById(Guid id);
         Task<IEnumerable<TopicDTO>> GetAll();
         Task<IEnumerable<TopicDTO>> GetBySectionId(Guid sectionId);
+        Task<IEnumerable<TopicDTO>> GetByUserCreatorId(Guid userId);
     }
 }
