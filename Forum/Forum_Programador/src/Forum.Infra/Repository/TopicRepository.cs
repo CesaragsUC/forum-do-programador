@@ -33,6 +33,11 @@ namespace Forum.Infra.Repository
             _context.Topics.Remove(topic);
         }
 
+        public void DeleteComments(Comments comment)
+        {
+            _context.Comments.Remove(comment);
+        }
+
         public void Dispose()
         {
             _context.Dispose();

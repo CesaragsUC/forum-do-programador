@@ -1,0 +1,196 @@
+﻿@model IEnumerable<Forum.Application.DTO.ReportUserDTO>
+
+
+    @{
+    ViewData["Title"] = "Users Report";
+
+    var pager = ViewBag.Pager;
+    int pageNo = 0;
+
+    if (ViewBag.Pagination != null)
+    {
+    pager = ViewBag.Pagination;
+    pageNo = pager.CurrentPage;
+    }
+    }
+
+
+    <style>
+        body {
+            margin-top: 20px;
+            background: #f8f8f8
+        }
+    </style>
+
+    <div class="container">
+        <div class="row flex-lg-nowrap">
+
+            <div class="col">
+
+                <vc:summary />
+
+                <div class="row flex-lg-nowrap">
+                    <div class="col mb-3">
+                        <div class="e-panel card">
+                            <div class="card-body">
+                                <div class="card-title">
+                                    <h6 class="mr-2"><span>Reported users</span></h6>
+                                </div>
+                                <a class="btn btn-warning" asp-controller="Admin" asp-action="Index">Back Admin Area</a>
+
+                                <div class="e-table">
+                                    <div class="table-responsive table-lg mt-3">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th class="max-width">Name</th>
+                                                    <th class="max-width">Reason</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if (Model.Any())
+                                                {
+                                                @foreach (var item in Model)
+                                                {
+
+                                                <tr>
+                                                    <td> @item.Name </td>
+                                                    <td> @item.Reason </td>
+                                                    <td class="align-middle" style="width: 100px;">
+                                                        <div class="btn-group align-top">
+                                                            <a class="btn btn-sm btn-outline-secondary badge" type="button" asp-controller="Admin" asp-action="UsersDetails" asp-route-userid="@item.UserId">Details</a>
+                                                            @{
+                                                            if (!item.IsBanned)
+                                                            {
+                                                            <button class="btn btn-sm btn-outline-secondary badge" type="button" data-toggle="modal" id="deleteClicked" data-toggle="tooltip" data-placement="top" title="Ban User" onclick="getUserId(this)" value="@item.UserId" data-target="#ban-user-modal"><i class="fa fa-ban" style="color: red;"></i></button>
+                                                            }
+                                                            else
+                                                            {
+                                                            <button class="btn btn-sm btn-outline-secondary badge" type="button" data-toggle="modal" id="deleteClicked" data-toggle="tooltip" data-placement="top" title="Remove Ban User" data-toggle="modal" id="deleteClicked" onclick="getUserId(this)" value="@item.UserId" data-target="#unban-user-modal"><i class="fa fa-unlock" style="color: green;"></i></button>
+                                                            }
+
+
+                                                            }
+
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                }
+                                                }
+
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <partial name="_Pagination" model="@pager" />
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- "Modal Ban -->
+                <div class="modal" tabindex="-1" role="dialog" id="ban-user-modal">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Ban User</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>You sure that want to ban this user?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" onclick="banUser()" class="btn btn-danger">Confirm</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- "Modal UnBan -->
+                <div class="modal" tabindex="-1" role="dialog" id="unban-user-modal">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Remove Ban User</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>You sure that want to remove Ban from this user?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" onclick="removeBanUser()" class="btn btn-danger">Confirm</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    @section scripts{
+
+    <script type="text/javascript">
+
+        var userId;
+
+        function getUserId(event) {
+            debugger
+            userId = event.value;
+            //alert(userId)
+        }
+
+        function banUser() {
+
+            debugger
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("BanUser", "Admin")',
+                data: { userId: userId },
+                success: function () {
+                    location.reload();
+                    alert('User banned');
+                },
+                error: function (xhr, status, error) {
+                    alert('An error occured');
+                }
+            });
+        }
+
+        function removeBanUser() {
+
+            debugger
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("UnBanUser", "Admin")',
+                data: { userId: userId },
+                success: function () {
+                    location.reload();
+                    alert('Ban Removed');
+                },
+                error: function (xhr, status, error) {
+                    alert('An error occured');
+                }
+            });
+        }
+
+    </script>
+    }
+
+
+
+
+

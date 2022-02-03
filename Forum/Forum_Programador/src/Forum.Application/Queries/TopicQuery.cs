@@ -75,7 +75,8 @@ namespace Forum.Application.Queries
                     Title = item.Title,
                     User = userTopicModel,
                     Coments = comments,
-                    TotalViews = topicTotalViews.Count()
+                    TotalViews = topicTotalViews.Count(),
+                    CreationDate = item.CreationDate
 
                 };
 

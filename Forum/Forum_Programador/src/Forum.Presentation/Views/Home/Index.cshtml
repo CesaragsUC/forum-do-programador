@@ -34,7 +34,7 @@
 
 
 
-                                foreach (var sec in item.Sections)
+                                foreach (var sec in item.Sections.Where(x=>x.IsActive))
                                 {
                                     <div class="forum-item active">
                                         <div class="row">

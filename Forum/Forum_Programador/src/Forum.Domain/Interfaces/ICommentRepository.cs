@@ -12,6 +12,7 @@ namespace Forum.Domain.Interfaces
     {
         Task<Comments> GetById(Guid id);
         Task<IEnumerable<Comments>> GetByTopicId(Guid topicid);
+        Task<IEnumerable<Comments>> ByTopicId(Guid topicid);  
         Task<IEnumerable<Comments>> GetAll();
         void Add(Comments section);
         void Update(Comments section);

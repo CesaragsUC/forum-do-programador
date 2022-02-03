@@ -18,5 +18,6 @@ namespace Forum.Domain.Interfaces
         void AddComment(Comments comment);
         void Update(Topic topic);
         void Delete(Topic topic);
+        void DeleteComments(Comments comment);
     }
 }

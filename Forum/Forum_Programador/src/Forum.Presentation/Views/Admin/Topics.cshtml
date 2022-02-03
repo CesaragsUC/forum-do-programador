@@ -1,5 +1,155 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿
+@model IEnumerable<Forum.Application.DTO.TopicDTO>
+
+
 @{
+    ViewData["Title"] = "Topics";
+
+    var pager = ViewBag.Pager;
+    int pageNo = 0;
+
+    if (ViewBag.Pagination != null)
+    {
+        pager = ViewBag.Pagination;
+        pageNo = pager.CurrentPage;
+    }
 }
+
+
+<style>
+    body {
+        margin-top: 20px;
+        background: #f8f8f8
+    }
+</style>
+
+<div class="container">
+    <div class="row flex-lg-nowrap">
+
+        <div class="col">
+
+            <vc:summary />
+
+            <div class="row flex-lg-nowrap">
+                <div class="col mb-3">
+                    <div class="e-panel card">
+                        <div class="card-body">
+                            <div class="card-title">
+                                <h6 class="mr-2"><span>Topics in Forum</span></h6>
+                            </div>
+                            <a class="btn btn-warning" asp-controller="Admin" asp-action="Index">Back Admin Area</a>
+
+                            <div class="e-table">
+                                <div class="table-responsive table-lg mt-3">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th class="max-width">Name</th>
+                                                <th class="max-width">Creator</th>
+                                                <th class="max-width">Create Date</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (Model.Any())
+                                            {
+                                                @foreach (var item in Model)
+                                                {
+
+                                            <tr>
+                                                <td> @item.Title </td>
+                                                <td> @item.User.Name </td>
+                                                <td> @item.CreationDate.ToString("dd//MM/yyyy") </td>
+                                                <td class="align-middle" style="width: 100px;">
+                                                    <div class="btn-group align-top">
+                                                        <a class="btn btn-sm btn-outline-secondary badge" type="button" asp-controller="Admin" asp-action="UsersDetails" asp-route-userid="@item.Id">Details</a>
+                                                        @{
+
+                                                            <button class="btn btn-sm btn-outline-secondary badge" type="button" data-toggle="modal" id="deleteClicked" data-toggle="tooltip" data-placement="top" title="Remove" data-toggle="modal" id="deleteClicked" onclick="getTopicId(this)" value="@item.Id" data-target="#remove-topic-modal"><i class="fa fa-trash" style="color: red;"></i></button>
+
+                                                        }
+
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                                }
+                                            }
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <partial name="_Pagination" model="@pager" />
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- "Modal Delete Topic -->
+            <div class="modal" tabindex="-1" role="dialog" id="remove-topic-modal">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Delete this Topic</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>You sure that want to delete this?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" onclick="deleteTopic()" class="btn btn-danger">Confirm</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    <script type="text/javascript">
+
+        var topicId;
+
+        function getTopicId(event) {
+            debugger
+            topicId = event.value;
+            //alert(userId)
+        }
+
+        function deleteTopic() {
+
+            debugger
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("DeleteTopic", "Admin")',
+                data: { topicId: topicId },
+                success: function () {
+                    location.reload();
+                    alert('Topic Deleted Successfully');
+                },
+                error: function (xhr, status, error) {
+                    alert('An error occured');
+                }
+            });
+        }
+
+
+    </script>
+}
+
+
+
+
+

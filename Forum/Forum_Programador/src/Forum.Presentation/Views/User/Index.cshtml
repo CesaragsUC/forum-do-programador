@@ -28,7 +28,7 @@
                     else
                     {
                         <li class="breadcrumb-item">
-                            <a target="__blank" href="#"><i class="fa fa-exclamation-triangle" style="size:20px;color:orangered"></i> Report This User</a>
+                            <button class="btn btn-danger" onclick="getReportedUserId(this)" data-toggle="modal" data-target="#modalReporttForm" value="@profileViewId"><i class="fa fa-exclamation-triangle" style="size:20px;color:orangered"></i> Report This User</button>
                         </li>
                     }
                 }
@@ -229,12 +229,72 @@
     </div>
 </div>
 
+<div class="modal fade" id="modalReporttForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h4 class="modal-title w-100 font-weight-bold">Write to us the reason of the report.</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body mx-3">
+                <div class="md-form">
+                    <i class="fas fa-comment-dots"></i>
+                    <textarea type="text" id="reason" class="md-textarea form-control" rows="4"></textarea>
+                    <label data-error="wrong" data-success="right" for="form8">Reason (Max 500 character)</label>
+                </div>
+
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <button class="btn btn-primary" onclick="reportUser()">Send </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 @section Scripts
 {
     <script type="text/javascript">
 
+        var reportedUserId;
+        function getReportedUserId(event) {
+            debugger
+            reportedUserId = event.value;
+            //alert(reportedUserId)
+        }
+
+        function reportUser()
+        {
+
+            debugger
+            var reasonText = $('#reason').val();
+            if (reasonText != "" && reasonText != "undefined" && reportedUserId != "undefined" && reportedUserId != "") {
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("UserReports", "Admin")',
+                    data: { userid: reportedUserId, reason: reasonText },
+                    success: function () {
+                        location.reload();
+                        alert('User Reported Successfully');
+                    },
+                    error: function (xhr, status, error) {
+                        location.reload();
+                        alert('An error occured');
+                    }
+                });
+            } else {
+                alert("Invalid report data.")
+
+            }
+
+
+
+        }
 
     function openPopup() {
         $("#errorModal").modal('show');
@@ -286,6 +346,7 @@
      $('#cancelPassword').click(function () {
          $('#updatePassword').attr("style", "display:none");
      })
+
 
     </script>
 }

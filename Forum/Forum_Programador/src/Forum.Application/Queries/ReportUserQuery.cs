@@ -12,19 +12,39 @@ namespace Forum.Application.Queries
     public class ReportUserQuery : IReportUserQuery
     {
         private readonly IReportUserRepository _reportUserRepository;
-        public ReportUserQuery(IReportUserRepository reportUserRepository)
+        private readonly IUserRepository _userRepository;
+        public ReportUserQuery(IReportUserRepository reportUserRepository, IUserRepository userRepository)
         {
             _reportUserRepository = reportUserRepository;
+            _userRepository = userRepository;
         }
         public async Task<ReportUserDTO> GetById(Guid id)
         {
             var report = await _reportUserRepository.GetById(id);
+
+            var user = await _userRepository.GetById(report.UserId);
+
+            var userDTO = new UserDTO
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Email = user.Email,
+                IdentityId = user.IdentityId,
+                LastActivity = user.LastActivity,
+                UserTypeId = user.UserTypeId,
+                CreationDate = user.CreationDate,
+                Avatar = user.Avatar,
+                IsBanned = user.IsBanned
+            };
+
             var reportDTO = new ReportUserDTO
             {
                 UserId = report.UserId,
                 Reason = report.Reason,
                 CreationDate = report.CreationDate,
-                UserSendReportId = report.UserSendReportId
+                UserSendReportId = report.UserSendReportId,
+                IsBanned = user.IsBanned,
+                Name = user.Name
             };
 
             return reportDTO;
@@ -38,12 +58,30 @@ namespace Forum.Application.Queries
 
             foreach (var report in reports)
             {
+                var user = await _userRepository.GetById(report.UserId);
+
+                var userDTO = new UserDTO
+                {
+                    Id = user.Id,
+                    Name = user.Name,
+                    Email = user.Email,
+                    IdentityId = user.IdentityId,
+                    LastActivity = user.LastActivity,
+                    UserTypeId = user.UserTypeId,
+                    CreationDate = user.CreationDate,
+                    Avatar = user.Avatar,
+                    IsBanned = user.IsBanned
+                };
+
+
                 var reportDTO = new ReportUserDTO
                 {
                     UserId = report.UserId,
                     Reason = report.Reason,
                     CreationDate = report.CreationDate,
-                    UserSendReportId = report.UserSendReportId
+                    UserSendReportId = report.UserSendReportId,
+                    IsBanned = user.IsBanned,
+                    Name = user.Name
                 };
                 reportList.Add(reportDTO);
             }
@@ -60,12 +98,29 @@ namespace Forum.Application.Queries
 
             foreach (var report in reports)
             {
+                var user = await _userRepository.GetById(report.UserId);
+
+                var userDTO = new UserDTO
+                {
+                    Id = user.Id,
+                    Name = user.Name,
+                    Email = user.Email,
+                    IdentityId = user.IdentityId,
+                    LastActivity = user.LastActivity,
+                    UserTypeId = user.UserTypeId,
+                    CreationDate = user.CreationDate,
+                    Avatar = user.Avatar,
+                    IsBanned = user.IsBanned
+                };
+
                 var reportDTO = new ReportUserDTO
                 {
                     UserId = report.UserId,
                     Reason = report.Reason,
                     CreationDate = report.CreationDate,
-                    UserSendReportId = report.UserSendReportId
+                    UserSendReportId = report.UserSendReportId,
+                    IsBanned = user.IsBanned,
+                    Name = user.Name
                 };
                 reportList.Add(reportDTO);
             }

@@ -51,6 +51,13 @@ namespace Forum.Infra.Repository
                 .AsNoTracking().ToListAsync();
         }
 
+        public async Task<IEnumerable<Comments>> ByTopicId(Guid topicid)
+        {
+            return await _context.Comments.Where(u => u.TopicId == topicid)
+                .AsNoTracking().ToListAsync();
+        }
+
+
         public void Update(Comments comment)
         {
             _context.Update(comment);

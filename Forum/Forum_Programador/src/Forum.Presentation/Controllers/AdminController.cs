@@ -6,10 +6,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Forum.Application.Commands;
+using Forum.Application.Commands.ReportUser;
 using Forum.Application.Commands.User;
 using Forum.Application.DTO;
 using Forum.Application.Queries.Interfaces;
 using Forum.Domain.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using NToastNotify;
 
 namespace Forum.Presentation.Controllers
@@ -25,6 +28,8 @@ namespace Forum.Presentation.Controllers
         private readonly IMessaCommentsQuery _commentRepository;
         private readonly IReportUserQuery _reportUserQuery;
         private readonly IRankingQuery _rankingQuery;
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
         public AdminController(INotificationHandler<DomainNotification> notifications,
             IMediatorHandler mediatorHandler,
@@ -35,7 +40,9 @@ namespace Forum.Presentation.Controllers
             ITopicQuery topicQuery,
             IMessaCommentsQuery commentRepository,
             IReportUserQuery reportUserQuery,
-            IRankingQuery rankingQuery) : base(notifications, mediatorHandler)
+            IRankingQuery rankingQuery,
+            SignInManager<IdentityUser> signInManager, 
+            UserManager<IdentityUser> userManager) : base(notifications, mediatorHandler)
         {
             _mediatorHandler = mediatorHandler;
             _userQuery = userQuery;
@@ -46,6 +53,8 @@ namespace Forum.Presentation.Controllers
             _commentRepository = commentRepository;
             _reportUserQuery = reportUserQuery;
             _rankingQuery = rankingQuery;
+            _signInManager = signInManager;
+            _userManager = userManager;
         }
         public async Task<IActionResult> Index()
         {
@@ -131,14 +140,109 @@ namespace Forum.Presentation.Controllers
 
         }
 
-        public async Task<IActionResult> UserReports()
+
+        public async Task<IActionResult> UserReportsAll(int pg =1)
         {
+            var reports = await _reportUserQuery.GetAll();
+
+            //limit iten for page
+            const int pageSize = 10;
+
+            if (pg < 1)
+                pg = 1;
+
+            string controllerName = ControllerContext.ActionDescriptor.ControllerName;
+            string actionName = ControllerContext.ActionDescriptor.ActionName;
+
+            int totalItens = reports.Count();
+            var pager = new Pager(totalItens, pg, controllerName, actionName, pageSize);
+            int rowSkip = (pg - 1) * pageSize;
+
+            var data = reports.Skip(rowSkip).Take(pager.PageSize).ToList();
+            ViewBag.Pagination = pager;
+            ViewBag.Pager = new Pager();
+
+            return View(data);
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UserReports(Guid userid,string reason)
+        {
+            if (userid == Guid.Empty || string.IsNullOrEmpty(reason))
+            {
+                _toastNotification.AddErrorToastMessage("A error occured, invalid form data ");
+                return RedirectToAction("Index", "Home");
+            }
+
+            var loggedUserName = User.Identity.Name;
+            var loggedUser = await _userManager.FindByNameAsync(loggedUserName);
+
+            //current logged user
+            var user = await _userQuery.GetByIdentityId(Guid.Parse(loggedUser.Id));
+
+            var userReported = await _userQuery.GetById(userid);
+
+            var command = new AddReportCommand(user.Id, userid, reason);
+            await _mediatorHandler.SendCommand(command);
+
+            if (IsvalidOpperation())
+            {
+                _toastNotification.AddSuccessToastMessage("You are reported " + userReported.Name);
+                return RedirectToAction("Index", "User", new { loggedid = user.Id, profileid = userReported.IdentityId, isowner = 0 });
+            }
+
+            _toastNotification.AddErrorToastMessage("A error occured ");
+            return RedirectToAction("Index", "User", new { loggedid = user.Id, profileid = userReported.IdentityId, isowner = 0 });
+
             return View();
         }
 
-        public async Task<IActionResult> Topics()
+        public async Task<IActionResult> Topics(int pg =1)
         {
-            return View();
+            var topics = await _topicQuery.GetAll();
+
+            //limit iten for page
+            const int pageSize = 10;
+
+            if (pg < 1)
+                pg = 1;
+
+            string controllerName = ControllerContext.ActionDescriptor.ControllerName;
+            string actionName = ControllerContext.ActionDescriptor.ActionName;
+
+            int totalItens = topics.Count();
+            var pager = new Pager(totalItens, pg, controllerName, actionName, pageSize);
+            int rowSkip = (pg - 1) * pageSize;
+
+            var data = topics.Skip(rowSkip).Take(pager.PageSize).ToList();
+            ViewBag.Pagination = pager;
+            ViewBag.Pager = new Pager();
+
+            return View(data);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteTopic(Guid topicId)
+        {
+            if (topicId != Guid.Empty)
+            {
+                var command = new DeleteTopicCommand(topicId);
+                await _mediatorHandler.SendCommand(command);
+            }
+            else
+            {
+                _toastNotification.AddErrorToastMessage("An error occur");
+                return RedirectToAction("Topics");
+            }
+
+            if (IsvalidOpperation())
+            {
+                _toastNotification.AddSuccessToastMessage("Topic Deleted successfully");
+                return RedirectToAction("Topics");
+            }
+
+            return   RedirectToAction("Topics");
         }
 
         [HttpPost]

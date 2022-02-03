@@ -1,4 +1,5 @@
-﻿using Forum.Application.Commands;
+﻿using System;
+using Forum.Application.Commands;
 using Forum.Application.Commands.Comments;
 using Forum.Application.Commands.Topic;
 using Forum.Application.Events;
@@ -85,6 +86,21 @@ namespace Forum.Application.Handler
                 return false;
             }
 
+            //need delete all coments from this topic before.
+            var comments = await _commentRepository.ByTopicId(topic.Id);
+            foreach (var comment in comments)
+            {
+                try
+                {
+                    _topicRepository.DeleteComments(comment);
+                }
+                catch (Exception e)
+                {
+                   
+                    throw e;
+                }
+
+            }
 
             _topicRepository.Delete(topic);
 
