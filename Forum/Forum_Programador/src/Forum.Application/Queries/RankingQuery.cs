@@ -45,41 +45,36 @@ namespace Forum.Application.Queries
 
         public int TotalUserScore(Guid userid)
         {
-            var rank =  _rankingRepository.GetByUserId(userid).Result;
+            var rank = _rankingRepository.GetByUserId(userid).Result;
 
             var total = rank.Sum(x => x.Point);
             return total;
         }
 
-        public async Task<IEnumerable<RankingDTO>> GetByCommentId(Guid commentId)
+        public async Task<RankingDTO> GetByCommentId(Guid commentId)
         {
-            var rankList = await _rankingRepository.GetByCommentId(commentId);
+            var rank = await _rankingRepository.GetByCommentId(commentId);
 
-            var result = new List<RankingDTO>();
 
-            foreach (var rank in rankList)
+            var data = new RankingDTO
             {
-                var data = new RankingDTO
-                {
-                    CommentId = rank.CommentId,
-                    CreationDate = rank.CreationDate,
-                    Id = rank.Id,
-                    Point = rank.Point,
-                    TopicId = rank.TopicId,
-                    UserId = rank.UserId,
-                    UserSentPointId = rank.UserSentId
+                CommentId = rank.CommentId,
+                CreationDate = rank.CreationDate,
+                Id = rank.Id,
+                Point = rank.Point,
+                TopicId = rank.TopicId,
+                UserId = rank.UserId,
+                UserSentPointId = rank.UserSentId
 
-                };
+            };
 
-                result.Add(data);
-            }
 
-            return result;
+            return data;
         }
 
         public async Task<RankingDTO> GetById(Guid id)
         {
-            var rank =  await _rankingRepository.GetById(id);
+            var rank = await _rankingRepository.GetById(id);
 
             var data = new RankingDTO
             {

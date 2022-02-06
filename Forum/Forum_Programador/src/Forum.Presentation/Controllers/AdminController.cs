@@ -14,9 +14,13 @@ using Forum.Application.Queries.Interfaces;
 using Forum.Domain.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using NToastNotify;
+using Microsoft.AspNetCore.Authorization;
+using Forum.Presentation.Configuration;
 
 namespace Forum.Presentation.Controllers
 {
+
+    [Authorize]
     public class AdminController : ControllerBase
     {
         private readonly IMediatorHandler _mediatorHandler;
@@ -56,11 +60,14 @@ namespace Forum.Presentation.Controllers
             _signInManager = signInManager;
             _userManager = userManager;
         }
+
+        [ClaimsAuthorize("Admin", "List")]
         public async Task<IActionResult> Index()
         {
             return View();
         }
 
+        [ClaimsAuthorize("Admin", "Users")]
         public async Task<IActionResult> Users(int pg = 1)
         {
             var users = await _userQuery.GetAll();
@@ -85,6 +92,8 @@ namespace Forum.Presentation.Controllers
             return View(data);
         }
 
+
+        [ClaimsAuthorize("Admin", "Users")]
         public async Task<IActionResult> UsersDetails(Guid userid)
         {
             var userInfo = new UserInformationDTO();
@@ -141,6 +150,7 @@ namespace Forum.Presentation.Controllers
         }
 
 
+        [ClaimsAuthorize("Admin", "Reports")]
         public async Task<IActionResult> UserReportsAll(int pg =1)
         {
             var reports = await _reportUserQuery.GetAll();
@@ -167,6 +177,8 @@ namespace Forum.Presentation.Controllers
         }
 
         [HttpPost]
+
+        [ClaimsAuthorize("Reports", "List")]
         public async Task<IActionResult> UserReports(Guid userid,string reason)
         {
             if (userid == Guid.Empty || string.IsNullOrEmpty(reason))
@@ -198,6 +210,8 @@ namespace Forum.Presentation.Controllers
             return View();
         }
 
+
+        [ClaimsAuthorize("Topics", "List")]
         public async Task<IActionResult> Topics(int pg =1)
         {
             var topics = await _topicQuery.GetAll();
@@ -223,6 +237,7 @@ namespace Forum.Presentation.Controllers
         }
 
         [HttpPost]
+        [ClaimsAuthorize("Topics", "Delete")]
         public async Task<IActionResult> DeleteTopic(Guid topicId)
         {
             if (topicId != Guid.Empty)
@@ -246,6 +261,7 @@ namespace Forum.Presentation.Controllers
         }
 
         [HttpPost]
+        [ClaimsAuthorize("Admin", "Ban")]
         public async Task<IActionResult> BanUser(Guid userId)
         {
 
@@ -265,6 +281,7 @@ namespace Forum.Presentation.Controllers
         }
 
         [HttpPost]
+        [ClaimsAuthorize("Admin", "UnBan")]
         public async Task<IActionResult> UnBanUser(Guid userId)
         {
             var command = new UnBanUserCommand(userId);

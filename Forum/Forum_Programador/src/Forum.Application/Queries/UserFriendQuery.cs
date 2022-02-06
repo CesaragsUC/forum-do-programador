@@ -68,16 +68,16 @@ namespace Forum.Application.Queries
             return userFriendsListDTO;
         }
 
-        public async Task<IEnumerable<UserFriendDTO>> GetByUserId(Guid userId)
+        public async Task<IEnumerable<UserFriendDTO>> GetByUserId(Guid friendId)
         {
-            var userFriends = await _userFriendRepository.GetByUserId(userId);
+            var userFriends = await _userFriendRepository.GetByUserId(friendId);
 
             var userFriendsListDTO = new List<UserFriendDTO>();
 
             foreach (var f in userFriends)
             {
                 //current profile user
-                var user = await _userRepository.GetById(userId);
+                var user = await _userRepository.GetById(friendId);
 
                 //his friend
                 var userFriend = await _userRepository.GetById(f.User.Id);
@@ -109,7 +109,7 @@ namespace Forum.Application.Queries
                 var friend = new UserFriendDTO
                 {
                     FriendId = f.FriendId,
-                    UserId = userId,
+                    UserId = friendId,
                     CreationDate = f.CreationDate,
                     User = userDTO,
                     Friend = userFriendDTO

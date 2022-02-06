@@ -44,14 +44,24 @@ namespace Forum.Infra.Repository
             return _context.UserFriends.Where(x => x.Id == id).FirstOrDefault();
         }
 
-        public async Task<IEnumerable<UserFriends>> GetByUserId(Guid userId)
+        public async Task<IEnumerable<UserFriends>> GetByUserAndFriendId(Guid userId,Guid friendId)
         {
             return await _context.UserFriends
-                .Where(x => x.FriendId == userId)
+                .Where(x => x.FriendId == friendId && x.UserId == userId)
                 .Include(u => u.User)
                 .Include(f => f.Friend)
                 .AsNoTracking().ToListAsync();
         }
+
+        public async Task<IEnumerable<UserFriends>> GetByUserId(Guid friendId)
+        {
+            return await _context.UserFriends
+                .Where(x => x.FriendId == friendId)
+                .Include(u => u.User)
+                .Include(f => f.Friend)
+                .AsNoTracking().ToListAsync();
+        }
+
 
         public void Update(UserFriends userFriends)
         {

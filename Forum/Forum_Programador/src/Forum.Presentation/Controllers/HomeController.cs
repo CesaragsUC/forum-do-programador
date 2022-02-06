@@ -19,7 +19,7 @@ namespace Forum.Presentation.Controllers
         private readonly ILogger<HomeController> _logger;
 
         private readonly IMediatorHandler _mediatorHandler;
-
+        private readonly IUserQuery _userQuery;
         private readonly IAreaQuery _areaQuery;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
@@ -27,6 +27,7 @@ namespace Forum.Presentation.Controllers
         public HomeController(INotificationHandler<DomainNotification> notifications,
             IMediatorHandler mediatorHandler,
             IAreaQuery areaQuery,
+            IUserQuery userQuery,
             ILogger<HomeController> logger,
              SignInManager<IdentityUser> signInManager,
             UserManager<IdentityUser> userManager) : base(notifications, mediatorHandler)
@@ -36,6 +37,7 @@ namespace Forum.Presentation.Controllers
             _logger = logger;
             _signInManager = signInManager;
             _userManager = userManager;
+            _userQuery = userQuery;
         }
 
         public async Task<IActionResult> Index()
@@ -44,13 +46,28 @@ namespace Forum.Presentation.Controllers
             var user = await _userManager.GetUserAsync(loogedUser);
             
             if(user != null)
+            {
                 TempData["UserId"] = user.Id;
+
+                var userData = await _userQuery.GetByIdentityId(Guid.Parse(user.Id));
+                ViewBag.UserData = userData;
+            }
+
 
             var areas = await _areaQuery.GetAll();
 
             return View(areas);
         }
 
+        public async  Task<IActionResult>DrawMenu()
+        {
+            var loogedUser = HttpContext.User;
+            var user = await _userManager.GetUserAsync(loogedUser);
+
+            var userData = await _userQuery.GetByIdentityId(Guid.Parse(user.Id));
+
+            return PartialView("_Headermenu", userData);
+        }
 
 
         [Route("erro/{id:length(3,3)}")]
@@ -60,20 +77,20 @@ namespace Forum.Presentation.Controllers
 
             if (id == 500)
             {
-                modelErro.Mensagem = "Ocorreu um erro! Tente novamente mais tarde ou contate nosso suporte.";
-                modelErro.Titulo = "Ocorreu um erro!";
+                modelErro.Mensagem = "An error has occurred! Please try again later or contact our support.";
+                modelErro.Titulo = "An error has occurred!";
                 modelErro.ErroCode = id;
             }
             else if (id == 404)
             {
-                modelErro.Mensagem = "A página que está procurando não existe! <br />Em caso de dúvidas entre em contato com nosso suporte";
-                modelErro.Titulo = "Ops! Página não encontrada.";
+                modelErro.Mensagem = "The page you are looking for does not exist! <br />If you have any questions, please contact our support.";
+                modelErro.Titulo = "Ops! Page not found.";
                 modelErro.ErroCode = id;
             }
             else if (id == 403)
             {
-                modelErro.Mensagem = "Você não tem permissão para fazer isto.";
-                modelErro.Titulo = "Acesso Negado";
+                modelErro.Mensagem = "Your profile not have permission to do that..";
+                modelErro.Titulo = "Access Denied";
                 modelErro.ErroCode = id;
             }
             else

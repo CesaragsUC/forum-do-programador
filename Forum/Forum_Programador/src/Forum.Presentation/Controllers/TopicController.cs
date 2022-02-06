@@ -1,5 +1,6 @@
 ﻿using Forum.Application.Commands;
 using Forum.Application.Commands.Comments;
+using Forum.Application.Commands.Ranking;
 using Forum.Application.Commands.TopicViews;
 using Forum.Application.Queries.Interfaces;
 using Forum.Core.Communication.Mediator;
@@ -218,6 +219,41 @@ namespace Forum.Presentation.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(Guid id)
         {
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> LikeComment(Guid commentid)
+        {
+
+            if (commentid == Guid.Empty) return BadRequest();
+
+            var loggedUserName = User.Identity.Name;
+            var loggedUser = await _userManager.FindByNameAsync(loggedUserName);
+
+            //current logged user
+            var user = await _userQuery.GetByIdentityId(Guid.Parse(loggedUser.Id));
+
+            var comment = await _commentQuery.GetById(commentid);
+
+            var command = new AddScoreCommand(comment.UserId, user.Id, comment.TopicId, comment.Id);
+            await _mediatorHandler.SendCommand(command);
+
+
+            if (IsvalidOpperation())
+            {
+                return RedirectToAction("ViewTopic", "Topic", new { id = comment.TopicId });
+            }
+            else
+            {
+                foreach (var error in GetMessageErros())
+                {
+                    _toastNotification.AddErrorToastMessage(error);
+                }
+                return RedirectToAction("ViewTopic", "Topic", new { id = comment.TopicId });
+            }
+              
 
             return View();
         }

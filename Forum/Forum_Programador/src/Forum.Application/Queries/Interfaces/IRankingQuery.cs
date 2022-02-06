@@ -10,7 +10,7 @@ namespace Forum.Application.Queries.Interfaces
         Task<RankingDTO> GetById(Guid id);
         Task<IEnumerable<RankingDTO>> GetByUserId(Guid userId);
         Task<IEnumerable<RankingDTO>> GetByTopicId(Guid topicId);
-        Task<IEnumerable<RankingDTO>> GetByCommentId(Guid commentId);
+        Task<RankingDTO> GetByCommentId(Guid commentId);
         Task<IEnumerable<RankingDTO>> GetAll();
         int TotalUserScore (Guid userid);
     }

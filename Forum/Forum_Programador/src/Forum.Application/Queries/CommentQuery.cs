@@ -41,6 +41,8 @@ namespace Forum.Application.Queries
                     TopicId = c.TopicId,
                     UserId = c.UserId,
                     TimeAgo = TimeAgo.GetTimeAgo(c.CreationDate),
+                    Point = c.Point,
+                    UserSendPointId = c.UserSendPointId
                 };
                 commentList.Add(comment);
             }
@@ -59,7 +61,9 @@ namespace Forum.Application.Queries
                 CreationDate = comment.CreationDate,
                 Text = comment.Text,
                 TopicId = comment.TopicId,
-                UserId = comment.UserId
+                UserId = comment.UserId,
+                Point = comment.Point,
+                UserSendPointId = comment.UserSendPointId
             };
 
             return commentDTO;
@@ -83,7 +87,9 @@ namespace Forum.Application.Queries
                     TopicId = c.TopicId,
                     UserId = c.UserId,
                     TimeAgo = TimeAgo.GetTimeAgo(c.CreationDate),
-                    CanEdit = c.UserId == loggedUserId ? true : false
+                    CanEdit = c.UserId == loggedUserId ? true : false,
+                    Point = c.Point,
+                    UserSendPointId = c.UserSendPointId
                 };
 
                 var topic = new TopicDTO

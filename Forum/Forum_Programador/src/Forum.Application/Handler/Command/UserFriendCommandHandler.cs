@@ -57,9 +57,20 @@ namespace Forum.Application.Handler.Command
 
             var userFriend = new UserFriends(command.UserId, command.UserToFollowId);
 
-            _userFriendRepository.Add(userFriend);
+            var userFriendData = await _userFriendRepository.GetByUserAndFriendId(command.UserId, command.UserToFollowId);
 
-            userFriend.AddEvent(new UserFriendEvent(userFriend.Id, command.UserId, command.UserToFollowId));
+            if (!userFriendData.Any())
+            {
+                _userFriendRepository.Add(userFriend);
+            }
+            else
+            {
+                await _mediatorHandler.PublishDomainNotification(new DomainNotification(command.MessageType, "Is Already friends"));
+                return false;
+            }
+
+
+            //userFriend.AddEvent(new UserFriendEvent(userFriend.Id, command.UserId, command.UserToFollowId));
 
             return await _userFriendRepository.UnitOfWork.Commit();
         }

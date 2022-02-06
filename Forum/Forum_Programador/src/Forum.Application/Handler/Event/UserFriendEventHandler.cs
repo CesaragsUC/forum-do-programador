@@ -26,7 +26,7 @@ namespace Forum.Application.Handler
 
         public async Task Handle(UserFriendEvent notification, CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+             await Task.CompletedTask;
         }
     }
 }

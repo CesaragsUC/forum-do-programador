@@ -46,6 +46,9 @@ namespace Forum.Infra.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("Point")
+                        .HasColumnType("int");
+
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("text");
@@ -54,6 +57,9 @@ namespace Forum.Infra.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("UserSendPointId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");

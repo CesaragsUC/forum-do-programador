@@ -39,9 +39,13 @@ namespace Forum.Infra.Repository
             return await _context.Rankings.AsNoTracking().ToListAsync();
         }
 
-        public async Task<IEnumerable<Ranking>> GetByCommentId(Guid commentId)
+        public async Task<Ranking> GetByCommentAndUserId(Guid commentId,Guid userSenderId)
         {
-            return await _context.Rankings.Where(c=>c.CommentId == commentId).AsNoTracking().ToListAsync();
+            return  _context.Rankings.Where(c=>c.CommentId == commentId && c.UserSentId == userSenderId).FirstOrDefault();
+        }
+        public async Task<Ranking> GetByCommentId(Guid commentId)
+        {
+            return _context.Rankings.Where(c => c.CommentId == commentId).FirstOrDefault();
         }
 
         public async Task<Ranking> GetById(Guid id)
@@ -55,11 +59,6 @@ namespace Forum.Infra.Repository
             return await _context.Rankings.Where(c => c.TopicId == topicId).AsNoTracking().ToListAsync();
         }
 
-        public async Task<Ranking> GetByCommentAndUserId(Guid commentId, Guid userId)
-        {
-            return await _context.Rankings.FirstOrDefaultAsync(u => u.CommentId == commentId && u.UserId == userId);
-        }
-
         public async Task<IEnumerable<Ranking>> GetByUserId(Guid userId)
         {
             return await _context.Rankings.Where(c => c.UserId == userId).AsNoTracking().ToListAsync();
@@ -68,6 +67,11 @@ namespace Forum.Infra.Repository
         public void Update(Ranking ranking)
         {
             _context.Update(ranking);
+        }
+
+        public void UpdateCommentPoint(Comments comment)
+        {
+            _context.Comments.Update(comment);
         }
     }
 }

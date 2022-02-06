@@ -112,7 +112,12 @@ namespace Forum.Presentation.Controllers
             }
             else
             {
-                var user = await _userQuery.GetByIdentityId(loggedid);
+                var loggedUserName = User.Identity.Name;
+                var loggedUser = await _userManager.FindByNameAsync(loggedUserName);
+
+                //current logged user
+                var user = await _userQuery.GetByIdentityId(Guid.Parse(loggedUser.Id));
+
                 if (user == null)
                 {
                     _toastNotification.AddErrorToastMessage("An unexpected error occur, invalid User");
@@ -325,11 +330,20 @@ namespace Forum.Presentation.Controllers
             if(IsvalidOpperation())
             {
                 _toastNotification.AddSuccessToastMessage("You are Foloowing " + userToFollow.Name);
-                return RedirectToAction("Index", "User", new { loggedid = currentuser.Id, profileid = userToFollow.IdentityId, isowner = 0 });
+                return RedirectToAction("Index", "User", new { loggedid = currentuser.IdentityId, profileid = userToFollow.IdentityId, isowner = 0 });
+            }
+            else
+            {
+                foreach (var error in GetMessageErros())
+                {
+                    _toastNotification.AddErrorToastMessage("Error: " + error);
+                }
+                
+                return RedirectToAction("Index", "User", new { loggedid = currentuser.IdentityId, profileid = userToFollow.Id, isowner = 0 });
             }
 
             _toastNotification.AddSuccessToastMessage("A error accoured to follow " + userToFollow.Name);
-            return RedirectToAction("Index", "User", new { loggedid = currentuser.Id, profileid = userToFollow.IdentityId, isowner = 0 });
+            return RedirectToAction("Index", "User", new { loggedid = currentuser.IdentityId, profileid = userToFollow.Id, isowner = 0 });
         }
 
 

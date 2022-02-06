@@ -135,12 +135,15 @@
                 type: "POST",
                 url: '@Url.Action("DeleteTopic", "Admin")',
                 data: { topicId: topicId },
-                success: function () {
+                success: function (data) {
                     location.reload();
-                    alert('Topic Deleted Successfully');
+                    console.log(data)
                 },
                 error: function (xhr, status, error) {
                     alert('An error occured');
+                    console.log(xhr)
+                    console.log(status)
+                    console.log(error)
                 }
             });
         }

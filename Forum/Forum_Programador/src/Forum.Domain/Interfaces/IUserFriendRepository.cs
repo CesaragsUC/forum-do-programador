@@ -12,7 +12,8 @@ namespace Forum.Domain.Interfaces
         public void Delete(UserFriends userFriends);
         public void Update(UserFriends userFriends);
         Task<UserFriends> GetById(Guid id);
-        Task<IEnumerable<UserFriends>> GetByUserId(Guid UserId);
+        Task<IEnumerable<UserFriends>> GetByUserAndFriendId(Guid userId, Guid friendId);
+        Task<IEnumerable<UserFriends>> GetByUserId(Guid userId);
         Task<IEnumerable<UserFriends>> GetAll();
     }
 }

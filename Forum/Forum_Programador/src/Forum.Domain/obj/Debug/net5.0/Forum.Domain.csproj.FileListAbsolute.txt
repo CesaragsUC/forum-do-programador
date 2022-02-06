@@ -15,3 +15,4 @@ F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Domai
 F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Domain\obj\Debug\net5.0\ref\Forum.Domain.dll
 F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Domain\obj\Debug\net5.0\Forum.Domain.pdb
 F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Domain\obj\Debug\net5.0\Forum.Domain.genruntimeconfig.cache
+F:\Projetos ASP.NET\forum-do-programador\Forum\Forum_Programador\src\Forum.Domain\obj\Debug\net5.0\Forum.Domain.csproj.CopyComplete
