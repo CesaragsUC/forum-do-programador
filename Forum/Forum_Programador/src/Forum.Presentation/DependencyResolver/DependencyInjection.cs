@@ -1,4 +1,5 @@
-﻿using Forum.Application.Commands;
+﻿using EventSourcing;
+using Forum.Application.Commands;
 using Forum.Application.Commands.Area;
 using Forum.Application.Commands.Comments;
 using Forum.Application.Commands.PrivateMessages;
@@ -16,6 +17,7 @@ using Forum.Application.Handler.Command;
 using Forum.Application.Queries;
 using Forum.Application.Queries.Interfaces;
 using Forum.Core.Communication.Mediator;
+using Forum.Core.Data.EventSourcing;
 using Forum.Core.Messages.CommonMessage.Notification;
 using Forum.Domain.Interfaces;
 using Forum.Infra;
@@ -34,6 +36,10 @@ namespace Forum.Presentation.DependencyResolver
 
             //Notifications
             services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
+
+            //EventStoreDb
+            services.AddSingleton<IEventStoreService, EventStoreService>();
+            services.AddSingleton<IEventSourceRepository, EventSourceRepository>();
 
             //Forum
             services.AddScoped<ForumContext>();
