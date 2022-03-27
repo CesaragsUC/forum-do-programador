@@ -1,7 +1,7 @@
 # forum-do-programador
 Olá.
-Esse é um Forum de discussão em geral, onde os usuarios podem trocar ideias, informações, discutir temas variados.
-Nesse projeto foi abordado os seguintes desing patterns e padrões:
+Esse é um Forum de discussão em geral desenvvolvido em ASP.NET 5, onde os usuarios podem trocar ideias, informações, discutir temas variados.
+Nesse projeto foi abordado os seguintes desing patterns e abordagens:
 
 - DDD
 - CQRS
